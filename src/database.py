@@ -8,14 +8,14 @@ class Database:
         self.dbCursor = self.dbConnection.cursor()
 
         # TODO: implement add query 
-    def addQuery():
+    def addQuery(self):
         pass
 
     # TODO: implement delete query
-    def deleteQuery():
+    def deleteQuery(self):
         pass
 
     # TODO: implement update query
-    def updateQuery():
+    def updateQuery(self):
         pass
 
