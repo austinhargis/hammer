@@ -19,15 +19,15 @@ class Hammer:
         root.title(f"hammer - {version}")
 
     # TODO: implement add query 
-    def addQuery():
+    def add_query():
         pass
 
     # TODO: implement delete query
-    def deleteQuery():
+    def delete_query():
         pass
 
     # TODO: implement update query
-    def updateQuery():
+    def update_query():
         pass
 
 if __name__ == "__main__":
