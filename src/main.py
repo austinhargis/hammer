@@ -1,7 +1,7 @@
 """
 
     hammer: an inventory management system developed in 
-    python, with a rust backend, and a mongodb database
+    python with sqlite3
 
     version: v0.1.0a
 
@@ -18,17 +18,6 @@ class Hammer:
     def __init__(self, root):
         root.title(f"hammer - {version}")
 
-    # TODO: implement add query 
-    def add_query():
-        pass
-
-    # TODO: implement delete query
-    def delete_query():
-        pass
-
-    # TODO: implement update query
-    def update_query():
-        pass
 
 if __name__ == "__main__":
     root = Tk()
