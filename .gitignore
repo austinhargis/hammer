@@ -18,4 +18,4 @@ debugging information
 
 .DS_STORE
 .idea
-./hammer.db/
+hammer.db
