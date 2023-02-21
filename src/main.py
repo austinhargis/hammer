@@ -1,7 +1,7 @@
 """
 
     hammer: an inventory management system developed in 
-    python
+    python with sqlite3
 
     version: v0.1.0a
 
