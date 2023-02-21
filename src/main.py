@@ -7,10 +7,10 @@
 
 """
 
-import os, sys
 import tkinter as tk
 from tkinter import ttk
 
+from database import Database
 from menu_bar import MenuBar
 
 version = 'v0.1.0a'
@@ -28,3 +28,5 @@ class Hammer(tk.Tk):
 if __name__ == "__main__":
     root = Hammer()
     root.mainloop()
+    
+    db = Database("hammer.db")

@@ -17,3 +17,5 @@ debugging information
 *.pdb/target
 
 .DS_STORE
+.idea
+./hammer.db/
