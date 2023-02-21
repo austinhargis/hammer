@@ -8,18 +8,23 @@
 """
 
 import os, sys
-from tkinter import *
+import tkinter as tk
 from tkinter import ttk
+
+from menu_bar import MenuBar
 
 version = 'v0.1.0a'
 
-class Hammer:
 
-    def __init__(self, root):
-        root.title(f"hammer - {version}")
+class Hammer(tk.Tk):
+
+    def __init__(self):
+        tk.Tk.__init__(self)
+        self.title(f"hammer - {version}")
+        menu_bar = MenuBar(self)
+        self.config(menu=menu_bar)
 
 
 if __name__ == "__main__":
-    root = Tk()
-    Hammer(root)
+    root = Hammer()
     root.mainloop()
