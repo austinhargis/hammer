@@ -11,6 +11,8 @@ import os, sys
 from tkinter import *
 from tkinter import ttk
 
+from database import Database
+
 version = 'v0.1.0a'
 
 class Hammer:
@@ -22,3 +24,5 @@ if __name__ == "__main__":
     root = Tk()
     Hammer(root)
     root.mainloop()
+    
+    db = Database("hammer.db")
