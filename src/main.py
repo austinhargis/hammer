@@ -28,11 +28,14 @@ class Hammer(tk.Tk):
         self.window()
 
     def window(self):
-        add_button = tk.Button(self, text="Add", command=self.db.addQuery)
+        add_button = tk.Button(self, text="Add", command=lambda: self.db.add_query())
         add_button.pack()
 
-        delete_button = tk.Button(self, text="Delete", command=self.db.deleteQuery)
+        delete_button = tk.Button(self, text="Delete", command=lambda: self.db.delete_query())
         delete_button.pack()
+
+        get_all_button = tk.Button(self, text="Get All", command=lambda: self.db.get_all_query())
+        get_all_button.pack()
 
 
 if __name__ == "__main__":
