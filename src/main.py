@@ -32,9 +32,10 @@ class Hammer(tk.Tk):
         self.window()
         self.populate_table()
 
-    def add_entry(self, data):
+    def add_entry(self, data, window):
         self.db.insert_query(data)
         self.refresh_table()
+        window.destroy()
 
     def add_item(self):
         self.db.test_add_query()
@@ -119,7 +120,7 @@ class Hammer(tk.Tk):
                                                                       publish_date_text.get(),
                                                                       type_text.get(),
                                                                       location_text.get(),
-                                                                      quantity_text.get()])).grid()
+                                                                      quantity_text.get()], top)).grid()
 
         top.mainloop()
 
