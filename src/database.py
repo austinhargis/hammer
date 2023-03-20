@@ -23,8 +23,12 @@ class Database:
             self.dbConnection = sqlite3.connect(filename)
             self.dbCursor = self.dbConnection.cursor()
 
+    def insert_query(self, data):
+        self.dbCursor.execute(f"INSERT INTO inventory(title, author, publish_date, type, location, quantity)"
+                              f"VALUES (?, ?, ?, ?, ?, ?)", data)
+
     # Currently adds filler data to the table
-    def add_query(self):
+    def test_add_query(self):
         data = ["Test", "Test2", "Test3", "Test4", "Test5", "Test6"]
         self.dbCursor.execute(f"INSERT INTO inventory (title, author, publish_date, type, location, quantity)"
                               f"VALUES (?, ?, ?, ?, ?, ?)", data)
