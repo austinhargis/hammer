@@ -29,9 +29,6 @@ class Database:
         self.dbConnection.commit()
 
     def delete_query(self, data):
-        print(data)
-        print(data[0])
-
         self.dbCursor.execute(f"DELETE FROM inventory WHERE id={data[0]}")
         self.dbConnection.commit()
 
