@@ -36,12 +36,19 @@ class Hammer(tk.Tk):
         current_table = self.db.get_all_query()
         print(current_table)
 
+        tree = ttk.Treeview(self, columns=('id', 'title', 'author', 'publish_date', 'type', 'location', 'quantity'))
+        tree.heading('id', text='ID')
+        tree.heading('title', text='Title')
+        tree.heading('author', text='Author')
+        tree.heading('publish_date', text='Publish Date')
+        tree.heading('type', text='Type')
+        tree.heading('location', text='Location')
+        tree.heading('quantity', text='Quantity')
+
         for y in range(len(current_table)):
-            for x in range(len(current_table[y])):
-                # if x > 0:
-                entry = tk.Entry(self, width=16, font=('Arial', 14,))
-                entry.grid(row=y, column=x)
-                entry.insert(tk.END, current_table[y][x])
+            tree.insert('', tk.END, values=current_table[y])
+
+        tree.grid()
 
     def window(self):
         add_button = tk.Button(self, text="Add", command=lambda: self.db.add_query())
