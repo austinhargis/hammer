@@ -25,9 +25,13 @@ class Hammer(tk.Tk):
 
         self.db = Database("hammer.db")
         self.menu_bar = MenuBar(self)
+
+        # creates the TreeView which will handle displaying all schema in the database
         self.tree = ttk.Treeview(self,
                                  columns=('id', 'title', 'author', 'publish_date', 'type', 'location', 'quantity'))
+        # hide the initial blank column that comes with TreeViews
         self.tree['show'] = 'headings'
+        # show only the desired columns (hiding the id)
         self.tree['displaycolumns'] = ('title', 'author', 'publish_date', 'type', 'location', 'quantity')
 
         self.config(menu=self.menu_bar)
@@ -35,7 +39,14 @@ class Hammer(tk.Tk):
         self.populate_table()
 
         self.tree.bind("<BackSpace>", self.delete_entry)
+        self.bind("<Escape>", lambda event: self.destroy())
 
+    """
+        add_entry takes the input from the TopLevel window for
+        inserting data into the database and passes it to the 
+        database handler, before refreshing the table and destroying
+        the TopLevel window
+    """
     def add_entry(self, data, window):
         self.db.insert_query(data)
         self.refresh_table()
@@ -45,6 +56,11 @@ class Hammer(tk.Tk):
         self.db.test_add_query()
         self.refresh_table()
 
+    """
+        delete_entry takes the currently selected/focused item in
+        the TreeView and performs a SQL query to remove it from the
+        database, before finally refreshing the table
+    """
     def delete_entry(self, event):
         current_item = self.tree.focus()
         if current_item != '':
@@ -54,7 +70,6 @@ class Hammer(tk.Tk):
     """
         drop_table will delete all delete all data within the table
     """
-
     def drop_table(self):
         self.db.drop_table()
         self.refresh_table()
@@ -63,13 +78,17 @@ class Hammer(tk.Tk):
         populate_table takes the return value of self.db.get_all_query()
         and builds a "table" of tk.Entry with the database
     """
-
     def populate_table(self):
         current_table = self.db.get_all_query()
 
         for y in range(len(current_table)):
             self.tree.insert('', tk.END, values=current_table[y])
 
+    """
+        refresh_table iterates through all elements in the TreeView
+        and then for each element, deletes it from the TreeView before
+        repopulating the table
+    """
     def refresh_table(self):
 
         for item in self.tree.get_children():
