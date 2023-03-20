@@ -22,10 +22,14 @@ class Hammer(tk.Tk):
         tk.Tk.__init__(self)
         self.title(f"hammer - {version}")
         self.minsize(400, 300)
+
         self.db = Database("hammer.db")
-        menu_bar = MenuBar(self)
-        self.config(menu=menu_bar)
+        self.menu_bar = MenuBar(self)
+        self.tree = ttk.Treeview(self, columns=('id', 'title', 'author', 'publish_date', 'type', 'location', 'quantity'))
+
+        self.config(menu=self.menu_bar)
         self.window()
+        self.populate_table()
 
     """
         populate_table takes the return value of self.db.get_all_query()
@@ -34,31 +38,30 @@ class Hammer(tk.Tk):
 
     def populate_table(self):
         current_table = self.db.get_all_query()
-        print(current_table)
-
-        tree = ttk.Treeview(self, columns=('id', 'title', 'author', 'publish_date', 'type', 'location', 'quantity'))
-        tree.heading('id', text='ID')
-        tree.heading('title', text='Title')
-        tree.heading('author', text='Author')
-        tree.heading('publish_date', text='Publish Date')
-        tree.heading('type', text='Type')
-        tree.heading('location', text='Location')
-        tree.heading('quantity', text='Quantity')
 
         for y in range(len(current_table)):
-            tree.insert('', tk.END, values=current_table[y])
+            self.tree.insert('', tk.END, values=current_table[y])
 
-        tree.grid()
+    def refresh_table(self):
+
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        self.populate_table()
 
     def window(self):
-        add_button = tk.Button(self, text="Add", command=lambda: self.db.add_query())
-        add_button.grid()
+        self.tree.heading('id', text='ID')
+        self.tree.heading('title', text='Title')
+        self.tree.heading('author', text='Author')
+        self.tree.heading('publish_date', text='Publish Date')
+        self.tree.heading('type', text='Type')
+        self.tree.heading('location', text='Location')
+        self.tree.heading('quantity', text='Quantity')
+        self.tree.pack(fill='both', expand=True)
 
-        delete_button = tk.Button(self, text="Delete", command=lambda: self.db.delete_query())
-        delete_button.grid()
-
-        get_all_button = tk.Button(self, text="Get All", command=lambda: self.populate_table())
-        get_all_button.grid()
+        self.menu_bar.database_menu.add_command(label='Add 1 Item', underline=1, command=lambda: self.db.add_query())
+        self.menu_bar.database_menu.add_command(label='Drop Table', underline=1, command=lambda: self.db.delete_query())
+        self.menu_bar.database_menu.add_command(label='Refresh', underline=1, command=lambda: self.refresh_table())
 
 
 if __name__ == "__main__":
