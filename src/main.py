@@ -27,6 +27,8 @@ class Hammer(tk.Tk):
         self.menu_bar = MenuBar(self)
         self.tree = ttk.Treeview(self,
                                  columns=('id', 'title', 'author', 'publish_date', 'type', 'location', 'quantity'))
+        self.tree['show'] = 'headings'
+        self.tree['displaycolumns'] = ('title', 'author', 'publish_date', 'type', 'location', 'quantity')
 
         self.config(menu=self.menu_bar)
         self.window()
@@ -45,9 +47,13 @@ class Hammer(tk.Tk):
 
     def delete_entry(self, event):
         current_item = self.tree.focus()
-        self.db.delete_query(self.tree.item(current_item)['values'])
-        self.refresh_table()
+        if current_item != '':
+            self.db.delete_query(self.tree.item(current_item)['values'])
+            self.refresh_table()
 
+    """
+        drop_table will delete all delete all data within the table
+    """
     def drop_table(self):
         self.db.drop_table()
         self.refresh_table()
@@ -56,7 +62,6 @@ class Hammer(tk.Tk):
         populate_table takes the return value of self.db.get_all_query()
         and builds a "table" of tk.Entry with the database
     """
-
     def populate_table(self):
         current_table = self.db.get_all_query()
 
