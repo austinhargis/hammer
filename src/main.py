@@ -54,6 +54,7 @@ class Hammer(tk.Tk):
     """
         drop_table will delete all delete all data within the table
     """
+
     def drop_table(self):
         self.db.drop_table()
         self.refresh_table()
@@ -62,6 +63,7 @@ class Hammer(tk.Tk):
         populate_table takes the return value of self.db.get_all_query()
         and builds a "table" of tk.Entry with the database
     """
+
     def populate_table(self):
         current_table = self.db.get_all_query()
 
@@ -89,50 +91,47 @@ class Hammer(tk.Tk):
         self.menu_bar.database_menu.add_command(label='Drop Table', underline=1, command=lambda: self.drop_table())
         self.menu_bar.database_menu.add_command(label='Refresh', underline=1, command=lambda: self.refresh_table())
 
-        self.add_button = tk.Button(text='Add', command=lambda: self.create_item())
-        self.add_button.pack()
+        tk.Button(text='Add', command=lambda: self.create_item()).pack()
+        tk.Button(text='Delete', command=lambda: self.delete_entry(None)).pack()
 
     def create_item(self):
         top = tk.Toplevel()
 
         top.title('Add Item To Database')
 
-        title_label = tk.Label(top, text='Title: ')
-        title_label.grid(row=0, column=0)
+        tk.Label(top, text='Title: ').grid(row=0, column=0)
         title_text = tk.Entry(top)
         title_text.grid(row=0, column=1)
 
-        author_label = tk.Label(top, text='Author: ')
-        author_label.grid(row=1, column=0)
+        tk.Label(top, text='Author: ').grid(row=1, column=0)
         author_text = tk.Entry(top)
         author_text.grid(row=1, column=1)
 
-        publish_date_label = tk.Label(top, text='Publish Date: ')
-        publish_date_label.grid(row=2, column=0)
+        tk.Label(top, text='Publish Date: ').grid(row=2, column=0)
         publish_date_text = tk.Entry(top)
         publish_date_text.grid(row=2, column=1)
 
-        type_label = tk.Label(top, text='Item Type: ')
-        type_label.grid(row=3, column=0)
+        tk.Label(top, text='Item Type: ').grid(row=3, column=0)
         type_text = tk.Entry(top)
         type_text.grid(row=3, column=1)
 
-        location_label = tk.Label(top, text='Location: ')
-        location_label.grid(row=4, column=0)
+        tk.Label(top, text='Location: ').grid(row=4, column=0)
         location_text = tk.Entry(top)
         location_text.grid(row=4, column=1)
 
-        quantity_label = tk.Label(top, text='Item Quantity: ')
-        quantity_label.grid(row=5, column=0)
+        tk.Label(top, text='Item Quantity: ').grid(row=5, column=0)
         quantity_text = tk.Entry(top)
         quantity_text.grid(row=5, column=1)
 
-        tk.Button(top, text='Finish', command=lambda: self.add_entry([title_text.get(),
-                                                                      author_text.get(),
-                                                                      publish_date_text.get(),
-                                                                      type_text.get(),
-                                                                      location_text.get(),
-                                                                      quantity_text.get()], top)).grid()
+        tk.Button(top, text='Add Item', command=lambda: self.add_entry([title_text.get(),
+                                                                        author_text.get(),
+                                                                        publish_date_text.get(),
+                                                                        type_text.get(),
+                                                                        location_text.get(),
+                                                                        quantity_text.get()], top))\
+            .grid(row=6, column=0)
+
+        tk.Button(top, text='Cancel', command=lambda: top.destroy()).grid(row=6, column=1)
 
         top.mainloop()
 
