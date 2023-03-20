@@ -26,6 +26,14 @@ class Database:
     def insert_query(self, data):
         self.dbCursor.execute(f"INSERT INTO inventory(title, author, publish_date, type, location, quantity)"
                               f"VALUES (?, ?, ?, ?, ?, ?)", data)
+        self.dbConnection.commit()
+
+    def delete_query(self, data):
+        print(data)
+        print(data[0])
+
+        self.dbCursor.execute(f"DELETE FROM inventory WHERE id={data[0]}")
+        self.dbConnection.commit()
 
     # Currently adds filler data to the table
     def test_add_query(self):
@@ -35,7 +43,7 @@ class Database:
         self.dbConnection.commit()
 
     # Currently drops all data from the inventory table
-    def delete_query(self):
+    def drop_table(self):
         self.dbCursor.execute("DELETE FROM inventory")
         self.dbConnection.commit()
 
