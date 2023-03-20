@@ -32,6 +32,8 @@ class Hammer(tk.Tk):
         self.window()
         self.populate_table()
 
+        self.tree.bind("<BackSpace>", self.delete_entry)
+
     def add_entry(self, data, window):
         self.db.insert_query(data)
         self.refresh_table()
@@ -41,8 +43,13 @@ class Hammer(tk.Tk):
         self.db.test_add_query()
         self.refresh_table()
 
+    def delete_entry(self, event):
+        current_item = self.tree.focus()
+        self.db.delete_query(self.tree.item(current_item)['values'])
+        self.refresh_table()
+
     def drop_table(self):
-        self.db.delete_query()
+        self.db.drop_table()
         self.refresh_table()
 
     """
