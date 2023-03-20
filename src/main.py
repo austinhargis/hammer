@@ -36,6 +36,14 @@ class Hammer(tk.Tk):
         and builds a "table" of tk.Entry with the database
     """
 
+    def add_item(self):
+        self.db.add_query()
+        self.refresh_table()
+
+    def drop_table(self):
+        self.db.delete_query()
+        self.refresh_table()
+
     def populate_table(self):
         current_table = self.db.get_all_query()
 
@@ -59,8 +67,8 @@ class Hammer(tk.Tk):
         self.tree.heading('quantity', text='Quantity')
         self.tree.pack(fill='both', expand=True)
 
-        self.menu_bar.database_menu.add_command(label='Add 1 Item', underline=1, command=lambda: self.db.add_query())
-        self.menu_bar.database_menu.add_command(label='Drop Table', underline=1, command=lambda: self.db.delete_query())
+        self.menu_bar.database_menu.add_command(label='Add 1 Item', underline=1, command=lambda: self.add_item())
+        self.menu_bar.database_menu.add_command(label='Drop Table', underline=1, command=lambda: self.drop_table())
         self.menu_bar.database_menu.add_command(label='Refresh', underline=1, command=lambda: self.refresh_table())
 
 
