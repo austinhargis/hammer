@@ -96,7 +96,7 @@ class Hammer(tk.Tk):
 
     def create_item(self):
         top = tk.Toplevel()
-
+        top.attributes('-topmost', True)
         top.title('Add Item To Database')
 
         tk.Label(top, text='Title: ').grid(row=0, column=0)
