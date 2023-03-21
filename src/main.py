@@ -40,11 +40,16 @@ class Hammer(tk.Tk):
         # show only the desired columns (hiding the id)
         self.tree['displaycolumns'] = ('title', 'author', 'publish_date', 'type', 'location', 'quantity')
 
+        self.treeScroll = tk.Scrollbar(self)
+        self.treeScroll.configure(command=self.tree.yview_scroll)
+        self.tree.configure(yscrollcommand=self.treeScroll.set)
+        self.treeScroll.pack(side='right', fill='both')
+
         self.config(menu=self.menu_bar)
         self.window()
         self.populate_table()
 
-        self.tree.bind("<BackSpace>", self.delete_entry)
+        self.tree.bind("<Delete>", self.delete_entry)
         self.bind("<Escape>", lambda event: self.destroy())
 
     """
@@ -150,6 +155,7 @@ class Hammer(tk.Tk):
         search_box.pack()
 
         tk.Button(text='Search', command=lambda: self.search_table(search_box)).pack()
+        self.bind('<Return>', lambda event: self.search_table(search_box))
 
 
 if __name__ == "__main__":
