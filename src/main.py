@@ -53,6 +53,7 @@ class Hammer(tk.Tk):
         database handler, before refreshing the table and destroying
         the TopLevel window
     """
+
     def add_entry(self, data, window):
         self.db.insert_query(data)
         self.refresh_table()
@@ -63,6 +64,10 @@ class Hammer(tk.Tk):
     def add_item(self):
         self.db.test_add_query()
         self.refresh_table()
+
+    def clear_table(self):
+        for item in self.tree.get_children():
+            self.tree.delete(item)
 
     """
         delete_entry takes the currently selected/focused item in
@@ -80,6 +85,7 @@ class Hammer(tk.Tk):
     """
         drop_table will delete all delete all data within the table
     """
+
     def drop_table(self):
         self.db.drop_table()
         self.refresh_table()
@@ -90,11 +96,12 @@ class Hammer(tk.Tk):
         populate_table takes the return value of self.db.get_all_query()
         and builds a "table" of tk.Entry with the database
     """
+
     def populate_table(self):
         current_table = self.db.get_all_query()
 
         for y in range(len(current_table)):
-            self.tree.insert('', tk.END, values=current_table[y])
+            self.tree.insert('', tk.END, values=current_table[y], tags=('item',))
 
         logging.info('Populated the table')
 
@@ -103,14 +110,27 @@ class Hammer(tk.Tk):
         and then for each element, deletes it from the TreeView before
         repopulating the table
     """
+
     def refresh_table(self):
 
-        for item in self.tree.get_children():
-            self.tree.delete(item)
-
+        self.clear_table()
         self.populate_table()
 
         logging.info('Refreshed the table')
+
+    def search_table(self, entry_box):
+        search_term = entry_box.get()
+
+        current_table = self.db.dbCursor.execute(f"""SELECT * 
+                                                     FROM inventory 
+                                                     WHERE title LIKE \'%{search_term}%\' 
+                                                     OR author LIKE \'%{search_term}%\'
+                                                     OR publish_date LIKE \'%{search_term}%\'
+                                                     OR type LIKE \'%{search_term}%\'
+                                                     OR location LIKE \'%{search_term}%\'
+                                                     OR quantity LIKE \'%{search_term}%\'""").fetchall()
+        self.clear_table()
+        self.populate_table(current_table)
 
     def window(self):
         self.tree.heading('id', text='ID')
@@ -125,8 +145,12 @@ class Hammer(tk.Tk):
         tk.Button(text='Add', command=lambda: AddItem(self)).pack()
         tk.Button(text='Delete', command=lambda: self.delete_entry(None)).pack()
 
+        search_box = tk.Entry()
+        search_box.pack()
+
+        tk.Button(text='Search', command=lambda: self.search_table(search_box)).pack()
+
 
 if __name__ == "__main__":
     root = Hammer()
-    sv_ttk.use_dark_theme()
     root.mainloop()
