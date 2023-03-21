@@ -97,8 +97,9 @@ class Hammer(tk.Tk):
         and builds a "table" of tk.Entry with the database
     """
 
-    def populate_table(self):
-        current_table = self.db.get_all_query()
+    def populate_table(self, current_table=None):
+        if current_table is None:
+            current_table = self.db.get_all_query()
 
         for y in range(len(current_table)):
             self.tree.insert('', tk.END, values=current_table[y], tags=('item',))
