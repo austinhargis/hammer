@@ -8,7 +8,6 @@
 """
 import logging
 
-import sv_ttk
 import tkinter as tk
 from tkinter import ttk
 
