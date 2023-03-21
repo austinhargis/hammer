@@ -23,15 +23,24 @@ class Database:
             self.dbConnection = sqlite3.connect(filename)
             self.dbCursor = self.dbConnection.cursor()
 
+    def insert_query(self, data):
+        self.dbCursor.execute(f"INSERT INTO inventory(title, author, publish_date, type, location, quantity)"
+                              f"VALUES (?, ?, ?, ?, ?, ?)", data)
+        self.dbConnection.commit()
+
+    def delete_query(self, data):
+        self.dbCursor.execute(f"DELETE FROM inventory WHERE id={data[0]}")
+        self.dbConnection.commit()
+
     # Currently adds filler data to the table
-    def add_query(self):
+    def test_add_query(self):
         data = ["Test", "Test2", "Test3", "Test4", "Test5", "Test6"]
         self.dbCursor.execute(f"INSERT INTO inventory (title, author, publish_date, type, location, quantity)"
                               f"VALUES (?, ?, ?, ?, ?, ?)", data)
         self.dbConnection.commit()
 
     # Currently drops all data from the inventory table
-    def delete_query(self):
+    def drop_table(self):
         self.dbCursor.execute("DELETE FROM inventory")
         self.dbConnection.commit()
 
