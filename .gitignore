@@ -2,3 +2,4 @@
 .idea
 hammer.db
 *.log
+*.pyc
