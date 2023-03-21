@@ -42,6 +42,13 @@ class AddItem(tk.Toplevel):
                                                                            quantity_text.get()], self)) \
             .grid(row=6, column=0)
 
+        self.bind('<Return>', lambda event: parent.add_entry([title_text.get(),
+                                                             author_text.get(),
+                                                             publish_date_text.get(),
+                                                             type_text.get(),
+                                                             location_text.get(),
+                                                             quantity_text.get()], self))
+
         tk.Button(self, text='Cancel', command=lambda: self.destroy()).grid(row=6, column=1)
 
         self.mainloop()
