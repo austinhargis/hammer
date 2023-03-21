@@ -6,7 +6,7 @@ from tkinter import ttk
 class AddItem(tk.Toplevel):
 
     def __init__(self, parent):
-        super().__init__(self, parent)
+        super().__init__()
         self.attributes('-topmost', True)
         self.title('Add Item')
 
@@ -34,12 +34,12 @@ class AddItem(tk.Toplevel):
         quantity_text = tk.Entry(self)
         quantity_text.grid(row=5, column=1)
 
-        tk.Button(self, text='Add Item', command=lambda: root.add_entry([title_text.get(),
-                                                                        author_text.get(),
-                                                                        publish_date_text.get(),
-                                                                        type_text.get(),
-                                                                        location_text.get(),
-                                                                        quantity_text.get()], self)) \
+        tk.Button(self, text='Add Item', command=lambda: parent.add_entry([title_text.get(),
+                                                                           author_text.get(),
+                                                                           publish_date_text.get(),
+                                                                           type_text.get(),
+                                                                           location_text.get(),
+                                                                           quantity_text.get()], self)) \
             .grid(row=6, column=0)
 
         tk.Button(self, text='Cancel', command=lambda: self.destroy()).grid(row=6, column=1)
