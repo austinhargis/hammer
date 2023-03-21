@@ -11,7 +11,7 @@ class MenuBar(tk.Menu):
     def __init__(self, parent):
         tk.Menu.__init__(self, parent)
 
-        self.counter = 89
+        self.counter = 0
         self.parent = parent
 
         self.file_menu = tk.Menu(self, tearoff=False)
