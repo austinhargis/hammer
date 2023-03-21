@@ -6,13 +6,18 @@
     version: v0.1.0a
 
 """
+import logging
 
+import sv_ttk
 import tkinter as tk
 from tkinter import ttk
 
+from add_window import AddItem
 from database import Database
 from menu_bar import MenuBar
 
+logging.basicConfig(filename='hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
+                    filemode='w')
 version = 'v0.1.0a'
 
 
@@ -22,6 +27,7 @@ class Hammer(tk.Tk):
         tk.Tk.__init__(self)
         self.title(f"hammer - {version}")
         self.minsize(400, 300)
+        self.config(background='#26242f')
 
         self.db = Database("hammer.db")
         self.menu_bar = MenuBar(self)
@@ -52,6 +58,8 @@ class Hammer(tk.Tk):
         self.refresh_table()
         window.destroy()
 
+        logging.info('Added item into database')
+
     def add_item(self):
         self.db.test_add_query()
         self.refresh_table()
@@ -67,12 +75,16 @@ class Hammer(tk.Tk):
             self.db.delete_query(self.tree.item(current_item)['values'])
             self.refresh_table()
 
+            logging.info('Deleted item from database')
+
     """
         drop_table will delete all delete all data within the table
     """
     def drop_table(self):
         self.db.drop_table()
         self.refresh_table()
+
+        logging.info('Dropped table')
 
     """
         populate_table takes the return value of self.db.get_all_query()
@@ -83,6 +95,8 @@ class Hammer(tk.Tk):
 
         for y in range(len(current_table)):
             self.tree.insert('', tk.END, values=current_table[y])
+
+        logging.info('Populated the table')
 
     """
         refresh_table iterates through all elements in the TreeView
@@ -96,6 +110,8 @@ class Hammer(tk.Tk):
 
         self.populate_table()
 
+        logging.info('Refreshed the table')
+
     def window(self):
         self.tree.heading('id', text='ID')
         self.tree.heading('title', text='Title')
@@ -106,55 +122,11 @@ class Hammer(tk.Tk):
         self.tree.heading('quantity', text='Quantity')
         self.tree.pack(fill='both', expand=True)
 
-        self.menu_bar.database_menu.add_command(label='Add 1 Item', underline=1, command=lambda: self.add_item())
-        self.menu_bar.database_menu.add_command(label='Drop Table', underline=1, command=lambda: self.drop_table())
-        self.menu_bar.database_menu.add_command(label='Refresh', underline=1, command=lambda: self.refresh_table())
-
-        tk.Button(text='Add', command=lambda: self.create_item()).pack()
+        tk.Button(text='Add', command=lambda: AddItem(self)).pack()
         tk.Button(text='Delete', command=lambda: self.delete_entry(None)).pack()
-
-    def create_item(self):
-        top = tk.Toplevel()
-        top.attributes('-topmost', True)
-        top.title('Add Item To Database')
-
-        tk.Label(top, text='Title: ').grid(row=0, column=0)
-        title_text = tk.Entry(top)
-        title_text.grid(row=0, column=1)
-
-        tk.Label(top, text='Author: ').grid(row=1, column=0)
-        author_text = tk.Entry(top)
-        author_text.grid(row=1, column=1)
-
-        tk.Label(top, text='Publish Date: ').grid(row=2, column=0)
-        publish_date_text = tk.Entry(top)
-        publish_date_text.grid(row=2, column=1)
-
-        tk.Label(top, text='Item Type: ').grid(row=3, column=0)
-        type_text = tk.Entry(top)
-        type_text.grid(row=3, column=1)
-
-        tk.Label(top, text='Location: ').grid(row=4, column=0)
-        location_text = tk.Entry(top)
-        location_text.grid(row=4, column=1)
-
-        tk.Label(top, text='Item Quantity: ').grid(row=5, column=0)
-        quantity_text = tk.Entry(top)
-        quantity_text.grid(row=5, column=1)
-
-        tk.Button(top, text='Add Item', command=lambda: self.add_entry([title_text.get(),
-                                                                        author_text.get(),
-                                                                        publish_date_text.get(),
-                                                                        type_text.get(),
-                                                                        location_text.get(),
-                                                                        quantity_text.get()], top))\
-            .grid(row=6, column=0)
-
-        tk.Button(top, text='Cancel', command=lambda: top.destroy()).grid(row=6, column=1)
-
-        top.mainloop()
 
 
 if __name__ == "__main__":
     root = Hammer()
+    sv_ttk.use_dark_theme()
     root.mainloop()
