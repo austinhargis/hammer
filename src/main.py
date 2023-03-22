@@ -44,12 +44,15 @@ class Hammer(tk.Tk):
         self.tree.configure(yscrollcommand=self.treeScroll.set)
         self.treeScroll.pack(side='right', fill='both')
 
+        self.padding = 10
+
         self.config(menu=self.menu_bar)
         self.window()
         self.populate_table()
 
         self.tree.bind("<Delete>", self.delete_entry)
         self.bind("<Escape>", lambda event: self.destroy())
+
 
     """
         add_entry takes the input from the TopLevel window for
@@ -148,15 +151,20 @@ class Hammer(tk.Tk):
         self.tree.pack(fill='both', expand=True, padx=20, pady=20)
 
         manage_frame = tk.Frame(self)
-        manage_frame.pack(fill='both', expand=True, padx=20, pady=20)
-        tk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=20, pady=20)
-        tk.Button(manage_frame, text='Delete', command=lambda: self.delete_entry(None)).pack(side='left', pady=20)
+        manage_frame.pack(fill='both', expand=True, padx=self.padding*2, pady=self.padding)
+        tk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=(self.padding*2,
+                                                                                                   self.padding),
+                                                                                pady=self.padding*2)
+        tk.Button(manage_frame, text='Delete', command=lambda: self.delete_entry(None)).pack(side='left',
+                                                                                             padx=self.padding,
+                                                                                             pady=self.padding*2)
 
         search_frame = tk.Frame(self)
-        search_frame.pack(fill='both', expand=True, padx=20, pady=20)
+        search_frame.pack(fill='both', expand=True, padx=(self.padding*2, self.padding), pady=self.padding*2)
         search_box = tk.Entry(search_frame)
-        search_box.pack(side='left', padx=20, pady=20)
-        tk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left', pady=20)
+        search_box.pack(side='left', padx=self.padding, pady=self.padding*2)
+        tk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left',
+                                                                                                   pady=self.padding*2)
 
         self.bind('<Return>', lambda event: self.search_table(search_box))
 
