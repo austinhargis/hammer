@@ -10,45 +10,62 @@ class AddItem(tk.Toplevel):
         self.attributes('-topmost', True)
         self.title('Add Item')
 
-        tk.Label(self, text='Title: ').grid(row=0, column=0)
-        title_text = tk.Entry(self)
-        title_text.grid(row=0, column=1)
+        self.x_padding = 20
+        self.y_padding = 10
 
-        tk.Label(self, text='Author: ').grid(row=1, column=0)
-        author_text = tk.Entry(self)
-        author_text.grid(row=1, column=1)
+        title_frame = tk.Frame(self)
+        title_frame.pack(fill='both', expand=True, padx=self.x_padding, pady=(self.y_padding*2, self.y_padding))
+        tk.Label(title_frame, text='Title: ').pack(side='left')
+        title_text = tk.Entry(title_frame)
+        title_text.pack(side='right')
 
-        tk.Label(self, text='Publish Date: ').grid(row=2, column=0)
-        publish_date_text = tk.Entry(self)
-        publish_date_text.grid(row=2, column=1)
+        author_frame = tk.Frame(self)
+        author_frame.pack(fill='both', expand=True, padx=self.x_padding, pady=self.y_padding)
+        tk.Label(author_frame, text='Author: ').pack(side='left')
+        author_text = tk.Entry(author_frame)
+        author_text.pack(side='right')
 
-        tk.Label(self, text='Item Type: ').grid(row=3, column=0)
-        type_text = tk.Entry(self)
-        type_text.grid(row=3, column=1)
+        publish_frame = tk.Frame(self)
+        publish_frame.pack(fill='both', expand=True, padx=self.x_padding, pady=self.y_padding)
+        tk.Label(publish_frame, text='Publish Date: ').pack(side='left')
+        publish_date_text = tk.Entry(publish_frame)
+        publish_date_text.pack(side='right')
 
-        tk.Label(self, text='Location: ').grid(row=4, column=0)
-        location_text = tk.Entry(self)
-        location_text.grid(row=4, column=1)
+        type_frame = tk.Frame(self)
+        type_frame.pack(fill='both', expand=True, padx=self.x_padding, pady=self.y_padding)
+        tk.Label(type_frame, text='Item Type: ').pack(side='left')
+        type_text = tk.Entry(type_frame)
+        type_text.pack(side='right')
 
-        tk.Label(self, text='Item Quantity: ').grid(row=5, column=0)
-        quantity_text = tk.Entry(self)
-        quantity_text.grid(row=5, column=1)
+        location_frame = tk.Frame(self)
+        location_frame.pack(fill='both', expand=True, padx=self.x_padding, pady=self.y_padding)
+        tk.Label(location_frame, text='Location: ').pack(side='left')
+        location_text = tk.Entry(location_frame)
+        location_text.pack(side='right')
 
-        tk.Button(self, text='Add Item', command=lambda: parent.add_entry([title_text.get(),
-                                                                           author_text.get(),
-                                                                           publish_date_text.get(),
-                                                                           type_text.get(),
-                                                                           location_text.get(),
-                                                                           quantity_text.get()], self)) \
-            .grid(row=6, column=0)
+        quantity_frame = tk.Frame(self)
+        quantity_frame.pack(fill='both', expand=True, padx=self.x_padding, pady=self.y_padding)
+        tk.Label(quantity_frame, text='Item Quantity: ').pack(side='left')
+        quantity_text = tk.Entry(quantity_frame)
+        quantity_text.pack(side='right')
+
+        button_frame = tk.Frame(self)
+        button_frame.pack(expand=True, padx=self.x_padding, pady=(self.y_padding, self.y_padding*2))
+        tk.Button(button_frame, text='Add Item', command=lambda: parent.add_entry([title_text.get(),
+                                                                                   author_text.get(),
+                                                                                   publish_date_text.get(),
+                                                                                   type_text.get(),
+                                                                                   location_text.get(),
+                                                                                   quantity_text.get()], self)) \
+            .pack(side='left')
 
         self.bind('<Return>', lambda event: parent.add_entry([title_text.get(),
-                                                             author_text.get(),
-                                                             publish_date_text.get(),
-                                                             type_text.get(),
-                                                             location_text.get(),
-                                                             quantity_text.get()], self))
+                                                              author_text.get(),
+                                                              publish_date_text.get(),
+                                                              type_text.get(),
+                                                              location_text.get(),
+                                                              quantity_text.get()], self))
 
-        tk.Button(self, text='Cancel', command=lambda: self.destroy()).grid(row=6, column=1)
+        tk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
 
         self.mainloop()
