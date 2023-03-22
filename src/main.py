@@ -145,15 +145,19 @@ class Hammer(tk.Tk):
         self.tree.heading('type', text='Type')
         self.tree.heading('location', text='Location')
         self.tree.heading('quantity', text='Quantity')
-        self.tree.pack(fill='both', expand=True)
+        self.tree.pack(fill='both', expand=True, padx=20, pady=20)
 
-        tk.Button(text='Add', command=lambda: AddItem(self)).pack()
-        tk.Button(text='Delete', command=lambda: self.delete_entry(None)).pack()
+        manage_frame = tk.Frame(self)
+        manage_frame.pack(fill='both', expand=True, padx=20, pady=20)
+        tk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=20, pady=20)
+        tk.Button(manage_frame, text='Delete', command=lambda: self.delete_entry(None)).pack(side='left', pady=20)
 
-        search_box = tk.Entry()
-        search_box.pack()
+        search_frame = tk.Frame(self)
+        search_frame.pack(fill='both', expand=True, padx=20, pady=20)
+        search_box = tk.Entry(search_frame)
+        search_box.pack(side='left', padx=20, pady=20)
+        tk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left', pady=20)
 
-        tk.Button(text='Search', command=lambda: self.search_table(search_box)).pack()
         self.bind('<Return>', lambda event: self.search_table(search_box))
 
 
