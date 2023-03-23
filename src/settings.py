@@ -7,10 +7,8 @@ class SettingsWindow(tk.Toplevel):
         super().__init__()
 
         self.attributes('-topmost', True)
+        self.resizable(False, False)
         self.title('Settings')
-
-        self.x_padding = 20
-        self.y_padding = 10
 
         theme_frame = tk.Frame(self)
         theme_frame.pack(fill='both', expand=True, padx=parent.padding*2, pady=(parent.padding*2, parent.padding))

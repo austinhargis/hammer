@@ -7,7 +7,9 @@ class AddItem(tk.Toplevel):
 
     def __init__(self, parent):
         super().__init__()
+
         self.attributes('-topmost', True)
+        self.resizable(False, False)
         self.title('Add Item')
 
         title_frame = tk.Frame(self)
