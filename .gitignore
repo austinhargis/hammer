@@ -3,3 +3,4 @@
 hammer.db
 *.log
 *.pyc
+*.pkl

@@ -14,6 +14,7 @@ from tkinter import ttk
 from add_window import AddItem
 from database import Database
 from menu_bar import MenuBar
+from save_manager import SaveManager
 
 logging.basicConfig(filename='hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
                     filemode='w')
@@ -28,6 +29,7 @@ class Hammer(tk.Tk):
         self.minsize(400, 300)
         self.config(background='#26242f')
 
+        self.save_m = SaveManager()
         self.db = Database("hammer.db")
         self.menu_bar = MenuBar(self)
 
@@ -52,7 +54,6 @@ class Hammer(tk.Tk):
 
         self.tree.bind("<Delete>", self.delete_entry)
         self.bind("<Escape>", lambda event: self.destroy())
-
 
     """
         add_entry takes the input from the TopLevel window for
