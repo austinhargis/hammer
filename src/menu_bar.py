@@ -4,6 +4,7 @@ from webbrowser import open_new_tab
 
 from add_window import AddItem
 from settings import SettingsWindow
+from update_checker import UpdateChecker
 
 
 class MenuBar(tk.Menu):
@@ -16,6 +17,7 @@ class MenuBar(tk.Menu):
 
         self.file_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label="File", underline=0, menu=self.file_menu)
+        self.file_menu.add_command(label='Check for Updates', underline=1, command=lambda: UpdateChecker(parent))
         self.file_menu.add_command(label='Settings', underline=1, command=lambda: SettingsWindow(parent))
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", underline=1, command=self.quit, accelerator='Escape')
