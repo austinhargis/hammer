@@ -148,7 +148,7 @@ class Hammer(tk.Tk):
         self.tree.heading('type', text='Type')
         self.tree.heading('location', text='Location')
         self.tree.heading('quantity', text='Quantity')
-        self.tree.pack(fill='both', expand=True, padx=20, pady=20)
+        self.tree.pack(fill='both', expand=True, padx=self.padding*2, pady=(self.padding*2, self.padding))
 
         manage_frame = tk.Frame(self)
         manage_frame.pack(fill='both', expand=True, padx=self.padding*2, pady=self.padding)
@@ -160,7 +160,7 @@ class Hammer(tk.Tk):
                                                                                              pady=self.padding*2)
 
         search_frame = tk.Frame(self)
-        search_frame.pack(fill='both', expand=True, padx=(self.padding*2, self.padding), pady=self.padding*2)
+        search_frame.pack(fill='both', expand=True, padx=self.padding*2, pady=(self.padding, self.padding*2))
         search_box = tk.Entry(search_frame)
         search_box.pack(side='left', padx=self.padding, pady=self.padding*2)
         tk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left',
