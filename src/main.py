@@ -79,6 +79,14 @@ class Hammer(tk.Tk):
         self.db.test_add_query()
         self.refresh_table()
 
+    def check_focus(self):
+        if self.tree.focus() == '':
+            self.manage_button.configure(state='disabled')
+            self.after(1000, self.check_focus)
+        else:
+            self.manage_button.configure(state='normal')
+            self.after(1000, self.check_focus)
+
     """
         clear_table purges the TreeView of all of its children
     """
@@ -177,8 +185,9 @@ class Hammer(tk.Tk):
         tk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=(self.padding * 2,
                                                                                                    self.padding),
                                                                                 pady=self.padding * 2)
-        tk.Button(manage_frame, text='Manage', command=lambda: ManageItem(self)).pack(side='left', padx=self.padding,
-                                                                                      pady=self.padding * 2)
+        self.manage_button = tk.Button(manage_frame, text='Manage', command=lambda: ManageItem(self))
+        self.manage_button.pack(side='left', padx=self.padding, pady=self.padding * 2)
+        self.manage_button.configure(state='disabled')
         tk.Button(manage_frame, text='Delete', command=lambda: self.delete_entry(None)).pack(side='left',
                                                                                              padx=self.padding,
                                                                                              pady=self.padding * 2)
@@ -195,4 +204,5 @@ class Hammer(tk.Tk):
 
 if __name__ == "__main__":
     root = Hammer()
+    root.after(1000, root.check_focus)
     root.mainloop()
