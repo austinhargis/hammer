@@ -1,6 +1,8 @@
 import sqlite3
 import os
 import random
+import tkinter as tk
+from tkinter import ttk
 
 
 class Database:
@@ -24,6 +26,19 @@ class Database:
             self.dbCursor = self.dbConnection.cursor()
 
     def insert_query(self, data):
+
+        for field in data:
+            if field == '':
+                popup = tk.Toplevel()
+                popup.wm_title("Error!")
+                popupLabel = tk.Label(popup, text="All fields must have a value specified.")
+                popupLabel.grid(row=0, column=0)
+
+                popupButton = ttk.Button(popup, text="Okay", command=popup.destroy)
+                popupButton.grid(row=1, column=0)
+
+                return
+
         self.dbCursor.execute(f"INSERT INTO inventory(title, author, publish_date, type, location, quantity)"
                               f"VALUES (?, ?, ?, ?, ?, ?)", data)
         self.dbConnection.commit()

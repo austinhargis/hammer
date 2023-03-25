@@ -67,4 +67,4 @@ class AddItem(tk.Toplevel):
 
         tk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
 
-        self.mainloop()
+        self.mainloop
