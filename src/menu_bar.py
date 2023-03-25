@@ -12,6 +12,10 @@ class MenuBar(tk.Menu):
     def __init__(self, parent):
         tk.Menu.__init__(self, parent)
 
+        self.help_menu = None
+        self.database_menu = None
+        self.file_menu = None
+        self.developer_menu = None
         self.counter = 0
         self.parent = parent
 
@@ -41,7 +45,8 @@ class MenuBar(tk.Menu):
         if self.parent.save_m.data['show_developer_menu'] == 'enabled':
             self.developer_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label='Developer', underline=0, menu=self.developer_menu)
-            self.developer_menu.add_command(label='Add Test Item', underline=1, command=lambda: self.parent.add_item())
+            self.developer_menu.add_command(label='Add Test Item', underline=1,
+                                            command=lambda: self.parent.test_add_item())
             self.developer_menu.add_command(label='Drop Table', underline=1, command=lambda: self.parent.drop_table())
 
         self.help_menu = tk.Menu(self, tearoff=False)
