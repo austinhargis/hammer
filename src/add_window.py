@@ -19,22 +19,22 @@ class AddItem:
 
         button_frame = tk.Frame(self.template)
         button_frame.pack(expand=True, padx=parent.padding * 2, pady=(parent.padding, parent.padding * 2))
-        tk.Button(button_frame, text='Add Item', command=lambda: parent.add_entry([self.template.title_text.get(),
-                                                                                   self.template.author_text.get(),
-                                                                                   self.template.publish_date_text.get(),
-                                                                                   self.template.type_text.get(),
-                                                                                   self.template.location_text.get(),
-                                                                                   self.template.quantity_text.get()],
-                                                                                  self)) \
+        tk.Button(button_frame, text='Add Item', command=lambda: parent.add_entry(
+            [self.template.title_text.get(),
+             self.template.author_text.get(),
+             self.template.publish_date_text.get(),
+             self.template.type_text.get(),
+             self.template.location_text.get(),
+             self.template.quantity_text.get()],
+            self)) \
             .pack(side='left')
         tk.Button(button_frame, text='Cancel', command=lambda: self.template.destroy()).pack(side='right')
 
-        self.bind('<Return>', lambda event: parent.add_entry([title_text.get(),
-                                                              author_text.get(),
-                                                              publish_date_text.get(),
-                                                              type_text.get(),
-                                                              location_text.get(),
-                                                              quantity_text.get()], self))
+        self.template.bind('<Return>', lambda event: parent.add_entry([self.template.title_text.get(),
+                                                                       self.template.author_text.get(),
+                                                                       self.template.publish_date_text.get(),
+                                                                       self.template.type_text.get(),
+                                                                       self.template.location_text.get(),
+                                                                       self.template.quantity_text.get()], self))
+        self.template.mainloop()
 
-        tk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
-        self.mainloop
