@@ -8,6 +8,7 @@ class ManageItem:
     def __init__(self, parent):
         super().__init__()
 
+        self.entry_id = None
         self.parent = parent
 
         self.template = ItemInfo(parent, 'manage')
@@ -30,7 +31,7 @@ class ManageItem:
                                                        self.template.type_text.get(),
                                                        self.template.location_text.get(),
                                                        self.template.quantity_text.get()],
-                                                      self)) \
+                                                      self, self.entry_id)) \
             .pack(side='left')
         tk.Button(button_frame, text='Cancel', command=lambda: self.template.destroy()).pack(side='right')
 
@@ -38,7 +39,7 @@ class ManageItem:
 
     def fill_entries(self):
         current_item = self.parent.tree.focus()
-
+        self.entry_id = self.parent.tree.item(current_item)['values'][0]
         self.template.title_text.insert(0, self.parent.tree.item(current_item)['values'][1])
         self.template.author_text.insert(0, self.parent.tree.item(current_item)['values'][2])
         self.template.publish_date_text.insert(0, self.parent.tree.item(current_item)['values'][3])

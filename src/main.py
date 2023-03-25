@@ -70,8 +70,8 @@ class Hammer(tk.Tk):
 
         logging.info('Added item into database')
 
-    def update_entry(self, data, window):
-        self.db.update_query(data)
+    def update_entry(self, data, window, entry_id):
+        self.db.update_query(data, entry_id)
         self.refresh_table()
         window.template.destroy()
 

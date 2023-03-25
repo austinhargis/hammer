@@ -60,8 +60,12 @@ class Database:
         self.dbConnection.commit()
 
     # TODO: implement update query
-    def update_query(self):
-        pass
+    def update_query(self, data, row_id):
+        self.dbCursor.execute(f"""UPDATE inventory 
+                                  SET title='{data[0]}', author='{data[1]}', publish_date='{data[2]}', type='{data[3]}',
+                                  location='{data[4]}', quantity='{data[5]}'
+                                  WHERE id={row_id}""")
+        self.dbConnection.commit()
 
     # Returns all rows in the inventory table
     def get_all_query(self):
