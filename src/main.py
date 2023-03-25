@@ -12,6 +12,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from add_window import AddItem
+from manage_window import ManageItem
 from database import Database
 from menu_bar import MenuBar
 from save_manager import SaveManager
@@ -65,13 +66,22 @@ class Hammer(tk.Tk):
     def add_entry(self, data, window):
         self.db.insert_query(data)
         self.refresh_table()
-        window.destroy()
+        window.template.destroy()
 
         logging.info('Added item into database')
 
-    def add_item(self):
+    def update_entry(self, data, window):
+        self.db.update_query(data)
+        self.refresh_table()
+        window.template.destroy()
+
+    def test_add_item(self):
         self.db.test_add_query()
         self.refresh_table()
+
+    """
+        clear_table purges the TreeView of all of its children
+    """
 
     def clear_table(self):
         for item in self.tree.get_children():
@@ -82,6 +92,7 @@ class Hammer(tk.Tk):
         the TreeView and performs a SQL query to remove it from the
         database, before finally refreshing the table
     """
+
     def delete_entry(self, event):
         current_item = self.tree.focus()
         if current_item != '':
@@ -127,6 +138,11 @@ class Hammer(tk.Tk):
 
         logging.info('Refreshed the table')
 
+    """
+        the search table function gets the currently entered text from the passed
+        entry_box and executes a SQL query with it
+    """
+
     def search_table(self, entry_box):
         search_term = entry_box.get()
 
@@ -149,23 +165,25 @@ class Hammer(tk.Tk):
         self.tree.heading('type', text='Type')
         self.tree.heading('location', text='Location')
         self.tree.heading('quantity', text='Quantity')
-        self.tree.pack(fill='both', expand=True, padx=self.padding*2, pady=(self.padding*2, self.padding))
+        self.tree.pack(fill='both', expand=True, padx=self.padding * 2, pady=(self.padding * 2, self.padding))
 
         manage_frame = tk.Frame(self)
-        manage_frame.pack(fill='both', expand=True, padx=self.padding*2, pady=self.padding)
-        tk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=(self.padding*2,
+        manage_frame.pack(fill='both', expand=True, padx=self.padding * 2, pady=self.padding)
+        tk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=(self.padding * 2,
                                                                                                    self.padding),
-                                                                                pady=self.padding*2)
+                                                                                pady=self.padding * 2)
+        tk.Button(manage_frame, text='Manage', command=lambda: ManageItem(self)).pack(side='left', padx=self.padding,
+                                                                                      pady=self.padding * 2)
         tk.Button(manage_frame, text='Delete', command=lambda: self.delete_entry(None)).pack(side='left',
                                                                                              padx=self.padding,
-                                                                                             pady=self.padding*2)
+                                                                                             pady=self.padding * 2)
 
         search_frame = tk.Frame(self)
-        search_frame.pack(fill='both', expand=True, padx=self.padding*2, pady=(self.padding, self.padding*2))
+        search_frame.pack(fill='both', expand=True, padx=self.padding * 2, pady=(self.padding, self.padding * 2))
         search_box = tk.Entry(search_frame)
-        search_box.pack(side='left', padx=self.padding, pady=self.padding*2)
+        search_box.pack(side='left', padx=self.padding, pady=self.padding * 2)
         tk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left',
-                                                                                                   pady=self.padding*2)
+                                                                                                   pady=self.padding * 2)
 
         self.bind('<Return>', lambda event: self.search_table(search_box))
 
