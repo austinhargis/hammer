@@ -123,9 +123,10 @@ class Hammer(tk.Tk):
         for y in range(len(current_table)):
             self.tree.insert('', tk.END, values=current_table[y], tags=('item',))
 
-        child = self.tree.get_children()[0]
-        self.tree.focus(child)
-        self.tree.selection_set(child)
+        if len(self.tree.get_children()) > 0:
+            child = self.tree.get_children()[0]
+            self.tree.focus(child)
+            self.tree.selection_set(child)
 
         logging.info('Populated the table')
 
