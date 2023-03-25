@@ -8,13 +8,13 @@
 """
 import logging
 
-import sv_ttk
 import tkinter as tk
 from tkinter import ttk
 
 from add_window import AddItem
 from database import Database
 from menu_bar import MenuBar
+from save_manager import SaveManager
 
 logging.basicConfig(filename='hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
                     filemode='w')
@@ -29,6 +29,7 @@ class Hammer(tk.Tk):
         self.minsize(400, 300)
         self.config(background='#26242f')
 
+        self.save_m = SaveManager()
         self.db = Database("hammer.db")
         self.menu_bar = MenuBar(self)
 
@@ -44,6 +45,8 @@ class Hammer(tk.Tk):
         self.treeScroll.configure(command=self.tree.yview_scroll)
         self.tree.configure(yscrollcommand=self.treeScroll.set)
         self.treeScroll.pack(side='right', fill='both')
+
+        self.padding = 10
 
         self.config(menu=self.menu_bar)
         self.window()
@@ -146,15 +149,24 @@ class Hammer(tk.Tk):
         self.tree.heading('type', text='Type')
         self.tree.heading('location', text='Location')
         self.tree.heading('quantity', text='Quantity')
-        self.tree.pack(fill='both', expand=True)
+        self.tree.pack(fill='both', expand=True, padx=self.padding*2, pady=(self.padding*2, self.padding))
 
-        tk.Button(text='Add', command=lambda: AddItem(self)).pack()
-        tk.Button(text='Delete', command=lambda: self.delete_entry(None)).pack()
+        manage_frame = tk.Frame(self)
+        manage_frame.pack(fill='both', expand=True, padx=self.padding*2, pady=self.padding)
+        tk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=(self.padding*2,
+                                                                                                   self.padding),
+                                                                                pady=self.padding*2)
+        tk.Button(manage_frame, text='Delete', command=lambda: self.delete_entry(None)).pack(side='left',
+                                                                                             padx=self.padding,
+                                                                                             pady=self.padding*2)
 
-        search_box = tk.Entry()
-        search_box.pack()
+        search_frame = tk.Frame(self)
+        search_frame.pack(fill='both', expand=True, padx=self.padding*2, pady=(self.padding, self.padding*2))
+        search_box = tk.Entry(search_frame)
+        search_box.pack(side='left', padx=self.padding, pady=self.padding*2)
+        tk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left',
+                                                                                                   pady=self.padding*2)
 
-        tk.Button(text='Search', command=lambda: self.search_table(search_box)).pack()
         self.bind('<Return>', lambda event: self.search_table(search_box))
 
 
