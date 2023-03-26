@@ -30,6 +30,8 @@ class Hammer(tk.Tk):
         self.minsize(400, 300)
         self.config(background='#26242f')
 
+        self.manage_check_delay = 250
+
         self.save_m = SaveManager()
         self.db = Database("hammer.db")
         self.menu_bar = MenuBar(self)
@@ -82,10 +84,10 @@ class Hammer(tk.Tk):
     def check_focus(self):
         if self.tree.focus() == '':
             self.manage_button.configure(state='disabled')
-            self.after(1000, self.check_focus)
+            self.after(self.manage_check_delay, self.check_focus)
         else:
             self.manage_button.configure(state='normal')
-            self.after(1000, self.check_focus)
+            self.after(self.manage_check_delay, self.check_focus)
 
     """
         clear_table purges the TreeView of all of its children
@@ -204,5 +206,5 @@ class Hammer(tk.Tk):
 
 if __name__ == "__main__":
     root = Hammer()
-    root.after(1000, root.check_focus)
+    root.after(root.manage_check_delay, root.check_focus)
     root.mainloop()
