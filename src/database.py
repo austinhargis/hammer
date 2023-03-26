@@ -11,14 +11,16 @@ class Database:
         if filename not in os.listdir():
             self.dbConnection = sqlite3.connect(filename)
             self.dbCursor = self.dbConnection.cursor()
-            self.dbCursor.execute(f"CREATE TABLE inventory("
-                                  f"id INTEGER PRIMARY KEY AUTOINCREMENT, "
-                                  f"title varchar, "
-                                  f"author varchar, "
-                                  f"publish_date varchar, "
-                                  f"type varchar, "
-                                  f"location varchar, "
-                                  f"quantity varchar)")
+            self.dbCursor.execute(f"""
+                    CREATE TABLE inventory(
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        title varchar,
+                        author varchar,
+                        publish_date varchar,
+                        type varchar,
+                        location varchar,
+                        quantity varchar
+                    )""")
             self.dbConnection.commit()
 
         else:
@@ -26,48 +28,74 @@ class Database:
             self.dbCursor = self.dbConnection.cursor()
 
     def insert_query(self, data):
+        """
+            inserts data into the inventory table
+            :param data: a tuple of data to be inserted into the table
+            :return: nothing
+        """
 
         for field in data:
             if field == '':
                 popup = tk.Toplevel()
                 popup.wm_title("Error!")
-                popupLabel = tk.Label(popup, text="All fields must have a value specified.")
-                popupLabel.grid(row=0, column=0)
-
-                popupButton = ttk.Button(popup, text="Okay", command=popup.destroy)
-                popupButton.grid(row=1, column=0)
+                tk.Label(popup, text="All fields must have a value specified.").grid(row=0, column=0)
+                ttk.Button(popup, text="Okay", command=popup.destroy).grid(row=1, column=0)
 
                 return
 
-        self.dbCursor.execute(f"INSERT INTO inventory(title, author, publish_date, type, location, quantity)"
-                              f"VALUES (?, ?, ?, ?, ?, ?)", data)
+        self.dbCursor.execute(f"""INSERT INTO inventory(title, author, publish_date, type, location, quantity)
+                                  VALUES (?, ?, ?, ?, ?, ?)""", data)
         self.dbConnection.commit()
 
     def delete_query(self, data):
-        self.dbCursor.execute(f"DELETE FROM inventory WHERE id={data[0]}")
+        """
+            deletes desired data from the table
+            :param data: a tuple of the data that needs to be deleted from the table
+            :return: nothing
+        """
+
+        self.dbCursor.execute(f"""DELETE FROM inventory WHERE id={data[0]}""")
         self.dbConnection.commit()
 
-    # Currently adds filler data to the table
     def test_add_query(self):
+        """
+            a query for adding test data to the database
+            :return: nothing
+        """
+
         data = ["Test", "Test2", "Test3", "Test4", "Test5", "Test6"]
-        self.dbCursor.execute(f"INSERT INTO inventory (title, author, publish_date, type, location, quantity)"
-                              f"VALUES (?, ?, ?, ?, ?, ?)", data)
+        self.dbCursor.execute(f"""INSERT INTO inventory (title, author, publish_date, type, location, quantity)
+                                  VALUES (?, ?, ?, ?, ?, ?)""", data)
         self.dbConnection.commit()
 
-    # Currently drops all data from the inventory table
     def drop_table(self):
-        self.dbCursor.execute("DELETE FROM inventory")
+        """
+            drops all data from the inventory table
+            :return: nothing
+        """
+
+        self.dbCursor.execute("""DELETE FROM inventory""")
         self.dbConnection.commit()
 
-    # TODO: implement update query
     def update_query(self, data, row_id):
+        """
+            allows for the updating of an entry into hammer's database
+            :param data a tuple of all the data for the row
+            :param row_id the ID for the row being updated
+            :return nothing
+        """
+
         self.dbCursor.execute(f"""UPDATE inventory 
                                   SET title=?, author=?, publish_date=?, type=?,
                                   location=?, quantity=?
                                   WHERE id={row_id}""", data)
         self.dbConnection.commit()
 
-    # Returns all rows in the inventory table
     def get_all_query(self):
-        self.dbCursor.execute("SELECT * FROM inventory")
+        """
+            allows for receiving all the data in the table
+            :return: a list of tuples of data in the table
+        """
+
+        self.dbCursor.execute("""SELECT * FROM inventory""")
         return self.dbCursor.fetchall()
