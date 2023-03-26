@@ -8,13 +8,10 @@ class ManageItem:
     def __init__(self, parent):
         super().__init__()
 
-        self.entry_id = None
         self.parent = parent
 
+        self.entry_id = None
         self.template = ItemInfo(parent, 'manage')
-
-        self.fill_entries()
-
         self.template.bind('<Return>', lambda event: parent.add_entry([self.template.title_text.get(),
                                                                        self.template.author_text.get(),
                                                                        self.template.publish_date_text.get(),
@@ -22,16 +19,19 @@ class ManageItem:
                                                                        self.template.location_text.get(),
                                                                        self.template.quantity_text.get()], self))
 
+        self.fill_entries()
+
         button_frame = tk.Frame(self.template)
-        button_frame.pack(expand=True, padx=parent.padding * 2, pady=(parent.padding, parent.padding * 2))
+        button_frame.pack(expand=True, padx=self.parent.padding * 2,
+                          pady=(self.parent.padding, self.parent.padding * 2))
         tk.Button(button_frame, text='Save Changes',
-                  command=lambda: parent.update_entry([self.template.title_text.get(),
-                                                       self.template.author_text.get(),
-                                                       self.template.publish_date_text.get(),
-                                                       self.template.type_text.get(),
-                                                       self.template.location_text.get(),
-                                                       self.template.quantity_text.get()],
-                                                      self, self.entry_id)) \
+                  command=lambda: self.parent.update_entry([self.template.title_text.get(),
+                                                            self.template.author_text.get(),
+                                                            self.template.publish_date_text.get(),
+                                                            self.template.type_text.get(),
+                                                            self.template.location_text.get(),
+                                                            self.template.quantity_text.get()],
+                                                           self, self.entry_id)) \
             .pack(side='left')
         tk.Button(button_frame, text='Cancel', command=lambda: self.template.destroy()).pack(side='right')
 

@@ -12,17 +12,18 @@ class MenuBar(tk.Menu):
     def __init__(self, parent):
         tk.Menu.__init__(self, parent)
 
+        self.parent = parent
+
         self.help_menu = None
         self.database_menu = None
         self.file_menu = None
         self.developer_menu = None
+
         self.counter = 0
-        self.parent = parent
 
         self.generate()
 
     def generate(self):
-
         self.delete(0, 'end')
 
         self.file_menu = tk.Menu(self, tearoff=False)
