@@ -14,7 +14,7 @@ class Database:
             self.dbCursor.execute(f"""
                     CREATE TABLE inventory(
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        barcode varchar,
+                        barcode varchar UNIQUE,
                         title varchar,
                         author varchar,
                         publish_date varchar,
@@ -25,6 +25,7 @@ class Database:
             self.dbCursor.execute(f"""
                     CREATE TABLE users(
                         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        barcode varchar UNIQUE,
                         first_name varchar,
                         last_name varchar
                     )""")
@@ -76,7 +77,7 @@ class Database:
             :return: nothing
         """
 
-        data = ["Test", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6"]
+        data = [f"Test{random.randint(0,100)}", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6"]
         self.dbCursor.execute(f"""INSERT INTO inventory (barcode, title, author, publish_date, type, location, quantity)
                                   VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
         self.dbConnection.commit()
