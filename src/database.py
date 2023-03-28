@@ -31,10 +31,10 @@ class Database:
                     )""")
             self.dbCursor.execute(f"""
                     CREATE TABLE checkouts(
-                        user_id integer,
-                        barcode_id varchar,
-                        FOREIGN KEY(user_id) REFERENCES users(user_id),
-                        FOREIGN KEY(barcode_id) REFERENCES inventory(barcode)
+                        user_barcode integer,
+                        item_barcode varchar UNIQUE,
+                        FOREIGN KEY(user_barcode) REFERENCES users(barcode),
+                        FOREIGN KEY(item_barcode) REFERENCES inventory(barcode)
                     )""")
             self.dbConnection.commit()
 
