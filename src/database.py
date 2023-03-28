@@ -51,9 +51,12 @@ class Database:
 
         if data[1].replace(' ', '') == '':
             popup = tk.Toplevel()
+            popup.attributes('-topmost', True)
             popup.title("Error!")
-            tk.Label(popup, text="The title field must have a value specified.").grid(row=0, column=0)
-            ttk.Button(popup, text="Okay", command=popup.destroy).grid(row=1, column=0)
+            tk.Label(popup, text="The title field must have a value specified.").pack()
+            ttk.Button(popup, text="Okay", command=popup.destroy).pack()
+
+            popup.mainloop()
 
             return
 
@@ -126,3 +129,5 @@ class Database:
         tk.Label(warning_popup, text='Warning: This barcode is already in use. '
                                      'Please try a different barcode.').pack()
         tk.Button(warning_popup, text='Continue', command=lambda: warning_popup.destroy()).pack()
+
+        warning_popup.mainloop()
