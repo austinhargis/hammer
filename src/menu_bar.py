@@ -58,7 +58,7 @@ class MenuBar(tk.Menu):
         self.add_cascade(label="Database", underline=0, menu=self.database_menu)
         self.database_menu.add_command(label='Add Item', underline=1, command=lambda: AddItem(self.parent))
         self.database_menu.add_command(label='Delete Selected', underline=1,
-                                       command=lambda: self.parent.delete_entry(None),
+                                       command=lambda: self.parent.delete_popup_window(),
                                        accelerator='BackSpace')
         self.database_menu.add_command(label='Refresh Table', underline=1, command=lambda: self.refresh(),
                                        accelerator='F5')
