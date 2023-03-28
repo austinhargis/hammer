@@ -52,6 +52,8 @@ class CheckoutScreen(tk.Toplevel):
             """, data)
             self.parent.db.dbConnection.commit()
 
+            self.destroy()
+
         else:
             popup = tk.Toplevel()
             tk.Label(popup, text='The user or item barcode were invalid, or the item is already checked out.').pack()
