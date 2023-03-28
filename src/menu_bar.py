@@ -3,6 +3,7 @@ import tkinter as tk
 from webbrowser import open_new_tab
 
 from add_window import AddItem
+from create_user import CreateUser
 from settings import SettingsWindow
 from update_checker import UpdateChecker
 
@@ -12,6 +13,7 @@ class MenuBar(tk.Menu):
     def __init__(self, parent):
         tk.Menu.__init__(self, parent)
 
+        self.users_menu = None
         self.parent = parent
 
         self.help_menu = None
@@ -36,7 +38,8 @@ class MenuBar(tk.Menu):
         self.database_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label="Database", underline=0, menu=self.database_menu)
         self.database_menu.add_command(label='Add Item', underline=1, command=lambda: AddItem(self.parent))
-        self.database_menu.add_command(label='Delete Selected', underline=1, command=lambda: self.parent.delete_entry(None),
+        self.database_menu.add_command(label='Delete Selected', underline=1,
+                                       command=lambda: self.parent.delete_entry(None),
                                        accelerator='BackSpace')
         self.database_menu.add_command(label='Refresh Table', underline=1, command=lambda: self.refresh(),
                                        accelerator='F5')
@@ -49,6 +52,10 @@ class MenuBar(tk.Menu):
             self.developer_menu.add_command(label='Add Test Item', underline=1,
                                             command=lambda: self.parent.test_add_item())
             self.developer_menu.add_command(label='Drop Table', underline=1, command=lambda: self.parent.drop_table())
+
+        self.users_menu = tk.Menu(self, tearoff=False)
+        self.add_cascade(label='Users', underline=0, menu=self.users_menu)
+        self.users_menu.add_command(label='Add User', underline=1, command=lambda: CreateUser(self.parent))
 
         self.help_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label="Help", underline=0, menu=self.help_menu)
