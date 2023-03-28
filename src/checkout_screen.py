@@ -1,3 +1,4 @@
+import sqlite3
 import tkinter as tk
 
 
@@ -34,11 +35,13 @@ class CheckoutScreen(tk.Toplevel):
     def checkout_to_user(self):
         data = (self.user_barcode.get(), self.barcode_entry.get())
 
+        # Get a list of all items with that item barcode
         items = self.parent.db.dbCursor.execute(f"""
             SELECT * FROM inventory
             WHERE barcode='{data[1]}'
         """).fetchall()
 
+        # Get a list of all users with that user barcode
         users = self.parent.db.dbCursor.execute(f"""
             SELECT * FROM users
             WHERE barcode='{data[0]}'
@@ -46,16 +49,23 @@ class CheckoutScreen(tk.Toplevel):
 
         if len(items) == 1 and len(users) == 1:
 
-            self.parent.db.dbCursor.execute("""
-                INSERT INTO checkouts(user_barcode, item_barcode)
-                VALUES (?, ?) 
-            """, data)
-            self.parent.db.dbConnection.commit()
+            try:
+                self.parent.db.dbCursor.execute("""
+                    INSERT INTO checkouts(user_barcode, item_barcode)
+                    VALUES (?, ?) 
+                """, data)
+                self.parent.db.dbConnection.commit()
 
-            self.destroy()
+                self.destroy()
+
+            except sqlite3.IntegrityError:
+                popup = tk.Toplevel()
+                tk.Label(popup, text='This item is already checked out to a user.').pack()
+
+                popup.mainloop()
 
         else:
             popup = tk.Toplevel()
-            tk.Label(popup, text='The user or item barcode were invalid, or the item is already checked out.').pack()
+            tk.Label(popup, text='The user or item barcode were invalid.').pack()
 
             popup.mainloop()
