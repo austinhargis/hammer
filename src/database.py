@@ -99,7 +99,7 @@ class Database:
         """
 
         self.dbCursor.execute(f"""UPDATE inventory 
-                                  SET title=?, author=?, publish_date=?, type=?,
+                                  SET barcode=?, title=?, author=?, publish_date=?, type=?,
                                   location=?, quantity=?
                                   WHERE id={row_id}""", data)
         self.dbConnection.commit()

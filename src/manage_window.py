@@ -12,7 +12,8 @@ class ManageItem:
 
         self.entry_id = None
         self.template = ItemInfo(parent, 'manage')
-        self.template.bind('<Return>', lambda event: parent.add_entry([self.template.title_text.get(),
+        self.template.bind('<Return>', lambda event: parent.add_entry([self.template.barcode_text.get(),
+                                                                       self.template.title_text.get(),
                                                                        self.template.author_text.get(),
                                                                        self.template.publish_date_text.get(),
                                                                        self.template.type_text.get(),
@@ -25,7 +26,8 @@ class ManageItem:
         button_frame.pack(expand=True, padx=self.parent.padding * 2,
                           pady=(self.parent.padding, self.parent.padding * 2))
         tk.Button(button_frame, text='Save Changes',
-                  command=lambda: self.parent.update_entry([self.template.title_text.get(),
+                  command=lambda: self.parent.update_entry([self.template.barcode_text.get(),
+                                                            self.template.title_text.get(),
                                                             self.template.author_text.get(),
                                                             self.template.publish_date_text.get(),
                                                             self.template.type_text.get(),
@@ -40,9 +42,10 @@ class ManageItem:
     def fill_entries(self):
         current_item = self.parent.tree.focus()
         self.entry_id = self.parent.tree.item(current_item)['values'][0]
-        self.template.title_text.insert(0, self.parent.tree.item(current_item)['values'][1])
-        self.template.author_text.insert(0, self.parent.tree.item(current_item)['values'][2])
-        self.template.publish_date_text.insert(0, self.parent.tree.item(current_item)['values'][3])
-        self.template.type_text.insert(0, self.parent.tree.item(current_item)['values'][4])
-        self.template.location_text.insert(0, self.parent.tree.item(current_item)['values'][5])
-        self.template.quantity_text.insert(0, self.parent.tree.item(current_item)['values'][6])
+        self.template.barcode_text.insert(0, self.parent.tree.item(current_item)['values'][1])
+        self.template.title_text.insert(0, self.parent.tree.item(current_item)['values'][2])
+        self.template.author_text.insert(0, self.parent.tree.item(current_item)['values'][3])
+        self.template.publish_date_text.insert(0, self.parent.tree.item(current_item)['values'][4])
+        self.template.type_text.insert(0, self.parent.tree.item(current_item)['values'][5])
+        self.template.location_text.insert(0, self.parent.tree.item(current_item)['values'][6])
+        self.template.quantity_text.insert(0, self.parent.tree.item(current_item)['values'][7])
