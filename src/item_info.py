@@ -13,8 +13,8 @@ class ItemInfo(tk.Toplevel):
         self.title(f'{process.capitalize()} Item')
 
         barcode_frame = tk.Frame(self)
-        barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding*2, pady=(self.parent.padding*2,
-                                                                                       self.parent.padding))
+        barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding * 2,
+                                                                                         self.parent.padding))
         tk.Label(barcode_frame, text='Barcode').pack(side='left')
         self.barcode_text = tk.Entry(barcode_frame)
         self.barcode_text.pack(side='right')
@@ -30,6 +30,12 @@ class ItemInfo(tk.Toplevel):
         tk.Label(author_frame, text='Author').pack(side='left')
         self.author_text = tk.Entry(author_frame)
         self.author_text.pack(side='right')
+
+        description_frame = tk.Frame(self)
+        description_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        tk.Label(description_frame, text='Item Description').pack(side='left')
+        self.description_text = tk.Text(description_frame)
+        self.description_text.pack(side='right')
 
         publish_frame = tk.Frame(self)
         publish_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
@@ -54,3 +60,13 @@ class ItemInfo(tk.Toplevel):
         tk.Label(quantity_frame, text='Item Quantity').pack(side='left')
         self.quantity_text = tk.Entry(quantity_frame)
         self.quantity_text.pack(side='right')
+
+    def get_item_info(self):
+        return [self.barcode_text.get(),
+                self.title_text.get(),
+                self.author_text.get(),
+                self.description_text.get('1.0', tk.END),
+                self.publish_date_text.get(),
+                self.type_text.get(),
+                self.location_text.get(),
+                self.quantity_text.get()]

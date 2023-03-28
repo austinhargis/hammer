@@ -20,7 +20,8 @@ class Database:
                         publish_date varchar,
                         type varchar,
                         location varchar,
-                        quantity varchar
+                        quantity varchar,
+                        description varchar
                     )""")
             self.dbCursor.execute(f"""
                     CREATE TABLE users(
@@ -61,8 +62,8 @@ class Database:
             return
 
         try:
-            self.dbCursor.execute(f"""INSERT INTO inventory(barcode, title, author, publish_date, type, location, quantity)
-                                      VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
+            self.dbCursor.execute(f"""INSERT INTO inventory(barcode, title, author, description, publish_date, type, location, quantity)
+                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", data)
             self.dbConnection.commit()
         except sqlite3.IntegrityError:
             self.unique_conflict()
@@ -84,8 +85,8 @@ class Database:
         """
 
         data = [f"Test{random.randint(0,100)}", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6"]
-        self.dbCursor.execute(f"""INSERT INTO inventory (barcode, title, author, publish_date, type, location, quantity)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
+        self.dbCursor.execute(f"""INSERT INTO inventory (barcode, title, author, description, publish_date, type, location, quantity)
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", data)
         self.dbConnection.commit()
 
     def drop_table(self):
@@ -107,7 +108,7 @@ class Database:
 
         try:
             self.dbCursor.execute(f"""UPDATE inventory 
-                                      SET barcode=?, title=?, author=?, publish_date=?, type=?,
+                                      SET barcode=?, title=?, author=?, description=?, publish_date=?, type=?,
                                       location=?, quantity=?
                                       WHERE id={row_id}""", data)
             self.dbConnection.commit()
