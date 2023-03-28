@@ -35,7 +35,8 @@ class AddItem:
             .pack(side='left')
         tk.Button(button_frame, text='Cancel', command=lambda: self.template.destroy()).pack(side='right')
 
-        self.template.bind('<Return>', lambda event: self.parent.add_entry([self.template.title_text.get(),
+        self.template.bind('<Return>', lambda event: self.parent.add_entry([self.template.barcode_text.get(),
+                                                                            self.template.title_text.get(),
                                                                             self.template.author_text.get(),
                                                                             self.template.publish_date_text.get(),
                                                                             self.template.type_text.get(),
