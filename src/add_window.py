@@ -12,7 +12,8 @@ class AddItem:
 
         self.template = ItemInfo(self.parent, 'add')
 
-        self.template.bind('<Return>', lambda event: parent.add_entry([self.template.title_text.get(),
+        self.template.bind('<Return>', lambda event: parent.add_entry([self.template.barcode_text.get(),
+                                                                       self.template.title_text.get(),
                                                                        self.template.author_text.get(),
                                                                        self.template.publish_date_text.get(),
                                                                        self.template.type_text.get(),
@@ -23,7 +24,8 @@ class AddItem:
         button_frame.pack(expand=True, padx=self.parent.padding * 2,
                           pady=(self.parent.padding, self.parent.padding * 2))
         tk.Button(button_frame, text='Add Item', command=lambda: self.parent.add_entry(
-            [self.template.title_text.get(),
+            [self.template.barcode_text.get(),
+             self.template.title_text.get(),
              self.template.author_text.get(),
              self.template.publish_date_text.get(),
              self.template.type_text.get(),

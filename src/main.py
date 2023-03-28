@@ -41,11 +41,11 @@ class Hammer(tk.Tk):
 
         # creates the TreeView which will handle displaying all schema in the database
         self.tree = ttk.Treeview(self,
-                                 columns=('id', 'title', 'author', 'publish_date', 'type', 'location', 'quantity'))
+                                 columns=('id', 'barcode', 'title', 'author', 'publish_date', 'type', 'location', 'quantity'))
         # hide the initial blank column that comes with TreeViews
         self.tree['show'] = 'headings'
         # show only the desired columns (hiding the id)
-        self.tree['displaycolumns'] = ('title', 'author', 'publish_date', 'type', 'location', 'quantity')
+        self.tree['displaycolumns'] = ('barcode', 'title', 'author', 'publish_date', 'type', 'location', 'quantity')
 
         self.treeScroll = tk.Scrollbar(self)
         self.treeScroll.configure(command=self.tree.yview_scroll)
@@ -61,14 +61,17 @@ class Hammer(tk.Tk):
         self.tree.bind("<Delete>", self.delete_entry)
         self.bind("<Escape>", lambda event: self.destroy())
 
-    """
-        add_entry takes the input from the TopLevel window for
-        inserting data into the database and passes it to the 
-        database handler, before refreshing the table and destroying
-        the TopLevel window
-    """
-
     def add_entry(self, data, window):
+        """
+            add_entry takes the input from the TopLevel window for
+            inserting data into the database and passes it to the
+            database handler, before refreshing the table and destroying
+            the TopLevel window
+
+            :param data: a list of user inputted data
+            :param window: a TopLevel item
+            :return:
+        """
         self.db.insert_query(data)
         self.refresh_table()
         window.template.destroy()
@@ -92,21 +95,22 @@ class Hammer(tk.Tk):
             self.manage_button.configure(state='normal')
             self.after(self.manage_check_delay, self.check_focus)
 
-    """
-        clear_table purges the TreeView of all of its children
-    """
-
     def clear_table(self):
+        """
+            clear_table purges the TreeView of all of its children
+            :return:
+        """
         for item in self.tree.get_children():
             self.tree.delete(item)
 
-    """
-        delete_entry takes the currently selected/focused item in
-        the TreeView and performs a SQL query to remove it from the
-        database, before finally refreshing the table
-    """
-
     def delete_entry(self, event):
+        """
+            delete_entry takes the currently selected/focused item in
+            the TreeView and performs a SQL query to remove it from the
+            database, before finally refreshing the table
+            :param event:
+            :return:
+        """
         current_item = self.tree.focus()
         if current_item != '':
             self.db.delete_query(self.tree.item(current_item)['values'])
@@ -114,22 +118,23 @@ class Hammer(tk.Tk):
 
             logging.info('Deleted item from database')
 
-    """
-        drop_table will delete all delete all data within the table
-    """
-
     def drop_table(self):
+        """
+            drop_table will delete all data within the table
+            :return:
+        """
         self.db.drop_table()
         self.refresh_table()
 
         logging.info('Dropped table')
 
-    """
-        populate_table takes the return value of self.db.get_all_query()
-        and builds a "table" of tk.Entry with the database
-    """
-
     def populate_table(self, current_table=None):
+        """
+            populate_table takes the return value of self.db.get_all_query()
+            and builds a "table" of tk.Entry with the database
+            :param current_table: determines the necessary table (for searches)
+            :return:
+        """
         if current_table is None:
             current_table = self.db.get_all_query()
 
@@ -143,25 +148,26 @@ class Hammer(tk.Tk):
 
         logging.info('Populated the table')
 
-    """
-        refresh_table iterates through all elements in the TreeView
-        and then for each element, deletes it from the TreeView before
-        repopulating the table
-    """
-
     def refresh_table(self):
+        """
+            refresh_table iterates through all elements in the TreeView
+            and then for each element, deletes it from the TreeView before
+            repopulating the table
+            :return:
+        """
 
         self.clear_table()
         self.populate_table()
 
         logging.info('Refreshed the table')
 
-    """
-        the search table function gets the currently entered text from the passed
-        entry_box and executes a SQL query with it
-    """
-
     def search_table(self, entry_box):
+        """
+            the search table function gets the currently entered text from the passed
+            entry_box and executes a SQL query with it
+            :param entry_box:
+            :return:
+        """
         search_term = entry_box.get()
 
         current_table = self.db.dbCursor.execute(f"""SELECT * 
@@ -177,6 +183,7 @@ class Hammer(tk.Tk):
 
     def window(self):
         self.tree.heading('id', text='ID')
+        self.tree.heading('barcode', text='Barcode')
         self.tree.heading('title', text='Title')
         self.tree.heading('author', text='Author')
         self.tree.heading('publish_date', text='Publish Date')

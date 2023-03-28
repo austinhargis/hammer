@@ -14,6 +14,7 @@ class Database:
             self.dbCursor.execute(f"""
                     CREATE TABLE inventory(
                         id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        barcode varchar,
                         title varchar,
                         author varchar,
                         publish_date varchar,
@@ -34,17 +35,16 @@ class Database:
             :return: nothing
         """
 
-        for field in data:
-            if field == '':
-                popup = tk.Toplevel()
-                popup.wm_title("Error!")
-                tk.Label(popup, text="All fields must have a value specified.").grid(row=0, column=0)
-                ttk.Button(popup, text="Okay", command=popup.destroy).grid(row=1, column=0)
+        if data[1].replace(' ', '') == '':
+            popup = tk.Toplevel()
+            popup.title("Error!")
+            tk.Label(popup, text="The title field must have a value specified.").grid(row=0, column=0)
+            ttk.Button(popup, text="Okay", command=popup.destroy).grid(row=1, column=0)
 
-                return
+            return
 
-        self.dbCursor.execute(f"""INSERT INTO inventory(title, author, publish_date, type, location, quantity)
-                                  VALUES (?, ?, ?, ?, ?, ?)""", data)
+        self.dbCursor.execute(f"""INSERT INTO inventory(barcode, title, author, publish_date, type, location, quantity)
+                                  VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
         self.dbConnection.commit()
 
     def delete_query(self, data):
@@ -63,9 +63,9 @@ class Database:
             :return: nothing
         """
 
-        data = ["Test", "Test2", "Test3", "Test4", "Test5", "Test6"]
-        self.dbCursor.execute(f"""INSERT INTO inventory (title, author, publish_date, type, location, quantity)
-                                  VALUES (?, ?, ?, ?, ?, ?)""", data)
+        data = ["Test", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6"]
+        self.dbCursor.execute(f"""INSERT INTO inventory (barcode, title, author, publish_date, type, location, quantity)
+                                  VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
         self.dbConnection.commit()
 
     def drop_table(self):

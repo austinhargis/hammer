@@ -12,9 +12,15 @@ class ItemInfo(tk.Toplevel):
         self.resizable(False, False)
         self.title(f'{process.capitalize()} Item')
 
-        title_frame = tk.Frame(self)
-        title_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding * 2,
+        barcode_frame = tk.Frame(self)
+        barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding*2, pady=(self.parent.padding*2,
                                                                                        self.parent.padding))
+        tk.Label(barcode_frame, text='Barcode').pack(side='left')
+        self.barcode_text = tk.Entry(barcode_frame)
+        self.barcode_text.pack(side='right')
+
+        title_frame = tk.Frame(self)
+        title_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
         tk.Label(title_frame, text='Title').pack(side='left')
         self.title_text = tk.Entry(title_frame)
         self.title_text.pack(side='right')
