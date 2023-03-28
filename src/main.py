@@ -19,14 +19,13 @@ from save_manager import SaveManager
 
 logging.basicConfig(filename='hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
                     filemode='w')
-version = 'v0.1.0a'
 
 
 class Hammer(tk.Tk):
 
     def __init__(self):
         tk.Tk.__init__(self)
-        self.title(f"hammer - {version}")
+        self.title(f"hammer")
         self.minsize(400, 300)
 
         self.manage_check_delay = 250
@@ -42,7 +41,8 @@ class Hammer(tk.Tk):
         # creates the TreeView which will handle displaying all schema in the database
         self.tree = ttk.Treeview(self,
                                  columns=(
-                                 'id', 'barcode', 'title', 'author', 'publish_date', 'type', 'location', 'quantity'))
+                                     'id', 'barcode', 'title', 'author', 'publish_date', 'type', 'location',
+                                     'quantity'))
         # hide the initial blank column that comes with TreeViews
         self.tree['show'] = 'headings'
         # show only the desired columns (hiding the id)
