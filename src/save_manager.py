@@ -17,6 +17,10 @@ class SaveManager:
         self.load_save()
 
     def load_save(self):
+        """
+            attempts to load the settings pickle file
+            :return:
+        """
 
         try:
             data_in = open('./settings.pkl', 'rb')
@@ -28,6 +32,11 @@ class SaveManager:
             self.push_save()
 
     def push_save(self):
+        """
+            saves the current settings dictionary to a pickle file
+            :return:
+        """
+
         data_out = open('./settings.pkl', 'wb')
         pickle.dump(self.data, data_out)
         data_out.close()
