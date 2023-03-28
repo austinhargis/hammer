@@ -3,10 +3,12 @@ import tkinter as tk
 from webbrowser import open_new_tab
 
 from add_window import AddItem
+from checkin_screen import CheckinScreen
 from checkout_screen import CheckoutScreen
 from create_user import CreateUser
 from settings import SettingsWindow
 from update_checker import UpdateChecker
+from view_users import ViewUsers
 
 
 class MenuBar(tk.Menu):
@@ -41,11 +43,13 @@ class MenuBar(tk.Menu):
         self.add_cascade(label='Checkout', underline=0, menu=self.checkout_menu)
         self.checkout_menu.add_command(label='Checkout to User', underline=1,
                                        command=lambda: CheckoutScreen(self.parent))
-        self.checkout_menu.add_command(label='Check Item In', underline=1)
+        self.checkout_menu.add_command(label='Check Item In',
+                                       command=lambda: CheckinScreen(self.parent), underline=1)
 
         self.users_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label='Users', underline=0, menu=self.users_menu)
         self.users_menu.add_command(label='Add User', underline=1, command=lambda: CreateUser(self.parent))
+        self.users_menu.add_command(label='View Users', underline=1, command=lambda: ViewUsers(self.parent))
 
         self.database_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label="Database", underline=0, menu=self.database_menu)
