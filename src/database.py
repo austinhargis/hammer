@@ -22,6 +22,19 @@ class Database:
                         location varchar,
                         quantity varchar
                     )""")
+            self.dbCursor.execute(f"""
+                    CREATE TABLE users(
+                        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        first_name varchar,
+                        last_name varchar
+                    )""")
+            self.dbCursor.execute(f"""
+                    CREATE TABLE checkouts(
+                        user_id integer,
+                        barcode_id varchar,
+                        FOREIGN KEY(user_id) REFERENCES users(user_id),
+                        FOREIGN KEY(barcode_id) REFERENCES inventory(barcode)
+                    )""")
             self.dbConnection.commit()
 
         else:
