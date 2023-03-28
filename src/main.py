@@ -172,7 +172,8 @@ class Hammer(tk.Tk):
 
         current_table = self.db.dbCursor.execute(f"""SELECT * 
                                                      FROM inventory 
-                                                     WHERE title LIKE \'%{search_term}%\' 
+                                                     WHERE barcode LIKE \'%{search_term}%\'
+                                                     OR title LIKE \'%{search_term}%\' 
                                                      OR author LIKE \'%{search_term}%\'
                                                      OR publish_date LIKE \'%{search_term}%\'
                                                      OR type LIKE \'%{search_term}%\'
