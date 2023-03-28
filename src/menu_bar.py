@@ -8,6 +8,7 @@ from checkout_screen import CheckoutScreen
 from create_user import CreateUser
 from settings import SettingsWindow
 from update_checker import UpdateChecker
+from view_checkouts import ViewCheckouts
 from view_users import ViewUsers
 
 
@@ -43,8 +44,10 @@ class MenuBar(tk.Menu):
         self.add_cascade(label='Checkout', underline=0, menu=self.checkout_menu)
         self.checkout_menu.add_command(label='Checkout to User', underline=1,
                                        command=lambda: CheckoutScreen(self.parent))
-        self.checkout_menu.add_command(label='Check Item In',
-                                       command=lambda: CheckinScreen(self.parent), underline=1)
+        self.checkout_menu.add_command(label='Check Item In', underline=1,
+                                       command=lambda: CheckinScreen(self.parent))
+        self.checkout_menu.add_command(label='View Checkouts', underline=1,
+                                       command=lambda: ViewCheckouts(self.parent))
 
         self.users_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label='Users', underline=0, menu=self.users_menu)
