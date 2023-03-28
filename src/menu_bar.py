@@ -56,13 +56,6 @@ class MenuBar(tk.Menu):
         self.database_menu.add_command(label='Refresh Table', underline=1, command=lambda: self.refresh(),
                                        accelerator='F5')
 
-        self.bind('F5', self.parent.refresh_table)
-
-        self.help_menu = tk.Menu(self, tearoff=False)
-        self.add_cascade(label="Help", underline=0, menu=self.help_menu)
-        self.help_menu.add_command(label="GitHub", underline=1, command=lambda: open_new_tab(
-            'https://github.com/austinhargis/hammer'))
-
         if self.parent.save_m.data['show_developer_menu'] == 'enabled':
             self.developer_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label='Developer', underline=0, menu=self.developer_menu)
@@ -70,6 +63,15 @@ class MenuBar(tk.Menu):
                                             command=lambda: self.parent.test_add_item())
             self.developer_menu.add_command(label='Drop Table', underline=1, command=lambda: self.parent.drop_table())
 
+        self.help_menu = tk.Menu(self, tearoff=False)
+        self.add_cascade(label="Help", underline=0, menu=self.help_menu)
+        self.help_menu.add_command(label="GitHub", underline=1, command=lambda: open_new_tab(
+            'https://github.com/austinhargis/hammer'))
+
+        self.set_bindings()
+
+    def set_bindings(self):
+        self.bind('F5', self.parent.refresh_table)
 
     def refresh(self):
         self.counter += 1

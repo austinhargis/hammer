@@ -47,8 +47,4 @@ class CreateUser(tk.Toplevel):
             self.parent.db.dbConnection.commit()
             self.destroy()
         except sqlite3.IntegrityError:
-            warning_popup = tk.Toplevel()
-            warning_popup.title('Barcode In Use')
-            tk.Label(warning_popup, text='Warning: This barcode is already in use. '
-                                         'Please try a different barcode.').pack()
-            tk.Button(warning_popup, text='Continue', command=lambda: warning_popup.destroy()).pack()
+            self.parent.db.unique_conflict()

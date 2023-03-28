@@ -57,9 +57,12 @@ class Database:
 
             return
 
-        self.dbCursor.execute(f"""INSERT INTO inventory(barcode, title, author, publish_date, type, location, quantity)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
-        self.dbConnection.commit()
+        try:
+            self.dbCursor.execute(f"""INSERT INTO inventory(barcode, title, author, publish_date, type, location, quantity)
+                                      VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
+            self.dbConnection.commit()
+        except sqlite3.IntegrityError:
+            self.unique_conflict()
 
     def delete_query(self, data):
         """
@@ -99,11 +102,14 @@ class Database:
             :return nothing
         """
 
-        self.dbCursor.execute(f"""UPDATE inventory 
-                                  SET barcode=?, title=?, author=?, publish_date=?, type=?,
-                                  location=?, quantity=?
-                                  WHERE id={row_id}""", data)
-        self.dbConnection.commit()
+        try:
+            self.dbCursor.execute(f"""UPDATE inventory 
+                                      SET barcode=?, title=?, author=?, publish_date=?, type=?,
+                                      location=?, quantity=?
+                                      WHERE id={row_id}""", data)
+            self.dbConnection.commit()
+        except sqlite3.IntegrityError:
+            self.unique_conflict()
 
     def get_all_query(self):
         """
@@ -113,3 +119,10 @@ class Database:
 
         self.dbCursor.execute("""SELECT * FROM inventory""")
         return self.dbCursor.fetchall()
+
+    def unique_conflict(self):
+        warning_popup = tk.Toplevel()
+        warning_popup.title('Barcode In Use')
+        tk.Label(warning_popup, text='Warning: This barcode is already in use. '
+                                     'Please try a different barcode.').pack()
+        tk.Button(warning_popup, text='Continue', command=lambda: warning_popup.destroy()).pack()
