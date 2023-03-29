@@ -17,7 +17,7 @@ class UpdateChecker(tk.Toplevel):
         self.update_button = None
         self.current_version = None
         self.server_version = None
-        self.version = '0.2.0'
+        self.version = '0.0.0'
 
         self.attributes('-topmost', True)
         self.resizable(False, False)
@@ -71,7 +71,7 @@ class UpdateChecker(tk.Toplevel):
                 self.update_button = tk.Button(self,
                                                text='Get Update',
                                                command=lambda: webbrowser.open_new_tab(
-                                                   'https://github.com/austinhargis/hammer/releases')
+                                                   f'https://github.com/austinhargis/hammer/releases/tag/version_{self.server_version_text}')
                                                )
                 self.update_button.pack(padx=self.parent.padding * 2,
                                         pady=(self.parent.padding, self.parent.padding * 2))
