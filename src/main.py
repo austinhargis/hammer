@@ -39,7 +39,7 @@ class Hammer(tk.Tk):
         # self.style.configure('Treeview', background='#26242f', fieldbackground='#26242f', fontcolor='white')
 
         self.save_m = SaveManager()
-        self.db = Database("./data/hammer.db")
+        self.db = Database("hammer.db")
         self.menu_bar = MenuBar(self)
 
         # creates the TreeView which will handle displaying all schema in the database
