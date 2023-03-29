@@ -45,7 +45,7 @@ class SettingsWindow(tk.Toplevel):
                                                                                                self.parent.padding * 2))
         tk.Button(save_settings_frame, text='Save Settings', command=lambda: self.prepare_for_save()).pack()
 
-        tk.Label(self, text=self.parent.save_m.data['settings_version']).pack()
+        tk.Label(self, text=f'Settings Version: {self.parent.save_m.data["settings_version"]}').pack()
 
         self.mainloop()
 
