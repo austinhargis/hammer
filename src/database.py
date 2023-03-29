@@ -84,7 +84,7 @@ class Database:
             :return: nothing
         """
 
-        data = [f"Test{random.randint(0,100)}", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6"]
+        data = [f"Test{random.randint(0,100)}", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7"]
         self.dbCursor.execute(f"""INSERT INTO inventory (barcode, title, author, description, publish_date, type, location, quantity)
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", data)
         self.dbConnection.commit()
