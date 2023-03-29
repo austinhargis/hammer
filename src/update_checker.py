@@ -17,7 +17,7 @@ class UpdateChecker(tk.Toplevel):
         self.update_button = None
         self.current_version = None
         self.server_version = None
-        self.version = '0.1.0'
+        self.version = '0.2.0'
 
         self.attributes('-topmost', True)
         self.resizable(False, False)
