@@ -7,10 +7,10 @@ class SaveManager:
     def __init__(self):
         self.data = {
             'automatic_updates': 'disabled',
-            'last_update_check': datetime.now(),
+            'last_update_check': datetime.now().strftime('%I:%M%p %m/%d/%Y'),
             'theme': 'system',
             'settings_version': 'v0.1.0a',
-            'show_developer_menu': 'enabled',
+            'show_developer_menu': 'disabled',
         }
         self.settings_enabled = 'normal'
 
