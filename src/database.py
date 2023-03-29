@@ -8,8 +8,8 @@ from tkinter import ttk
 class Database:
 
     def __init__(self, filename):
-        if filename not in os.listdir():
-            self.dbConnection = sqlite3.connect(filename)
+        if filename not in os.listdir('./data'):
+            self.dbConnection = sqlite3.connect(f'./data/{filename}')
             self.dbCursor = self.dbConnection.cursor()
             self.dbCursor.execute(f"""
                     CREATE TABLE inventory(
@@ -40,7 +40,7 @@ class Database:
             self.dbConnection.commit()
 
         else:
-            self.dbConnection = sqlite3.connect(filename)
+            self.dbConnection = sqlite3.connect(f'./data/{filename}')
             self.dbCursor = self.dbConnection.cursor()
 
     def insert_query(self, data):
