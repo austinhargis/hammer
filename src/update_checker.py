@@ -26,17 +26,17 @@ class UpdateChecker(tk.Toplevel):
         title_frame = tk.Frame(self)
         title_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2,
                          pady=(self.parent.padding * 2, self.parent.padding))
-        tk.Label(title_frame, text='Update Checker').pack(side='left')
+        tk.Label(title_frame, text='Update Checker').pack()
 
         subtitle_frame = tk.Frame(self)
         subtitle_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
         self.last_check = tk.Label(subtitle_frame, text=f'Last Checked {self.parent.save_m.data["last_update_check"]}')
-        self.last_check.pack(side='left')
+        self.last_check.pack()
 
         self.server_label = tk.Label(self, text='Server Version: ')
-        self.server_label.pack(side='left')
+        self.server_label.pack()
 
-        tk.Label(self, text=f'Current Version: {self.version}').pack(side='right')
+        tk.Label(self, text=f'Current Version: {self.version}').pack()
 
         check_update_theme = tk.Frame(self)
         check_update_theme.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding,
@@ -53,11 +53,11 @@ class UpdateChecker(tk.Toplevel):
 
         # Download the latest version file from the server
         urllib.request.urlretrieve('https://raw.githubusercontent.com/austinhargis/hammer/main/version.txt',
-                                   '../version.txt')
+                                   './data/version.txt')
 
         # Convert the current and server version to information that is usable
         if self.server_version is None:
-            file = open('../version.txt', 'r')
+            file = open('./data/version.txt', 'r')
             self.server_version_text = file.read()
             self.server_version = tuple(self.server_version_text.replace('\n', '').split('.'))
             self.current_version = tuple(self.version.split('.'))

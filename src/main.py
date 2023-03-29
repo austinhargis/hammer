@@ -7,6 +7,7 @@
 
 """
 import logging
+import os
 
 import tkinter as tk
 from tkinter import ttk
@@ -17,7 +18,10 @@ from database import Database
 from menu_bar import MenuBar
 from save_manager import SaveManager
 
-logging.basicConfig(filename='hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
+if not os.path.isdir('./data'):
+    os.mkdir('./data')
+
+logging.basicConfig(filename='./data/hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
                     filemode='w')
 
 
@@ -35,7 +39,7 @@ class Hammer(tk.Tk):
         # self.style.configure('Treeview', background='#26242f', fieldbackground='#26242f', fontcolor='white')
 
         self.save_m = SaveManager()
-        self.db = Database("hammer.db")
+        self.db = Database("./data/hammer.db")
         self.menu_bar = MenuBar(self)
 
         # creates the TreeView which will handle displaying all schema in the database

@@ -23,7 +23,7 @@ class SaveManager:
         """
 
         try:
-            data_in = open('./settings.pkl', 'rb')
+            data_in = open('./data/settings.pkl', 'rb')
             self.data = pickle.load(data_in)
             data_in.close()
         except EOFError:
@@ -37,6 +37,6 @@ class SaveManager:
             :return:
         """
 
-        data_out = open('./settings.pkl', 'wb')
+        data_out = open('./data/settings.pkl', 'wb')
         pickle.dump(self.data, data_out)
         data_out.close()
