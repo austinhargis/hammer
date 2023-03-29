@@ -24,12 +24,12 @@ class SettingsWindow(tk.Toplevel):
 
         update_frame = tk.Frame(self)
         update_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        tk.Label(update_frame, text='Update Checker').pack(side='left')
+        tk.Label(update_frame, text='Automatic Update').pack(side='left')
         self.update_var = tk.StringVar(update_frame)
         self.update_var.set(self.parent.save_m.data['automatic_updates'].capitalize())
         update_dropdown = tk.OptionMenu(update_frame, self.update_var, *['Enabled', 'Disabled'])
         update_dropdown.pack(side='right')
-        update_dropdown.configure(state=self.parent.save_m.settings_enabled)
+        update_dropdown.configure(state='disabled')
 
         developer_frame = tk.Frame(self)
         developer_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
