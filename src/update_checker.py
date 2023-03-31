@@ -2,6 +2,7 @@ import tkinter as tk
 import urllib.request
 import webbrowser
 from datetime import datetime
+from tkinter import ttk
 
 
 class UpdateChecker(tk.Toplevel):
@@ -41,7 +42,7 @@ class UpdateChecker(tk.Toplevel):
         # Determine whether the server version is newer than the current version
         if self.server_version > self.current_version:
             if self.update_button is None:
-                self.update_button = tk.Button(self,
+                self.update_button = ttk.Button(self,
                                                text='Get Update',
                                                command=lambda: webbrowser.open_new_tab(
                                                    f'https://github.com/austinhargis/hammer/releases/tag/version_{self.server_version_text}')
@@ -54,19 +55,19 @@ class UpdateChecker(tk.Toplevel):
         title_frame = tk.Frame(self)
         title_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2,
                          pady=(self.parent.padding * 2, self.parent.padding))
-        tk.Label(title_frame, text='Update Checker').pack()
+        ttk.Label(title_frame, text='Update Checker').pack()
 
         subtitle_frame = tk.Frame(self)
         subtitle_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        self.last_check = tk.Label(subtitle_frame, text=f'Last Checked {self.parent.save_m.data["last_update_check"]}')
+        self.last_check = ttk.Label(subtitle_frame, text=f'Last Checked {self.parent.save_m.data["last_update_check"]}')
         self.last_check.pack()
 
-        self.server_label = tk.Label(self, text='Server Version: ')
+        self.server_label = ttk.Label(self, text='Server Version: ')
         self.server_label.pack()
 
-        tk.Label(self, text=f'Current Version: {self.version}').pack()
+        ttk.Label(self, text=f'Current Version: {self.version}').pack()
 
         check_update_theme = tk.Frame(self)
         check_update_theme.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding,
                                                                                               self.parent.padding * 2))
-        tk.Button(check_update_theme, text='Check for Updates', command=lambda: self.check_for_update()).pack()
+        ttk.Button(check_update_theme, text='Check for Updates', command=lambda: self.check_for_update()).pack()
