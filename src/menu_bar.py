@@ -2,7 +2,6 @@ import sys
 import tkinter as tk
 from webbrowser import open_new_tab
 
-from add_window import AddItem
 from checkin_screen import CheckinScreen
 from checkout_screen import CheckoutScreen
 from create_user import CreateUser
@@ -33,13 +32,13 @@ class MenuBar(tk.Menu):
     def generate(self):
         self.delete(0, 'end')
 
-        self.file_menu = tk.Menu(self, tearoff=False)
-        self.add_cascade(label="File", underline=0, menu=self.file_menu)
-        self.file_menu.add_command(label='Check for Updates', underline=1, command=lambda: UpdateChecker(self.parent))
-        self.file_menu.add_command(label='Settings', underline=1, command=lambda: SettingsWindow(self.parent))
-        self.file_menu.add_separator()
-        self.file_menu.add_command(label="Exit", underline=1, command=self.quit, accelerator='Escape')
+        self.file()
+        self.checkout()
+        self.users()
+        self.developer()
+        self.help()
 
+    def checkout(self):
         self.checkout_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label='Checkout', underline=0, menu=self.checkout_menu)
         self.checkout_menu.add_command(label='Checkout to User', underline=1,
@@ -49,20 +48,15 @@ class MenuBar(tk.Menu):
         self.checkout_menu.add_command(label='View Checkouts', underline=1,
                                        command=lambda: ViewCheckouts(self.parent))
 
-        self.users_menu = tk.Menu(self, tearoff=False)
-        self.add_cascade(label='Users', underline=0, menu=self.users_menu)
-        self.users_menu.add_command(label='Add User', underline=1, command=lambda: CreateUser(self.parent))
-        self.users_menu.add_command(label='View Users', underline=1, command=lambda: ViewUsers(self.parent))
+    def file(self):
+        self.file_menu = tk.Menu(self, tearoff=False)
+        self.add_cascade(label="File", underline=0, menu=self.file_menu)
+        self.file_menu.add_command(label='Check for Updates', underline=1, command=lambda: UpdateChecker(self.parent))
+        self.file_menu.add_command(label='Settings', underline=1, command=lambda: SettingsWindow(self.parent))
+        self.file_menu.add_separator()
+        self.file_menu.add_command(label="Exit", underline=1, command=self.quit, accelerator='Escape')
 
-        self.database_menu = tk.Menu(self, tearoff=False)
-        self.add_cascade(label="Database", underline=0, menu=self.database_menu)
-        self.database_menu.add_command(label='Add Item', underline=1, command=lambda: AddItem(self.parent))
-        self.database_menu.add_command(label='Delete Selected', underline=1,
-                                       command=lambda: self.parent.delete_popup_window(),
-                                       accelerator='BackSpace')
-        self.database_menu.add_command(label='Refresh Table', underline=1, command=lambda: self.refresh(),
-                                       accelerator='F5')
-
+    def developer(self):
         if self.parent.save_m.data['show_developer_menu'] == 'enabled':
             self.developer_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label='Developer', underline=0, menu=self.developer_menu)
@@ -70,24 +64,17 @@ class MenuBar(tk.Menu):
                                             command=lambda: self.parent.test_add_item())
             self.developer_menu.add_command(label='Drop Table', underline=1, command=lambda: self.parent.drop_table())
 
+    def help(self):
         self.help_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label="Help", underline=0, menu=self.help_menu)
         self.help_menu.add_command(label="GitHub", underline=1, command=lambda: open_new_tab(
             'https://github.com/austinhargis/hammer'))
 
-        self.set_bindings()
-
-    def set_bindings(self):
-        self.bind('F5', self.parent.refresh_table)
-
-    def refresh(self):
-        self.counter += 1
-
-        if self.counter == 90:
-            open_new_tab('https://youtu.be/otCpCn0l4Wo')
-            self.counter = 0
-
-        self.parent.refresh_table()
+    def users(self):
+        self.users_menu = tk.Menu(self, tearoff=False)
+        self.add_cascade(label='Users', underline=0, menu=self.users_menu)
+        self.users_menu.add_command(label='Add User', underline=1, command=lambda: CreateUser(self.parent))
+        self.users_menu.add_command(label='View Users', underline=1, command=lambda: ViewUsers(self.parent))
 
     def quit(self):
         sys.exit()
