@@ -16,7 +16,7 @@ class ViewUsers(tk.Toplevel):
         self.user_tree['show'] = 'headings'
         self.user_tree['displaycolumns'] = ('barcode', 'first_name', 'last_name')
 
-        self.user_tree_scroll = tk.Scrollbar(self)
+        self.user_tree_scroll = ttk.Scrollbar(self)
         self.user_tree_scroll.configure(command=self.user_tree.yview_scroll)
         self.user_tree.configure(yscrollcommand=self.user_tree_scroll.set)
         self.user_tree_scroll.pack(side='right', fill='both')

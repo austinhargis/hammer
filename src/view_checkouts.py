@@ -15,7 +15,7 @@ class ViewCheckouts(tk.Toplevel):
         self.checkout_tree['show'] = 'headings'
         self.checkout_tree['displaycolumns'] = ('user_barcode', 'item_barcode', 'item_title')
 
-        self.checkout_tree_scroll = tk.Scrollbar(self)
+        self.checkout_tree_scroll = ttk.Scrollbar(self)
         self.checkout_tree_scroll.configure(command=self.checkout_tree.yview_scroll)
         self.checkout_tree.configure(yscrollcommand=self.checkout_tree_scroll.set)
         self.checkout_tree_scroll.pack(side='right', fill='both')
