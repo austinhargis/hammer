@@ -3,14 +3,12 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class CheckoutScreen(tk.Toplevel):
+class CheckoutScreen(tk.Frame):
 
     def __init__(self, parent):
         super().__init__()
 
         self.parent = parent
-
-        self.title('Checkout')
 
         user_frame = tk.Frame(self)
         user_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding * 2,
@@ -30,8 +28,6 @@ class CheckoutScreen(tk.Toplevel):
                           pady=(self.parent.padding, self.parent.padding * 2))
         ttk.Button(button_frame, text='Checkout', command=lambda: self.checkout_to_user()).pack(side='left')
         ttk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
-
-        self.mainloop()
 
     def checkout_to_user(self):
         data = (self.user_barcode.get(), self.barcode_entry.get())

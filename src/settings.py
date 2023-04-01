@@ -1,16 +1,13 @@
 import tkinter as tk
+from tkinter import ttk
 
 
-class SettingsWindow(tk.Toplevel):
+class SettingsWindow(tk.Frame):
 
     def __init__(self, parent):
         super().__init__()
 
         self.parent = parent
-
-        self.attributes('-topmost', True)
-        self.resizable(False, False)
-        self.title('Settings')
 
         theme_frame = tk.Frame(self)
         theme_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2,
@@ -45,9 +42,7 @@ class SettingsWindow(tk.Toplevel):
                                                                                                self.parent.padding * 2))
         ttk.Button(save_settings_frame, text='Save Settings', command=lambda: self.prepare_for_save()).pack()
 
-        ttk.Label(self, text=self.parent.save_m.data['settings_version']).pack()
-
-        self.mainloop()
+        ttk.Label(self, text=f'Settings Version: {self.parent.save_m.data["settings_version"]}').pack()
 
     def prepare_for_save(self):
         """

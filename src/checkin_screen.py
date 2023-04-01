@@ -2,14 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class CheckinScreen(tk.Toplevel):
+class CheckinScreen(tk.Frame):
 
     def __init__(self, parent):
         super().__init__()
 
         self.parent = parent
-
-        self.title('Checkin')
 
         barcode_frame = tk.Frame(self)
         barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=self.parent.padding)
@@ -22,8 +20,6 @@ class CheckinScreen(tk.Toplevel):
                           pady=(0, self.parent.padding))
         ttk.Button(button_frame, text='Return Item', command=lambda: self.check_item_in()).pack(side='left')
         ttk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
-
-        self.mainloop()
 
     def check_item_in(self):
         items = self.parent.db.dbCursor.execute(f"""

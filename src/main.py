@@ -213,6 +213,7 @@ class Hammer(tk.Tk):
 
         self.tab_controller.add(screen_frame, text='Home')
         self.tab_controller.pack(expand=1, fill='both')
+        self.tab_controller.bind('<Button-2>', lambda event: self.delete_tab())
 
         manage_frame = tk.Frame(screen_frame, padx=self.padding, pady=self.padding)
         manage_frame.pack(side='left', anchor='nw')
@@ -269,6 +270,9 @@ class Hammer(tk.Tk):
         entry_title = self.tree.item(current_item)['values'][2]
 
         self.tab_controller.add(ExpandedInformation(self, entry_values), text=f'{entry_title}')
+
+    def delete_tab(self):
+        pass
 
 
 if __name__ == "__main__":

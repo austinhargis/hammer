@@ -1,15 +1,14 @@
 import sqlite3
 import tkinter as tk
+from tkinter import ttk
 
 
-class CreateUser(tk.Toplevel):
+class CreateUser(tk.Frame):
 
     def __init__(self, parent):
         super().__init__()
 
         self.parent = parent
-
-        self.title('Add User')
 
         barcode_frame = tk.Frame(self)
         barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding * 2,
@@ -34,10 +33,9 @@ class CreateUser(tk.Toplevel):
         button_frame.pack(expand=True, padx=self.parent.padding * 2,
                           pady=(self.parent.padding, self.parent.padding * 2))
         ttk.Button(button_frame, text='Add User',
-                  command=lambda: self.add_user([barcode_entry.get(), first_name_entry.get(), last_name_entry.get()])).pack(side='left')
+                   command=lambda: self.add_user(
+                       [barcode_entry.get(), first_name_entry.get(), last_name_entry.get()])).pack(side='left')
         ttk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
-
-        self.mainloop()
 
     def add_user(self, data):
         try:

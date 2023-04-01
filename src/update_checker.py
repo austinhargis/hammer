@@ -5,13 +5,10 @@ from datetime import datetime
 from tkinter import ttk
 
 
-class UpdateChecker(tk.Toplevel):
+class UpdateChecker(tk.Frame):
 
     def __init__(self, parent):
         super().__init__()
-        self.attributes('-topmost', True)
-        self.resizable(False, False)
-        self.title('Check for Updates')
 
         self.parent = parent
         self.server_version = None
@@ -20,7 +17,6 @@ class UpdateChecker(tk.Toplevel):
 
         self.window()
         self.check_for_update()
-        self.mainloop()
 
     def check_for_update(self):
         self.parent.save_m.data['last_update_check'] = datetime.now().strftime('%I:%M%p %m/%d/%Y')

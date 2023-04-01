@@ -2,14 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class ViewCheckouts(tk.Toplevel):
+class ViewCheckouts(tk.Frame):
 
     def __init__(self, parent):
         super().__init__()
 
         self.parent = parent
-
-        self.title('View Checkouts')
 
         self.checkout_tree = ttk.Treeview(self, columns=('user_barcode', 'item_barcode', 'item_title'))
         self.checkout_tree['show'] = 'headings'
@@ -26,8 +24,6 @@ class ViewCheckouts(tk.Toplevel):
         self.checkout_tree.heading('item_barcode', text='Item Barcode')
         self.checkout_tree.heading('item_title', text='Item Title')
         self.checkout_tree.pack(fill='both', expand=True, padx=self.parent.padding*2, pady=self.parent.padding*2)
-
-        self.mainloop()
 
     def get_checkouts(self):
         checkouts = self.parent.db.dbCursor.execute("""

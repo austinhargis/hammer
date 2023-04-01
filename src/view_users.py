@@ -3,14 +3,12 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class ViewUsers(tk.Toplevel):
+class ViewUsers(tk.Frame):
 
     def __init__(self, parent):
         super().__init__()
 
         self.parent = parent
-
-        self.title('View Users')
 
         self.user_tree = ttk.Treeview(self, columns=('user_id', 'barcode', 'first_name', 'last_name'))
         self.user_tree['show'] = 'headings'
@@ -28,8 +26,6 @@ class ViewUsers(tk.Toplevel):
         self.user_tree.heading('first_name', text='First Name')
         self.user_tree.heading('last_name', text='Last Name')
         self.user_tree.pack(fill='both', expand=True, padx=self.parent.padding*2, pady=self.parent.padding*2)
-
-        self.mainloop()
 
     def get_users(self):
         users = self.parent.db.dbCursor.execute("""
