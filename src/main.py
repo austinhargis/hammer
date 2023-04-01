@@ -46,6 +46,7 @@ class Hammer(tk.Tk):
         self.menu_bar = MenuBar(self)
         self.tab_controller = ttk.Notebook(self)
 
+        self.heading_font= ('Arial', 18, 'bold')
         self.padding = 10
         self.wraplength = 200
 
