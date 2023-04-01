@@ -18,6 +18,7 @@ from manage_window import ManageItem
 from database import Database
 from menu_bar import MenuBar
 from save_manager import SaveManager
+from item_info import ItemInfo
 
 if not os.path.isdir('./data'):
     os.mkdir('./data')
@@ -32,7 +33,7 @@ class Hammer(tk.Tk):
         tk.Tk.__init__(self)
         self.title(f"hammer")
         self.minsize(400, 300)
-        self.state('zoomed')
+        # self.state('zoomed')
 
         self.manage_check_delay = 250
 
@@ -215,8 +216,10 @@ class Hammer(tk.Tk):
 
         manage_frame = tk.Frame(screen_frame, padx=self.padding, pady=self.padding)
         manage_frame.pack(side='left', anchor='nw')
-        ttk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack()
-        self.manage_button = ttk.Button(manage_frame, text='Manage', command=lambda: ManageItem(self))
+        ttk.Button(manage_frame, text='Add', command=lambda: self.tab_controller.add(AddItem(self), text='Add')).pack()
+        self.manage_button = ttk.Button(manage_frame,
+                                        text='Manage',
+                                        command=lambda: self.tab_controller.add(ManageItem(self), text='Manage'))
         self.manage_button.pack()
         self.manage_button.configure(state='disabled')
         ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window()).pack()

@@ -2,66 +2,66 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class ItemInfo(tk.Toplevel):
+class ItemInfo(tk.Frame):
 
-    def __init__(self, parent, process):
+    def __init__(self, parent):
         super().__init__()
 
         self.parent = parent
 
-        self.attributes('-topmost', True)
-        self.resizable(False, False)
-        self.title(f'{process.capitalize()} Item')
+        # self.attributes('-topmost', True)
+        # self.resizable(False, False)
+        # self.title(f'{process.capitalize()} Item')
 
-        barcode_frame = tk.Frame(self)
-        barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding * 2,
+        self.barcode_frame = tk.Frame(self)
+        self.barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding * 2,
                                                                                          self.parent.padding))
-        ttk.Label(barcode_frame, text='Barcode').pack(side='left')
-        self.barcode_text = tk.Entry(barcode_frame)
+        ttk.Label(self.barcode_frame, text='Barcode').pack(side='left')
+        self.barcode_text = tk.Entry(self.barcode_frame)
         self.barcode_text.pack(side='right')
 
-        title_frame = tk.Frame(self)
-        title_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        ttk.Label(title_frame, text='Title').pack(side='left')
-        self.title_text = tk.Entry(title_frame)
+        self.title_frame = tk.Frame(self)
+        self.title_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        ttk.Label(self.title_frame, text='Title').pack(side='left')
+        self.title_text = tk.Entry(self.title_frame)
         self.title_text.pack(side='right')
 
-        author_frame = tk.Frame(self)
-        author_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        ttk.Label(author_frame, text='Author').pack(side='left')
-        self.author_text = tk.Entry(author_frame)
+        self.author_frame = tk.Frame(self)
+        self.author_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        ttk.Label(self.author_frame, text='Author').pack(side='left')
+        self.author_text = tk.Entry(self.author_frame)
         self.author_text.pack(side='right')
 
-        description_frame = tk.Frame(self)
-        description_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        ttk.Label(description_frame, text='Item Description').pack(side='left', anchor='nw')
-        description_text_frame = tk.Frame(description_frame)
-        description_text_frame.pack()
-        self.description_text = tk.Text(description_text_frame, width=26, height=5)
+        self.description_frame = tk.Frame(self)
+        self.description_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        ttk.Label(self.description_frame, text='Item Description').pack(side='left', anchor='nw')
+        self.description_text_frame = tk.Frame(self.description_frame)
+        self.description_text_frame.pack()
+        self.description_text = tk.Text(self.description_text_frame, width=26, height=5)
         self.description_text.pack(side='right')
 
-        publish_frame = tk.Frame(self)
-        publish_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        ttk.Label(publish_frame, text='Publish Date').pack(side='left')
-        self.publish_date_text = tk.Entry(publish_frame)
+        self.publish_frame = tk.Frame(self)
+        self.publish_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        ttk.Label(self.publish_frame, text='Publish Date').pack(side='left')
+        self.publish_date_text = tk.Entry(self.publish_frame)
         self.publish_date_text.pack(side='right')
 
-        type_frame = tk.Frame(self)
-        type_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        ttk.Label(type_frame, text='Item Type').pack(side='left')
-        self.type_text = tk.Entry(type_frame)
+        self.type_frame = tk.Frame(self)
+        self.type_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        ttk.Label(self.type_frame, text='Item Type').pack(side='left')
+        self.type_text = tk.Entry(self.type_frame)
         self.type_text.pack(side='right')
 
-        location_frame = tk.Frame(self)
-        location_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        ttk.Label(location_frame, text='Location').pack(side='left')
-        self.location_text = tk.Entry(location_frame)
+        self.location_frame = tk.Frame(self)
+        self.location_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        ttk.Label(self.location_frame, text='Location').pack(side='left')
+        self.location_text = tk.Entry(self.location_frame)
         self.location_text.pack(side='right')
 
-        quantity_frame = tk.Frame(self)
-        quantity_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        ttk.Label(quantity_frame, text='Item Quantity').pack(side='left')
-        self.quantity_text = tk.Entry(quantity_frame)
+        self.quantity_frame = tk.Frame(self)
+        self.quantity_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        ttk.Label(self.quantity_frame, text='Item Quantity').pack(side='left')
+        self.quantity_text = tk.Entry(self.quantity_frame)
         self.quantity_text.pack(side='right')
 
     def get_item_info(self):
