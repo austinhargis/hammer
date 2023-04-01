@@ -7,7 +7,9 @@ from tkinter import ttk
 
 class Database:
 
-    def __init__(self, filename):
+    def __init__(self, filename, parent):
+        self.parent = parent
+
         if filename not in os.listdir('./data'):
             self.dbConnection = sqlite3.connect(f'./data/{filename}')
             self.dbCursor = self.dbConnection.cursor()
@@ -49,13 +51,16 @@ class Database:
             :param data: a tuple of data to be inserted into the table
             :return: nothing
         """
-
-        if data[1].replace(' ', '') == '':
-            popup = tk.Toplevel()
+        if data[0].replace(' ', '') == '' or data[1].replace(' ', '') == '':
+            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
             popup.attributes('-topmost', True)
             popup.title("Error!")
-            tk.Label(popup, text="The title field must have a value specified.").pack()
-            ttk.Button(popup, text="Okay", command=popup.destroy).pack()
+            ttk.Label(popup,
+                      text="The barcode and title field must have a value"
+                           "specified before they can be added to the table.",
+                      wraplength=self.parent.wraplength,
+                      justify='center').pack()
+            ttk.Button(popup, text="Continue", command=popup.destroy).pack()
 
             popup.mainloop()
 
@@ -84,7 +89,7 @@ class Database:
             :return: nothing
         """
 
-        data = [f"Test{random.randint(0,100)}", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6"]
+        data = [f"Test{random.randint(0, 100)}", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7"]
         self.dbCursor.execute(f"""INSERT INTO inventory (barcode, title, author, description, publish_date, type, location, quantity)
                                   VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", data)
         self.dbConnection.commit()
@@ -125,10 +130,14 @@ class Database:
         return self.dbCursor.fetchall()
 
     def unique_conflict(self):
-        warning_popup = tk.Toplevel()
-        warning_popup.title('Barcode In Use')
-        tk.Label(warning_popup, text='Warning: This barcode is already in use. '
-                                     'Please try a different barcode.').pack()
-        tk.Button(warning_popup, text='Continue', command=lambda: warning_popup.destroy()).pack()
+        popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
+        popup.title('Barcode In Use')
 
-        warning_popup.mainloop()
+        ttk.Label(popup,
+                  text='Warning: This barcode is already in use. '
+                       'Please try a different barcode.',
+                  wraplength=self.parent.wraplength,
+                  justify='center').pack()
+        ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
+
+        popup.mainloop()
