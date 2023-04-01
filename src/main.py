@@ -39,7 +39,7 @@ class Hammer(tk.Tk):
         # self.style.configure('Treeview', background='#26242f', fieldbackground='#26242f', fontcolor='white')
 
         self.save_m = SaveManager()
-        self.db = Database("hammer.db")
+        self.db = Database("hammer.db", self)
         self.menu_bar = MenuBar(self)
 
         # creates the TreeView which will handle displaying all schema in the database
@@ -52,12 +52,13 @@ class Hammer(tk.Tk):
         # show only the desired columns (hiding the id)
         self.tree['displaycolumns'] = ('barcode', 'title', 'author', 'publish_date', 'type', 'location', 'quantity')
 
-        self.treeScroll = tk.Scrollbar(self)
+        self.treeScroll = ttk.Scrollbar(self)
         self.treeScroll.configure(command=self.tree.yview_scroll)
         self.tree.configure(yscrollcommand=self.treeScroll.set)
         self.treeScroll.pack(side='right', fill='both')
 
         self.padding = 10
+        self.wraplength = 200
 
         self.config(menu=self.menu_bar)
         self.window()
@@ -128,23 +129,29 @@ class Hammer(tk.Tk):
             intended on deleting the focused item
             :return:
         """
-        delete_popup = tk.Toplevel()
-        delete_popup.title('Confirm Delete?')
-        tk.Label(delete_popup, text='Are you sure you would like to delete this?').pack(padx=self.padding * 2,
-                                                                                        pady=(self.padding * 2,
-                                                                                              self.padding))
-        tk.Label(delete_popup, text=f'Item: {self.tree.item(self.tree.focus())["values"][2]}').pack(
-            padx=self.padding * 2,
-            pady=self.padding)
-        button_frame = tk.Frame(delete_popup)
-        button_frame.pack(expand=True, padx=self.padding * 2, pady=(self.padding, self.padding * 2))
-        tk.Button(button_frame, text='Confirm', command=lambda: [self.delete_entry(), delete_popup.destroy()]).pack(
-            side='left',
-            padx=self.padding)
-        tk.Button(button_frame, text='Cancel', command=lambda: delete_popup.destroy()).pack(side='right',
-                                                                                            padx=self.padding)
+        popup = tk.Toplevel(padx=self.padding, pady=self.padding)
+        popup.title('Confirm Delete?')
 
-        delete_popup.mainloop()
+        ttk.Label(popup,
+                  text='Are you sure you would like to delete this?',
+                  wraplength=self.wraplength,
+                  justify='center').pack()
+        ttk.Label(popup,
+                  text=f'Item: {self.tree.item(self.tree.focus())["values"][2]}').pack()
+
+        button_frame = tk.Frame(popup)
+        button_frame.pack(expand=True)
+
+        ttk.Button(button_frame,
+                   text='Confirm',
+                   command=lambda: [self.delete_entry(), popup.destroy()]).pack(side='left')
+        ttk.Button(button_frame,
+                   text='Cancel',
+                   command=lambda: popup.destroy()).pack(side='right')
+
+        popup.mainloop()
+
+        logging.info('Initialized delete confirmation')
 
     def drop_table(self):
         """
@@ -167,7 +174,7 @@ class Hammer(tk.Tk):
             current_table = self.db.get_all_query()
 
         for y in range(len(current_table)):
-            self.tree.insert('', tk.END, values=current_table[y], tags=('item',))
+            self.tree.insert('', tk.END, values=current_table[y])
 
         if len(self.tree.get_children()) > 0:
             child = self.tree.get_children()[0]
@@ -223,13 +230,13 @@ class Hammer(tk.Tk):
 
         manage_frame = tk.Frame(self)
         manage_frame.pack(fill='both', expand=True, padx=(0, self.padding))
-        tk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=(self.padding * 2,
+        ttk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=(self.padding * 2,
                                                                                                    self.padding),
                                                                                 pady=self.padding * 2)
-        self.manage_button = tk.Button(manage_frame, text='Manage', command=lambda: ManageItem(self))
+        self.manage_button = ttk.Button(manage_frame, text='Manage', command=lambda: ManageItem(self))
         self.manage_button.pack(side='left', padx=self.padding, pady=self.padding * 2)
         self.manage_button.configure(state='disabled')
-        tk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window()).pack(side='left',
+        ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window()).pack(side='left',
                                                                                                 padx=self.padding,
                                                                                                 pady=self.padding * 2)
 
@@ -237,7 +244,7 @@ class Hammer(tk.Tk):
         search_frame.pack(fill='both', expand=True, padx=self.padding, pady=(0, self.padding * 2))
         search_box = tk.Entry(search_frame)
         search_box.pack(side='left', padx=self.padding)
-        tk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
+        ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
 
         self.bind('<Return>', lambda event: self.search_table(search_box))
 
