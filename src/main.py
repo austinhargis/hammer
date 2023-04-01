@@ -13,6 +13,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from add_window import AddItem
+from expanded_info import ExpandedInformation
 from manage_window import ManageItem
 from database import Database
 from menu_bar import MenuBar
@@ -42,6 +43,7 @@ class Hammer(tk.Tk):
         self.save_m = SaveManager()
         self.db = Database("hammer.db", self)
         self.menu_bar = MenuBar(self)
+        self.tab_controller = ttk.Notebook(self)
 
         self.padding = 10
         self.wraplength = 200
@@ -205,8 +207,11 @@ class Hammer(tk.Tk):
 
     def window(self):
 
-        screen_frame = tk.Frame(self, padx=self.padding, pady=self.padding)
+        screen_frame = tk.Frame(self.tab_controller, padx=self.padding, pady=self.padding)
         screen_frame.pack()
+
+        self.tab_controller.add(screen_frame, text='Home')
+        self.tab_controller.pack(expand=1, fill='both')
 
         manage_frame = tk.Frame(screen_frame, padx=self.padding, pady=self.padding)
         manage_frame.pack(side='left', anchor='nw')
@@ -215,7 +220,6 @@ class Hammer(tk.Tk):
         self.manage_button.pack()
         self.manage_button.configure(state='disabled')
         ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window()).pack()
-
 
         # creates the TreeView which will handle displaying all schema in the database
         tree_frame = tk.Frame(screen_frame)
@@ -253,6 +257,15 @@ class Hammer(tk.Tk):
         ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
 
         self.bind('<Return>', lambda event: self.search_table(search_box))
+        self.tree.bind('<Double-1>', lambda event: self.tree_double_click())
+
+    def tree_double_click(self):
+        current_item = self.tree.focus()
+
+        entry_values = self.tree.item(current_item)['values']
+        entry_title = self.tree.item(current_item)['values'][2]
+
+        self.tab_controller.add(ExpandedInformation(self, entry_values), text=f'{entry_title}')
 
 
 if __name__ == "__main__":
