@@ -31,6 +31,7 @@ class Hammer(tk.Tk):
         tk.Tk.__init__(self)
         self.title(f"hammer")
         self.minsize(400, 300)
+        self.state('zoomed')
 
         self.manage_check_delay = 250
 
@@ -42,26 +43,11 @@ class Hammer(tk.Tk):
         self.db = Database("hammer.db", self)
         self.menu_bar = MenuBar(self)
 
-        # creates the TreeView which will handle displaying all schema in the database
-        self.tree = ttk.Treeview(self,
-                                 columns=(
-                                     'id', 'barcode', 'title', 'author', 'publish_date', 'type', 'location',
-                                     'quantity'))
-        # hide the initial blank column that comes with TreeViews
-        self.tree['show'] = 'headings'
-        # show only the desired columns (hiding the id)
-        self.tree['displaycolumns'] = ('barcode', 'title', 'author', 'publish_date', 'type', 'location', 'quantity')
-
-        self.treeScroll = ttk.Scrollbar(self)
-        self.treeScroll.configure(command=self.tree.yview_scroll)
-        self.tree.configure(yscrollcommand=self.treeScroll.set)
-        self.treeScroll.pack(side='right', fill='both')
-
         self.padding = 10
         self.wraplength = 200
 
-        self.config(menu=self.menu_bar)
         self.window()
+        self.config(menu=self.menu_bar)
         self.populate_table()
 
         self.tree.bind("<Delete>", lambda event: self.delete_popup_window())
@@ -218,30 +204,50 @@ class Hammer(tk.Tk):
         self.populate_table(current_table)
 
     def window(self):
+
+        screen_frame = tk.Frame(self, padx=self.padding, pady=self.padding)
+        screen_frame.pack()
+
+        manage_frame = tk.Frame(screen_frame, padx=self.padding, pady=self.padding)
+        manage_frame.pack(side='left', anchor='nw')
+        ttk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack()
+        self.manage_button = ttk.Button(manage_frame, text='Manage', command=lambda: ManageItem(self))
+        self.manage_button.pack()
+        self.manage_button.configure(state='disabled')
+        ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window()).pack()
+
+
+        # creates the TreeView which will handle displaying all schema in the database
+        tree_frame = tk.Frame(screen_frame)
+        tree_frame.pack(side='right', anchor='ne')
+        self.tree = ttk.Treeview(tree_frame,
+                                 columns=(
+                                     'id', 'barcode', 'title', 'author', 'publish_date', 'type', 'location',
+                                     'quantity'))
+        # hide the initial blank column that comes with TreeViews
+        self.tree['show'] = 'headings'
+        # show only the desired columns (hiding the id)
+        self.tree['displaycolumns'] = ('barcode', 'title', 'author', 'publish_date', 'location', 'quantity')
+
+        self.treeScroll = ttk.Scrollbar(tree_frame)
+        self.treeScroll.configure(command=self.tree.yview_scroll)
+        self.tree.configure(yscrollcommand=self.treeScroll.set)
+        self.treeScroll.pack(side='right', fill='both')
+
         self.tree.heading('id', text='ID')
         self.tree.heading('barcode', text='Barcode')
+        self.tree.column('barcode', stretch=False, width=150)
         self.tree.heading('title', text='Title')
+        self.tree.column('title', stretch=False, width=150)
         self.tree.heading('author', text='Author')
+        self.tree.column('author', stretch=False, width=150)
         self.tree.heading('publish_date', text='Publish Date')
-        self.tree.heading('type', text='Type')
         self.tree.heading('location', text='Location')
         self.tree.heading('quantity', text='Quantity')
-        self.tree.pack(fill='both', expand=True, padx=self.padding * 2, pady=(self.padding * 2, 0))
+        self.tree.pack(expand=True, fill='y')
 
-        manage_frame = tk.Frame(self)
-        manage_frame.pack(fill='both', expand=True, padx=(0, self.padding))
-        ttk.Button(manage_frame, text='Add', command=lambda: AddItem(self)).pack(side='left', padx=(self.padding * 2,
-                                                                                                   self.padding),
-                                                                                pady=self.padding * 2)
-        self.manage_button = ttk.Button(manage_frame, text='Manage', command=lambda: ManageItem(self))
-        self.manage_button.pack(side='left', padx=self.padding, pady=self.padding * 2)
-        self.manage_button.configure(state='disabled')
-        ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window()).pack(side='left',
-                                                                                                padx=self.padding,
-                                                                                                pady=self.padding * 2)
-
-        search_frame = tk.Frame(self)
-        search_frame.pack(fill='both', expand=True, padx=self.padding, pady=(0, self.padding * 2))
+        search_frame = tk.Frame(tree_frame)
+        search_frame.pack(fill='both', expand=True, pady=self.padding)
         search_box = tk.Entry(search_frame)
         search_box.pack(side='left', padx=self.padding)
         ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
