@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 
 class CheckinScreen(tk.Toplevel):
@@ -11,16 +12,16 @@ class CheckinScreen(tk.Toplevel):
         self.title('Checkin')
 
         barcode_frame = tk.Frame(self)
-        barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
-        tk.Label(barcode_frame, text='Item Barcode').pack(side='left')
+        barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=self.parent.padding)
+        ttk.Label(barcode_frame, text='Item Barcode').pack(side='left')
         self.barcode_entry = tk.Entry(barcode_frame)
         self.barcode_entry.pack(side='right')
 
         button_frame = tk.Frame(self)
-        button_frame.pack(expand=True, padx=self.parent.padding * 2,
-                          pady=(self.parent.padding, self.parent.padding * 2))
-        tk.Button(button_frame, text='Return Item', command=lambda: self.check_item_in()).pack(side='left')
-        tk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
+        button_frame.pack(expand=True, padx=self.parent.padding,
+                          pady=(0, self.parent.padding))
+        ttk.Button(button_frame, text='Return Item', command=lambda: self.check_item_in()).pack(side='left')
+        ttk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
 
         self.mainloop()
 
@@ -38,16 +39,22 @@ class CheckinScreen(tk.Toplevel):
             """)
             self.parent.db.dbConnection.commit()
 
-            confirmation_popup = tk.Toplevel()
-            tk.Label(confirmation_popup, text='The item was successfully checked in.').pack()
-            tk.Button(confirmation_popup, text='Okay', command=lambda: [confirmation_popup.destroy(), self.destroy()])\
+            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
+            ttk.Label(popup,
+                     text='The item was successfully checked in.',
+                     wraplength=self.parent.wraplength,
+                     justify='center').pack()
+            ttk.Button(popup, text='Okay', command=lambda: [popup.destroy(), self.destroy()])\
                 .pack()
 
-            confirmation_popup.mainloop()
+            popup.mainloop()
 
         else:
-            not_exist_popup = tk.Toplevel()
-            tk.Label(not_exist_popup, text='That item does not exist or is not checked out.').pack()
-            tk.Button(not_exist_popup, text='Okay', command=lambda: not_exist_popup.destroy()).pack()
+            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
+            ttk.Label(popup,
+                     text='That item does not exist or is not checked out.',
+                     wraplength=self.parent.wraplength,
+                     justify='center').pack()
+            ttk.Button(popup, text='Okay', command=lambda: popup.destroy()).pack()
 
-            not_exist_popup.mainloop()
+            popup.mainloop()
