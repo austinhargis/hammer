@@ -25,7 +25,11 @@ class ViewUsers(tk.Frame):
         self.user_tree.heading('barcode', text='Barcode')
         self.user_tree.heading('first_name', text='First Name')
         self.user_tree.heading('last_name', text='Last Name')
-        self.user_tree.pack(fill='both', expand=True, padx=self.parent.padding*2, pady=self.parent.padding*2)
+        self.user_tree.pack(fill='both', expand=True, padx=self.parent.padding, pady=(self.parent.padding, 0))
+
+        close_frame = tk.Frame(self)
+        close_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
+        ttk.Button(close_frame, text='Close', command=lambda: self.destroy()).pack()
 
     def get_users(self):
         users = self.parent.db.dbCursor.execute("""

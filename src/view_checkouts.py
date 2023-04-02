@@ -23,7 +23,11 @@ class ViewCheckouts(tk.Frame):
         self.checkout_tree.heading('user_barcode', text='User Barcode')
         self.checkout_tree.heading('item_barcode', text='Item Barcode')
         self.checkout_tree.heading('item_title', text='Item Title')
-        self.checkout_tree.pack(fill='both', expand=True, padx=self.parent.padding*2, pady=self.parent.padding*2)
+        self.checkout_tree.pack(fill='both', expand=True, padx=self.parent.padding, pady=(self.parent.padding, 0))
+
+        close_frame = tk.Frame(self)
+        close_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
+        ttk.Button(close_frame, text='Close', command=lambda: self.destroy()).pack()
 
     def get_checkouts(self):
         checkouts = self.parent.db.dbCursor.execute("""
