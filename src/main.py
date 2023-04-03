@@ -8,6 +8,7 @@
 """
 import logging
 import os
+from pathlib import Path
 
 import tkinter as tk
 from tkinter import ttk
@@ -20,10 +21,10 @@ from menu_bar import MenuBar
 from save_manager import SaveManager
 from item_info import ItemInfo
 
-if not os.path.isdir('./data'):
-    os.mkdir('./data')
+if not os.path.isdir(f'{Path.home()}/hammer'):
+    os.mkdir(f'{Path.home()}/hammer')
 
-logging.basicConfig(filename='./data/hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
+logging.basicConfig(filename=f'{Path.home()}/hammer/hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
                     filemode='w')
 
 
@@ -35,19 +36,19 @@ class Hammer(tk.Tk):
         self.minsize(400, 300)
         # self.state('zoomed')
 
+        self.data_path = f'{Path.home()}/hammer'
         self.manage_check_delay = 250
+        self.padding = 10
+        self.wraplength = 200
 
         # self.style = ttk.Style(self)
         # self.style.theme_use('clam')
         # self.style.configure('Treeview', background='#26242f', fieldbackground='#26242f', fontcolor='white')
 
-        self.save_m = SaveManager()
+        self.save_m = SaveManager(self)
         self.db = Database("hammer.db", self)
         self.menu_bar = MenuBar(self)
         self.tab_controller = ttk.Notebook(self)
-
-        self.padding = 10
-        self.wraplength = 200
 
         self.window()
         self.config(menu=self.menu_bar)

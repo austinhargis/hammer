@@ -24,11 +24,11 @@ class UpdateChecker(tk.Frame):
 
         # Download the latest version file from the server
         urllib.request.urlretrieve('https://raw.githubusercontent.com/austinhargis/hammer/main/version.txt',
-                                   './data/server_version.txt')
+                                   f'{self.parent.data_path}/server_version.txt')
 
         # Convert the current and server version to information that is usable
         if self.server_version is None:
-            with open('./data/server_version.txt') as s_ver:
+            with open(f'{self.parent.data_path}/server_version.txt') as s_ver:
                 self.server_version_text = s_ver.read()
             self.server_version = tuple(self.server_version_text.replace('\n', '').split('.'))
             self.current_version = tuple(self.version.split('.'))

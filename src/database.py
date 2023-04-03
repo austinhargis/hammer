@@ -10,8 +10,8 @@ class Database:
     def __init__(self, filename, parent):
         self.parent = parent
 
-        if filename not in os.listdir('./data'):
-            self.dbConnection = sqlite3.connect(f'./data/{filename}')
+        if filename not in os.listdir(f'{self.parent.data_path}'):
+            self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
             self.dbCursor = self.dbConnection.cursor()
             self.dbCursor.execute(f"""
                     CREATE TABLE inventory(
@@ -42,7 +42,7 @@ class Database:
             self.dbConnection.commit()
 
         else:
-            self.dbConnection = sqlite3.connect(f'./data/{filename}')
+            self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
             self.dbCursor = self.dbConnection.cursor()
 
     def insert_query(self, data):
@@ -134,7 +134,7 @@ class Database:
         popup.title('Barcode In Use')
 
         ttk.Label(popup,
-                  text='Warning: This barcode is already in use. '
+                  text='Warning: An item or user already exists with this barcode.'
                        'Please try a different barcode.',
                   wraplength=self.parent.wraplength,
                   justify='center').pack()
