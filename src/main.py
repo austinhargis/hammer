@@ -84,9 +84,11 @@ class Hammer(tk.Tk):
     def check_focus(self):
         if self.tree.focus() == '':
             self.manage_button.configure(state='disabled')
+            self.delete_button.configure(state='disabled')
             self.after(self.manage_check_delay, self.check_focus)
         else:
             self.manage_button.configure(state='normal')
+            self.delete_button.configure(state='normal')
             self.after(self.manage_check_delay, self.check_focus)
 
     def clear_table(self):
@@ -223,7 +225,9 @@ class Hammer(tk.Tk):
                                         command=lambda: self.create_tab(ManageItem, 'Manage Item'))
         self.manage_button.pack()
         self.manage_button.configure(state='disabled')
-        ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window()).pack()
+        self.delete_button = ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window())
+        self.delete_button.pack()
+        self.delete_button.configure(state='disabled')
 
         # creates the TreeView which will handle displaying all schema in the database
         tree_frame = tk.Frame(screen_frame)
