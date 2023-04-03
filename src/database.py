@@ -87,9 +87,24 @@ class Database:
             :param data: a tuple of the data that needs to be deleted from the table
             :return: nothing
         """
+        item_barcode = data[1]
+        print(item_barcode)
 
-        self.dbCursor.execute(f"""DELETE FROM inventory WHERE id={data[0]}""")
-        self.dbConnection.commit()
+        if not self.is_checked_out(item_barcode):
+            self.dbCursor.execute(f"""DELETE FROM inventory WHERE id={data[0]}""")
+            self.dbConnection.commit()
+        else:
+            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
+            popup.title('Barcode Currently Checked Out')
+
+            ttk.Label(popup,
+                      text='Warning: An item with this barcode is currently checked out, '
+                           'you CANNOT delete the barcode at this time.',
+                      wraplength=self.parent.wraplength,
+                      justify='center').pack()
+            ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
+
+            popup.mainloop()
 
     def test_add_query(self):
         """
@@ -109,6 +124,7 @@ class Database:
         """
 
         self.dbCursor.execute("""DELETE FROM inventory""")
+        self.dbCursor.execute("""DELETE FROM checkouts""")
         self.dbConnection.commit()
 
     def update_query(self, data, row_id):
@@ -125,19 +141,14 @@ class Database:
                 FROM inventory
                 WHERE id={row_id}
             """).fetchall()
-            checkouts_with_barcode = self.dbCursor.execute(f"""
-                                        SELECT * 
-                                        FROM checkouts
-                                        WHERE item_barcode=?""", previous_data[0]).fetchall()
 
-            if len(checkouts_with_barcode) == 0 or previous_data[0][0] == data[0]:
+            if not self.is_checked_out(previous_data[0][0]) or previous_data[0][0] == data[0]:
                 data = list(data)
                 data.append(datetime.now())
                 self.dbCursor.execute(f"""UPDATE inventory 
                                           SET barcode=?, title=?, author=?, description=?, publish_date=?, type=?,
                                           location=?, quantity=?, managed_date=?
                                           WHERE id={row_id}""", data)
-
 
                 self.dbConnection.commit()
             else:
@@ -172,10 +183,21 @@ class Database:
         popup.title('Barcode Currently Checked Out')
 
         ttk.Label(popup,
-                  text='Warning: An item with this barcode is currently checked out,'
+                  text='Warning: An item with this barcode is currently checked out, '
                        'you CANNOT change the barcode at this time.',
                   wraplength=self.parent.wraplength,
                   justify='center').pack()
         ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
 
         popup.mainloop()
+
+    def is_checked_out(self, barcode):
+        checkouts_with_barcode = self.dbCursor.execute(f"""
+                                                SELECT * 
+                                                FROM checkouts
+                                                WHERE item_barcode=?""", (barcode,)).fetchall()
+
+        if len(checkouts_with_barcode) == 0:
+            return False
+        else:
+            return True
