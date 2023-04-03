@@ -13,7 +13,7 @@ class UpdateChecker(tk.Frame):
         self.parent = parent
         self.server_version = None
         self.update_button = None
-        self.version = '0.2.0'
+        self.version = '0.1.0'
 
         self.window()
         self.check_for_update()
@@ -33,37 +33,46 @@ class UpdateChecker(tk.Frame):
             self.server_version = tuple(self.server_version_text.replace('\n', '').split('.'))
             self.current_version = tuple(self.version.split('.'))
 
-        self.server_label['text'] = f'Server Version: {self.server_version_text}'
+        self.server_label.configure(text=f'Available Version: {self.server_version_text}')
 
         # Determine whether the server version is newer than the current version
         if self.server_version > self.current_version:
             if self.update_button is None:
-                self.update_button = ttk.Button(self,
+                self.update_button = ttk.Button(self.check_update_frame,
                                                text='Get Update',
                                                command=lambda: webbrowser.open_new_tab(
                                                    f'https://github.com/austinhargis/hammer/releases/tag/version_{self.server_version_text}')
                                                )
-                self.update_button.pack(padx=self.parent.padding * 2,
-                                        pady=(self.parent.padding, self.parent.padding * 2))
+                self.update_button.pack(padx=self.parent.padding)
 
     def window(self):
 
-        title_frame = tk.Frame(self)
-        title_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2,
-                         pady=(self.parent.padding * 2, self.parent.padding))
-        ttk.Label(title_frame, text='Update Checker').pack()
+        main_frame = tk.Frame(self)
+        main_frame.pack(side='left', anchor='nw')
 
-        subtitle_frame = tk.Frame(self)
-        subtitle_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        title_frame = tk.Frame(main_frame)
+        title_frame.pack(fill='both', padx=self.parent.padding,
+                         pady=self.parent.padding)
+        ttk.Label(title_frame, text='Update Checker', font=self.parent.heading_font).pack(side='left')
+
+        subtitle_frame = tk.Frame(main_frame)
+        subtitle_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         self.last_check = ttk.Label(subtitle_frame, text=f'Last Checked {self.parent.save_m.data["last_update_check"]}')
-        self.last_check.pack()
+        self.last_check.pack(side='left')
 
-        self.server_label = ttk.Label(self, text='Server Version: ')
-        self.server_label.pack()
+        server_version_frame = tk.Frame(main_frame)
+        server_version_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        self.server_label = ttk.Label(server_version_frame, text='Available Version: ')
+        self.server_label.pack(side='left')
 
-        ttk.Label(self, text=f'Current Version: {self.version}').pack()
+        current_version_frame = tk.Frame(main_frame)
+        current_version_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(current_version_frame, text=f'Your Version: {self.version}').pack(side='left')
 
-        check_update_theme = tk.Frame(self)
-        check_update_theme.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding,
-                                                                                              self.parent.padding * 2))
-        ttk.Button(check_update_theme, text='Check for Updates', command=lambda: self.check_for_update()).pack()
+        self.check_update_frame = tk.Frame(main_frame)
+        self.check_update_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Button(self.check_update_frame, text='Check for Updates', command=lambda: self.check_for_update()).pack(side='left')
+
+        quit_frame = tk.Frame(main_frame)
+        quit_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Button(quit_frame, text='Close', command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='left')
