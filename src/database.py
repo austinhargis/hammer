@@ -23,7 +23,9 @@ class Database:
                         type varchar,
                         location varchar,
                         quantity varchar,
-                        description varchar
+                        description varchar,
+                        creation_date date,
+                        managed_date date
                     )""")
             self.dbCursor.execute(f"""
                     CREATE TABLE users(
@@ -112,11 +114,24 @@ class Database:
         """
 
         try:
-            self.dbCursor.execute(f"""UPDATE inventory 
-                                      SET barcode=?, title=?, author=?, description=?, publish_date=?, type=?,
-                                      location=?, quantity=?
-                                      WHERE id={row_id}""", data)
-            self.dbConnection.commit()
+            previous_data = self.dbCursor.execute(f"""
+                SELECT barcode
+                FROM inventory
+                WHERE id={row_id}
+            """).fetchall()
+            checkouts_with_barcode = self.dbCursor.execute(f"""
+                                        SELECT * 
+                                        FROM checkouts
+                                        WHERE item_barcode=?""", previous_data[0]).fetchall()
+
+            if len(checkouts_with_barcode) == 0 or previous_data[0][0] == data[0]:
+                self.dbCursor.execute(f"""UPDATE inventory 
+                                          SET barcode=?, title=?, author=?, description=?, publish_date=?, type=?,
+                                          location=?, quantity=?
+                                          WHERE id={row_id}""", data)
+                self.dbConnection.commit()
+            else:
+                self.cant_change_error()
         except sqlite3.IntegrityError:
             self.unique_conflict()
 
@@ -136,6 +151,19 @@ class Database:
         ttk.Label(popup,
                   text='Warning: An item or user already exists with this barcode.'
                        'Please try a different barcode.',
+                  wraplength=self.parent.wraplength,
+                  justify='center').pack()
+        ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
+
+        popup.mainloop()
+
+    def cant_change_error(self):
+        popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
+        popup.title('Barcode Currently Checked Out')
+
+        ttk.Label(popup,
+                  text='Warning: An item with this barcode is currently checked out,'
+                       'you CANNOT change the barcode at this time.',
                   wraplength=self.parent.wraplength,
                   justify='center').pack()
         ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
