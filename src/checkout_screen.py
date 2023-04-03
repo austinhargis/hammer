@@ -26,8 +26,10 @@ class CheckoutScreen(tk.Frame):
         button_frame = tk.Frame(self)
         button_frame.pack(expand=True, padx=self.parent.padding * 2,
                           pady=(self.parent.padding, self.parent.padding * 2))
-        ttk.Button(button_frame, text='Checkout', command=lambda: self.checkout_to_user()).pack(side='left')
-        ttk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
+        ttk.Button(button_frame, text='Checkout', command=lambda: [self.checkout_to_user(),
+                                                                   self.parent.tab_controller.select(0)]).pack(side='left')
+        ttk.Button(button_frame, text='Cancel', command=lambda: [self.parent.tab_controller.select(0),
+                                                                 self.destroy()]).pack(side='right')
 
     def checkout_to_user(self):
         data = (self.user_barcode.get(), self.barcode_entry.get())
@@ -53,15 +55,16 @@ class CheckoutScreen(tk.Frame):
                 """, data)
                 self.parent.db.dbConnection.commit()
 
+                self.parent.tab_controller.select(0)
                 self.destroy()
 
             except sqlite3.IntegrityError:
                 popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
                 ttk.Label(popup,
-                         text='This item is already checked out to a user. '
-                              'This checkout cannot be completed at this time.',
-                         wraplength=self.parent.wraplength,
-                         justify='center').pack()
+                          text='This item is already checked out to a user. '
+                               'This checkout cannot be completed at this time.',
+                          wraplength=self.parent.wraplength,
+                          justify='center').pack()
                 ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
 
                 popup.mainloop()
@@ -69,9 +72,9 @@ class CheckoutScreen(tk.Frame):
         else:
             popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
             ttk.Label(popup,
-                     text='The user or item barcode were invalid.',
-                     wraplength=self.parent.wraplength,
-                     justify='center').pack()
+                      text='The user or item barcode were invalid.',
+                      wraplength=self.parent.wraplength,
+                      justify='center').pack()
             ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
 
             popup.mainloop()

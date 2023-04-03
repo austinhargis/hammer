@@ -58,4 +58,5 @@ class SettingsWindow(tk.Frame):
         self.parent.save_m.push_save()
         self.parent.menu_bar.generate()
 
+        self.parent.tab_controller.select(0)
         self.destroy()

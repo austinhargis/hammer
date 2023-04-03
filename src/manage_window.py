@@ -21,11 +21,13 @@ class ManageItem(ItemInfo):
                           pady=(self.parent.padding, self.parent.padding * 2))
         ttk.Button(button_frame, text='Save Changes',
                    command=lambda: [self.parent.update_entry(self.get_item_info(),
-                                                             self.entry_id), self.destroy()]) \
-            .pack(side='left')
+                                                             self.entry_id),
+                                    self.parent.tab_controller.select(0),
+                                    self.destroy()]).pack(side='left')
         ttk.Button(button_frame,
                    text='Cancel',
-                   command=lambda: self.destroy()).pack(side='right')
+                   command=lambda: [self.parent.tab_controller.select(0),
+                                    self.destroy()]).pack(side='right')
 
     def fill_entries(self):
         current_item = self.parent.tree.focus()

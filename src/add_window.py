@@ -18,7 +18,10 @@ class AddItem(ItemInfo):
                           pady=(self.parent.padding, self.parent.padding * 2))
         ttk.Button(button_frame,
                    text='Add Item',
-                   command=lambda: [self.parent.add_entry(self.get_item_info()), self.destroy()]).pack(side='left')
+                   command=lambda: [self.parent.add_entry(self.get_item_info()),
+                                    self.parent.tab_controller.select(0),
+                                    self.destroy()]).pack(side='left')
         ttk.Button(button_frame,
                    text='Cancel',
-                   command=lambda: self.destroy()).pack(side='right')
+                   command=lambda: [self.parent.tab_controller.select(0),
+                                    self.destroy()]).pack(side='right')

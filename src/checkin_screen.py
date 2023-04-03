@@ -18,8 +18,11 @@ class CheckinScreen(tk.Frame):
         button_frame = tk.Frame(self)
         button_frame.pack(expand=True, padx=self.parent.padding,
                           pady=(0, self.parent.padding))
-        ttk.Button(button_frame, text='Return Item', command=lambda: self.check_item_in()).pack(side='left')
-        ttk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
+        ttk.Button(button_frame, text='Return Item', command=lambda: [self.check_item_in(),
+                                                                      self.parent.tab_controller.select(0)]).pack(
+            side='left')
+        ttk.Button(button_frame, text='Cancel', command=lambda: [self.parent.tab_controller.select(0),
+                                                                 self.destroy()]).pack(side='right')
 
     def check_item_in(self):
         items = self.parent.db.dbCursor.execute(f"""
@@ -37,10 +40,12 @@ class CheckinScreen(tk.Frame):
 
             popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
             ttk.Label(popup,
-                     text='The item was successfully checked in.',
-                     wraplength=self.parent.wraplength,
-                     justify='center').pack()
-            ttk.Button(popup, text='Okay', command=lambda: [popup.destroy(), self.destroy()])\
+                      text='The item was successfully checked in.',
+                      wraplength=self.parent.wraplength,
+                      justify='center').pack()
+            ttk.Button(popup, text='Okay', command=lambda: [self.parent.tab_controller.select(0),
+                                                            popup.destroy(),
+                                                            self.destroy()]) \
                 .pack()
 
             popup.mainloop()
@@ -48,9 +53,9 @@ class CheckinScreen(tk.Frame):
         else:
             popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
             ttk.Label(popup,
-                     text='That item does not exist or is not checked out.',
-                     wraplength=self.parent.wraplength,
-                     justify='center').pack()
+                      text='That item does not exist or is not checked out.',
+                      wraplength=self.parent.wraplength,
+                      justify='center').pack()
             ttk.Button(popup, text='Okay', command=lambda: popup.destroy()).pack()
 
             popup.mainloop()

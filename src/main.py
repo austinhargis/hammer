@@ -269,17 +269,21 @@ class Hammer(tk.Tk):
         entry_values = self.tree.item(current_item)['values']
         entry_title = self.tree.item(current_item)['values'][2]
 
-        self.tab_controller.add(ExpandedInformation(self, entry_values), text=f'{entry_title}')
+        self.create_tab(ExpandedInformation, title=f'{entry_title}', values=entry_values)
 
-    def create_tab(self, window, title):
+    def create_tab(self, window, title, values=None):
         """
             Creates a new Notebook tab with the passed class and title,
             and automatically selects it.
+            :param values:
             :param window:
             :param title:
             :return:
         """
-        self.tab_controller.add(window(self), text=title)
+        if values is not None:
+            self.tab_controller.add(window(self, values), text=title)
+        else:
+            self.tab_controller.add(window(self), text=title)
         tabs = self.tab_controller.tabs()
         self.tab_controller.select(len(tabs) - 1)
 
