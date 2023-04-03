@@ -57,7 +57,7 @@ class Hammer(tk.Tk):
         self.tree.bind("<Delete>", lambda event: self.delete_popup_window())
         self.bind("<Escape>", lambda event: self.destroy())
 
-    def add_entry(self, data, window):
+    def add_entry(self, data):
         """
             add_entry takes the input from the TopLevel window for
             inserting data into the database and passes it to the
@@ -70,14 +70,12 @@ class Hammer(tk.Tk):
         """
         self.db.insert_query(data)
         self.refresh_table()
-        window.destroy()
 
         logging.info('Added item into database')
 
-    def update_entry(self, data, window, entry_id):
+    def update_entry(self, data, entry_id):
         self.db.update_query(data, entry_id)
         self.refresh_table()
-        window.template.destroy()
 
     def test_add_item(self):
         self.db.test_add_query()
