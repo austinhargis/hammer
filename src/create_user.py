@@ -1,5 +1,6 @@
 import sqlite3
 import tkinter as tk
+from datetime import datetime
 from tkinter import ttk
 
 
@@ -40,9 +41,10 @@ class CreateUser(tk.Frame):
 
     def add_user(self, data):
         try:
+            data.append(datetime.now())
             self.parent.db.dbCursor.execute(f"""
-                INSERT INTO users(barcode, first_name, last_name) 
-                VALUES (?, ?, ?)""", data)
+                INSERT INTO users(barcode, first_name, last_name, creation_date) 
+                VALUES (?, ?, ?, ?)""", data)
             self.parent.db.dbConnection.commit()
             self.parent.tab_controller.select(0)
             self.destroy()

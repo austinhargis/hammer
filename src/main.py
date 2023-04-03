@@ -287,6 +287,9 @@ class Hammer(tk.Tk):
         tabs = self.tab_controller.tabs()
         self.tab_controller.select(len(tabs) - 1)
 
+    def delete_tab(self, event):
+        pass
+
 
 if __name__ == "__main__":
     root = Hammer()

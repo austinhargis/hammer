@@ -2,6 +2,7 @@ import sqlite3
 import os
 import random
 import tkinter as tk
+from datetime import datetime
 from tkinter import ttk
 
 
@@ -24,20 +25,22 @@ class Database:
                         location varchar,
                         quantity varchar,
                         description varchar,
-                        creation_date date,
-                        managed_date date
+                        creation_date datetime,
+                        managed_date datetime
                     )""")
             self.dbCursor.execute(f"""
                     CREATE TABLE users(
                         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
                         barcode varchar UNIQUE,
                         first_name varchar,
-                        last_name varchar
+                        last_name varchar,
+                        creation_date date
                     )""")
             self.dbCursor.execute(f"""
                     CREATE TABLE checkouts(
-                        user_barcode integer,
+                        user_barcode varchar,
                         item_barcode varchar UNIQUE,
+                        creation_date datetime,
                         FOREIGN KEY(user_barcode) REFERENCES users(barcode),
                         FOREIGN KEY(item_barcode) REFERENCES inventory(barcode)
                     )""")
@@ -69,8 +72,11 @@ class Database:
             return
 
         try:
-            self.dbCursor.execute(f"""INSERT INTO inventory(barcode, title, author, description, publish_date, type, location, quantity)
-                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", data)
+            data = list(data)
+            data.append(datetime.now())
+            data.append(datetime.now())
+            self.dbCursor.execute(f"""INSERT INTO inventory(barcode, title, author, description, publish_date, type, location, quantity, creation_date, managed_date)
+                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", data)
             self.dbConnection.commit()
         except sqlite3.IntegrityError:
             self.unique_conflict()
@@ -91,9 +97,9 @@ class Database:
             :return: nothing
         """
 
-        data = [f"Test{random.randint(0, 100)}", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7"]
-        self.dbCursor.execute(f"""INSERT INTO inventory (barcode, title, author, description, publish_date, type, location, quantity)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", data)
+        data = [f"Test{random.randint(0, 100)}", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", datetime.now(), datetime.now()]
+        self.dbCursor.execute(f"""INSERT INTO inventory (barcode, title, author, description, publish_date, type, location, quantity, creation_date, managed_date)
+                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", data)
         self.dbConnection.commit()
 
     def drop_table(self):
@@ -125,10 +131,14 @@ class Database:
                                         WHERE item_barcode=?""", previous_data[0]).fetchall()
 
             if len(checkouts_with_barcode) == 0 or previous_data[0][0] == data[0]:
+                data = list(data)
+                data.append(datetime.now())
                 self.dbCursor.execute(f"""UPDATE inventory 
                                           SET barcode=?, title=?, author=?, description=?, publish_date=?, type=?,
-                                          location=?, quantity=?
+                                          location=?, quantity=?, managed_date=?
                                           WHERE id={row_id}""", data)
+
+
                 self.dbConnection.commit()
             else:
                 self.cant_change_error()
