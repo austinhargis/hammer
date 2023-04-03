@@ -70,7 +70,7 @@ class Hammer(tk.Tk):
         """
         self.db.insert_query(data)
         self.refresh_table()
-        window.template.destroy()
+        window.destroy()
 
         logging.info('Added item into database')
 
@@ -218,10 +218,11 @@ class Hammer(tk.Tk):
 
         manage_frame = tk.Frame(screen_frame, padx=self.padding, pady=self.padding)
         manage_frame.pack(side='left', anchor='nw')
-        ttk.Button(manage_frame, text='Add', command=lambda: self.tab_controller.add(AddItem(self), text='Add')).pack()
+        ttk.Button(manage_frame, text='Add',
+                   command=lambda: self.create_tab(AddItem, 'Add Item')).pack()
         self.manage_button = ttk.Button(manage_frame,
                                         text='Manage',
-                                        command=lambda: self.tab_controller.add(ManageItem(self), text='Manage'))
+                                        command=lambda: self.create_tab(ManageItem, 'Manage Item'))
         self.manage_button.pack()
         self.manage_button.configure(state='disabled')
         ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window()).pack()
@@ -272,8 +273,17 @@ class Hammer(tk.Tk):
 
         self.tab_controller.add(ExpandedInformation(self, entry_values), text=f'{entry_title}')
 
-    def delete_tab(self):
-        pass
+    def create_tab(self, window, title):
+        """
+            Creates a new Notebook tab with the passed class and title,
+            and automatically selects it.
+            :param window:
+            :param title:
+            :return:
+        """
+        self.tab_controller.add(window(self), text=title)
+        tabs = self.tab_controller.tabs()
+        self.tab_controller.select(len(tabs) - 1)
 
 
 if __name__ == "__main__":
