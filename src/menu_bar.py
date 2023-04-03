@@ -42,24 +42,19 @@ class MenuBar(tk.Menu):
         self.checkout_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label='Checkout', underline=0, menu=self.checkout_menu)
         self.checkout_menu.add_command(label='Checkout to User', underline=1,
-                                       command=lambda: self.parent.tab_controller.add(CheckoutScreen(self.parent),
-                                                                                      text='Checkout Item'))
+                                       command=lambda: self.parent.create_tab(CheckoutScreen, 'Checkout Item'))
         self.checkout_menu.add_command(label='Check Item In', underline=1,
-                                       command=lambda: self.parent.tab_controller.add(CheckinScreen(self.parent),
-                                                                                      text='Check Item In'))
+                                       command=lambda: self.parent.create_tab(CheckinScreen, 'Check In Item'))
         self.checkout_menu.add_command(label='View Checkouts', underline=1,
-                                       command=lambda: self.parent.tab_controller.add(ViewCheckouts(self.parent),
-                                                                                      text='View Checkouts'))
+                                       command=lambda: self.parent.create_tab(ViewCheckouts, 'View Checkouts'))
 
     def file(self):
         self.file_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label="File", underline=0, menu=self.file_menu)
         self.file_menu.add_command(label='Check for Updates', underline=1,
-                                   command=lambda: self.parent.tab_controller.add(UpdateChecker(self.parent),
-                                                                                  text='Check for Updates'))
+                                   command=lambda: self.parent.create_tab(UpdateChecker, 'Check for Updates'))
         self.file_menu.add_command(label='Settings', underline=1,
-                                   command=lambda: self.parent.tab_controller.add(SettingsWindow(self.parent),
-                                                                                  text='Settings'))
+                                   command=lambda: self.parent.create_tab(SettingsWindow, 'Settings'))
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", underline=1, command=self.quit, accelerator='Escape')
 
@@ -81,11 +76,9 @@ class MenuBar(tk.Menu):
         self.users_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label='Users', underline=0, menu=self.users_menu)
         self.users_menu.add_command(label='Add User', underline=1,
-                                    command=lambda: self.parent.tab_controller.add(CreateUser(self.parent),
-                                                                                   text='Create User'))
+                                    command=lambda: self.parent.create_tab(CreateUser, 'Add User'))
         self.users_menu.add_command(label='View Users', underline=1,
-                                    command=lambda: self.parent.tab_controller.add(ViewUsers(self.parent),
-                                                                                   text='View Users'))
+                                    command=lambda: self.parent.create_tab(ViewUsers, 'View Users'))
 
     def quit(self):
         sys.exit()

@@ -4,7 +4,10 @@ import pickle
 
 class SaveManager:
 
-    def __init__(self):
+    def __init__(self, parent):
+
+        self.parent = parent
+
         self.data = {
             'automatic_updates': 'disabled',
             'last_update_check': datetime.now().strftime('%I:%M%p %m/%d/%Y'),
@@ -23,7 +26,7 @@ class SaveManager:
         """
 
         try:
-            data_in = open('./data/settings.pkl', 'rb')
+            data_in = open(f'{self.parent.data_path}/settings.pkl', 'rb')
             self.data = pickle.load(data_in)
             data_in.close()
         except EOFError:
@@ -37,6 +40,6 @@ class SaveManager:
             :return:
         """
 
-        data_out = open('./data/settings.pkl', 'wb')
+        data_out = open(f'{self.parent.data_path}/settings.pkl', 'wb')
         pickle.dump(self.data, data_out)
         data_out.close()

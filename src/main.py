@@ -8,6 +8,7 @@
 """
 import logging
 import os
+from pathlib import Path
 
 import tkinter as tk
 from tkinter import ttk
@@ -20,10 +21,10 @@ from menu_bar import MenuBar
 from save_manager import SaveManager
 from item_info import ItemInfo
 
-if not os.path.isdir('./data'):
-    os.mkdir('./data')
+if not os.path.isdir(f'{Path.home()}/hammer'):
+    os.mkdir(f'{Path.home()}/hammer')
 
-logging.basicConfig(filename='./data/hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
+logging.basicConfig(filename=f'{Path.home()}/hammer/hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
                     filemode='w')
 
 
@@ -35,20 +36,19 @@ class Hammer(tk.Tk):
         self.minsize(400, 300)
         # self.state('zoomed')
 
+        self.data_path = f'{Path.home()}/hammer'
         self.manage_check_delay = 250
+        self.padding = 10
+        self.wraplength = 200
 
         # self.style = ttk.Style(self)
         # self.style.theme_use('clam')
         # self.style.configure('Treeview', background='#26242f', fieldbackground='#26242f', fontcolor='white')
 
-        self.save_m = SaveManager()
+        self.save_m = SaveManager(self)
         self.db = Database("hammer.db", self)
         self.menu_bar = MenuBar(self)
         self.tab_controller = ttk.Notebook(self)
-
-        self.heading_font= ('Arial', 18, 'bold')
-        self.padding = 10
-        self.wraplength = 200
 
         self.window()
         self.config(menu=self.menu_bar)
@@ -57,7 +57,7 @@ class Hammer(tk.Tk):
         self.tree.bind("<Delete>", lambda event: self.delete_popup_window())
         self.bind("<Escape>", lambda event: self.destroy())
 
-    def add_entry(self, data, window):
+    def add_entry(self, data):
         """
             add_entry takes the input from the TopLevel window for
             inserting data into the database and passes it to the
@@ -70,14 +70,12 @@ class Hammer(tk.Tk):
         """
         self.db.insert_query(data)
         self.refresh_table()
-        window.template.destroy()
 
         logging.info('Added item into database')
 
-    def update_entry(self, data, window, entry_id):
+    def update_entry(self, data, entry_id):
         self.db.update_query(data, entry_id)
         self.refresh_table()
-        window.template.destroy()
 
     def test_add_item(self):
         self.db.test_add_query()
@@ -86,11 +84,9 @@ class Hammer(tk.Tk):
     def check_focus(self):
         if self.tree.focus() == '':
             self.manage_button.configure(state='disabled')
-            self.delete_button.configure(state='disabled')
             self.after(self.manage_check_delay, self.check_focus)
         else:
             self.manage_button.configure(state='normal')
-            self.delete_button.configure(state='normal')
             self.after(self.manage_check_delay, self.check_focus)
 
     def clear_table(self):
@@ -220,16 +216,14 @@ class Hammer(tk.Tk):
 
         manage_frame = tk.Frame(screen_frame, padx=self.padding, pady=self.padding)
         manage_frame.pack(side='left', anchor='nw')
-        ttk.Button(manage_frame, text='Add', command=lambda: self.tab_controller.add(AddItem(self), text='Add')).pack()
+        ttk.Button(manage_frame, text='Add',
+                   command=lambda: self.create_tab(AddItem, 'Add Item')).pack()
         self.manage_button = ttk.Button(manage_frame,
                                         text='Manage',
-                                        command=lambda: self.tab_controller.add(ManageItem(self), text='Manage'))
+                                        command=lambda: self.create_tab(ManageItem, 'Manage Item'))
         self.manage_button.pack()
         self.manage_button.configure(state='disabled')
-
-        self.delete_button = ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window())
-        self.delete_button.pack()
-        self.delete_button.configure(state='disabled')
+        ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window()).pack()
 
         # creates the TreeView which will handle displaying all schema in the database
         tree_frame = tk.Frame(screen_frame)
@@ -275,9 +269,25 @@ class Hammer(tk.Tk):
         entry_values = self.tree.item(current_item)['values']
         entry_title = self.tree.item(current_item)['values'][2]
 
-        self.tab_controller.add(ExpandedInformation(self, entry_values), text=f'{entry_title}')
+        self.create_tab(ExpandedInformation, title=f'{entry_title}', values=entry_values)
 
-    def delete_tab(self):
+    def create_tab(self, window, title, values=None):
+        """
+            Creates a new Notebook tab with the passed class and title,
+            and automatically selects it.
+            :param values:
+            :param window:
+            :param title:
+            :return:
+        """
+        if values is not None:
+            self.tab_controller.add(window(self, values), text=title)
+        else:
+            self.tab_controller.add(window(self), text=title)
+        tabs = self.tab_controller.tabs()
+        self.tab_controller.select(len(tabs) - 1)
+
+    def delete_tab(self, event):
         pass
 
 

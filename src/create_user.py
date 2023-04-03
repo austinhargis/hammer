@@ -1,5 +1,6 @@
 import sqlite3
 import tkinter as tk
+from datetime import datetime
 from tkinter import ttk
 
 
@@ -35,14 +36,17 @@ class CreateUser(tk.Frame):
         ttk.Button(button_frame, text='Add User',
                    command=lambda: self.add_user(
                        [barcode_entry.get(), first_name_entry.get(), last_name_entry.get()])).pack(side='left')
-        ttk.Button(button_frame, text='Cancel', command=lambda: self.destroy()).pack(side='right')
+        ttk.Button(button_frame, text='Cancel', command=lambda: [self.parent.tab_controller.select(0),
+                                                                 self.destroy()]).pack(side='right')
 
     def add_user(self, data):
         try:
+            data.append(datetime.now())
             self.parent.db.dbCursor.execute(f"""
-                INSERT INTO users(barcode, first_name, last_name) 
-                VALUES (?, ?, ?)""", data)
+                INSERT INTO users(barcode, first_name, last_name, creation_date) 
+                VALUES (?, ?, ?, ?)""", data)
             self.parent.db.dbConnection.commit()
+            self.parent.tab_controller.select(0)
             self.destroy()
         except sqlite3.IntegrityError:
             self.parent.db.unique_conflict()
