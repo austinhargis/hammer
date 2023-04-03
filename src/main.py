@@ -37,6 +37,7 @@ class Hammer(tk.Tk):
         # self.state('zoomed')
 
         self.data_path = f'{Path.home()}/hammer'
+        self.heading_font = ('Arial', 20, 'bold')
         self.manage_check_delay = 250
         self.padding = 10
         self.wraplength = 200
