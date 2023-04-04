@@ -3,6 +3,8 @@ import tkinter as tk
 from datetime import datetime
 from tkinter import ttk
 
+from languages import *
+
 
 class CreateUser(tk.Frame):
 
@@ -16,34 +18,36 @@ class CreateUser(tk.Frame):
 
         title_frame = tk.Frame(main_frame)
         title_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
-        ttk.Label(title_frame, text='Add User', font=self.parent.heading_font).pack(side='left')
+        ttk.Label(title_frame, text=languages[self.parent.save_m.data['language']]['users']['user_create_heading'],
+                  font=self.parent.heading_font).pack(side='left')
 
         barcode_frame = tk.Frame(main_frame)
         barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(barcode_frame, text='User Barcode').pack(side='left')
+        ttk.Label(barcode_frame,
+                  text=languages[self.parent.save_m.data['language']]['users']['user_barcode_label']).pack(side='left')
         barcode_entry = tk.Entry(barcode_frame)
         barcode_entry.pack(side='right')
 
         first_name_frame = tk.Frame(main_frame)
         first_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(first_name_frame, text='First Name').pack(side='left')
+        ttk.Label(first_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_first_name_label']).pack(side='left')
         first_name_entry = tk.Entry(first_name_frame)
         first_name_entry.pack(side='right')
 
         last_name_frame = tk.Frame(main_frame)
         last_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(last_name_frame, text='Last Name').pack(side='left')
+        ttk.Label(last_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_last_name_label']).pack(side='left')
         last_name_entry = tk.Entry(last_name_frame)
         last_name_entry.pack(side='right')
 
         button_frame = tk.Frame(main_frame)
         button_frame.pack(expand=True, padx=self.parent.padding,
                           pady=(0, self.parent.padding))
-        ttk.Button(button_frame, text='Add User',
+        ttk.Button(button_frame, text=languages[self.parent.save_m.data['language']]['users']['user_create_heading'],
                    command=lambda: self.add_user(
                        [barcode_entry.get(), first_name_entry.get(), last_name_entry.get()])).pack(side='left')
-        ttk.Button(button_frame, text='Cancel', command=lambda: [self.parent.tab_controller.select(0),
-                                                                 self.destroy()]).pack(side='right')
+        ttk.Button(button_frame, text=languages[self.parent.save_m.data['language']]['prompts']['prompt_deny'],
+                   command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
 
     def add_user(self, data):
         try:

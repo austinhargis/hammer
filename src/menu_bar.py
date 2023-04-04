@@ -5,6 +5,7 @@ from webbrowser import open_new_tab
 from checkin_screen import CheckinScreen
 from checkout_screen import CheckoutScreen
 from create_user import CreateUser
+from languages import *
 from settings import SettingsWindow
 from update_checker import UpdateChecker
 from view_checkouts import ViewCheckouts
@@ -50,35 +51,37 @@ class MenuBar(tk.Menu):
 
     def file(self):
         self.file_menu = tk.Menu(self, tearoff=False)
-        self.add_cascade(label="File", underline=0, menu=self.file_menu)
-        self.file_menu.add_command(label='Check for Updates', underline=1,
-                                   command=lambda: self.parent.create_tab(UpdateChecker, 'Check for Updates'))
-        self.file_menu.add_command(label='Settings', underline=1,
-                                   command=lambda: self.parent.create_tab(SettingsWindow, 'Settings'))
+        self.add_cascade(label=languages[self.parent.save_m.data['language']]['menubar']['file_menu'], underline=0, menu=self.file_menu)
+        self.file_menu.add_command(label=languages[self.parent.save_m.data['language']]['settings']['check_for_updates'], underline=1,
+                                   command=lambda: self.parent.create_tab(UpdateChecker, languages[self.parent.save_m.data['language']]['settings']['check_for_updates']))
+        self.file_menu.add_command(label=languages[self.parent.save_m.data['language']]['settings']['settings'], underline=1,
+                                   command=lambda: self.parent.create_tab(SettingsWindow, languages[self.parent.save_m.data['language']]['settings']['settings']))
         self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", underline=1, command=self.quit, accelerator='Escape')
 
     def developer(self):
         if self.parent.save_m.data['show_developer_menu'] == 'enabled':
             self.developer_menu = tk.Menu(self, tearoff=False)
-            self.add_cascade(label='Developer', underline=0, menu=self.developer_menu)
-            self.developer_menu.add_command(label='Add Test Item', underline=1,
+            self.add_cascade(label=languages[self.parent.save_m.data['language']]['menubar']['developer_menu'], underline=0, menu=self.developer_menu)
+            self.developer_menu.add_command(label=languages[self.parent.save_m.data['language']]['developer']['test_add'], underline=1,
                                             command=lambda: self.parent.test_add_item())
-            self.developer_menu.add_command(label='Drop Table', underline=1, command=lambda: self.parent.drop_table())
+            self.developer_menu.add_command(label=languages[self.parent.save_m.data['language']]['developer']['table_drop'], underline=1,
+                                            command=lambda: self.parent.drop_table())
 
     def help(self):
         self.help_menu = tk.Menu(self, tearoff=False)
-        self.add_cascade(label="Help", underline=0, menu=self.help_menu)
+        self.add_cascade(label=languages[self.parent.save_m.data['language']]['menubar']['help_menu'], underline=0, menu=self.help_menu)
         self.help_menu.add_command(label="GitHub", underline=1, command=lambda: open_new_tab(
             'https://github.com/austinhargis/hammer'))
 
     def users(self):
         self.users_menu = tk.Menu(self, tearoff=False)
-        self.add_cascade(label='Users', underline=0, menu=self.users_menu)
-        self.users_menu.add_command(label='Add User', underline=1,
-                                    command=lambda: self.parent.create_tab(CreateUser, 'Add User'))
-        self.users_menu.add_command(label='View Users', underline=1,
-                                    command=lambda: self.parent.create_tab(ViewUsers, 'View Users'))
+        self.add_cascade(label=languages[self.parent.save_m.data['language']]['menubar']['users_menu'], underline=0, menu=self.users_menu)
+        self.users_menu.add_command(label=languages[self.parent.save_m.data['language']]['users']['user_add'], underline=1,
+                                    command=lambda: self.parent.create_tab(CreateUser, languages[self.parent.save_m.data['language']]['users']['user_add']))
+        self.users_menu.add_command(label=languages[self.parent.save_m.data['language']]['users']['user_view'],
+                                    underline=1,
+                                    command=lambda: self.parent.create_tab(ViewUsers, languages[self.parent.save_m.data['language']]['users']['user_view']))
 
     def quit(self):
         sys.exit()
