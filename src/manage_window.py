@@ -13,6 +13,8 @@ class ManageItem(ItemInfo):
 
         self.parent = parent
 
+        self.heading_label.configure(text=languages[self.parent.save_m.data['language']]['iteminfo']['item_manage_heading'])
+
         self.entry_id = None
 
         self.fill_entries()

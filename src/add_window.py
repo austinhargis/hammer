@@ -5,6 +5,7 @@ from item_info import ItemInfo
 
 from languages import *
 
+
 class AddItem(ItemInfo):
 
     def __init__(self, parent):
@@ -12,7 +13,7 @@ class AddItem(ItemInfo):
 
         self.parent = parent
 
-        # self.template.bind('<Return>', lambda event: parent.add_entry(self.template.get_item_info(), self))
+        self.heading_label.configure(text=languages[self.parent.save_m.data['language']]['iteminfo']['item_add_heading'])
 
         ttk.Button(self.button_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_add_item'],

@@ -5,6 +5,8 @@ languages = {
             'table_drop': 'Drop All Tables'
         },
         'iteminfo': {
+            'item_add_heading': 'Create Item',
+            'item_manage_heading': 'Manage Item Info',
             'item_barcode': 'Barcode',
             'item_title': 'Title',
             'item_author': 'Author',
