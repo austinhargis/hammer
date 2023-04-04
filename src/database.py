@@ -125,6 +125,7 @@ class Database:
 
         self.dbCursor.execute("""DELETE FROM inventory""")
         self.dbCursor.execute("""DELETE FROM checkouts""")
+        self.dbCursor.execute("""DELETE FROM users""")
         self.dbConnection.commit()
 
     def update_query(self, data, row_id):
