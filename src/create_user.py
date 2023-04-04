@@ -11,28 +11,34 @@ class CreateUser(tk.Frame):
 
         self.parent = parent
 
-        barcode_frame = tk.Frame(self)
-        barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=(self.parent.padding * 2,
-                                                                                         self.parent.padding))
+        main_frame = tk.Frame(self)
+        main_frame.pack(side='left', anchor='nw')
+
+        title_frame = tk.Frame(main_frame)
+        title_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
+        ttk.Label(title_frame, text='Add User', font=self.parent.heading_font).pack(side='left')
+
+        barcode_frame = tk.Frame(main_frame)
+        barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(barcode_frame, text='User Barcode').pack(side='left')
         barcode_entry = tk.Entry(barcode_frame)
         barcode_entry.pack(side='right')
 
-        first_name_frame = tk.Frame(self)
-        first_name_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        first_name_frame = tk.Frame(main_frame)
+        first_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(first_name_frame, text='First Name').pack(side='left')
         first_name_entry = tk.Entry(first_name_frame)
         first_name_entry.pack(side='right')
 
-        last_name_frame = tk.Frame(self)
-        last_name_frame.pack(fill='both', expand=True, padx=self.parent.padding * 2, pady=self.parent.padding)
+        last_name_frame = tk.Frame(main_frame)
+        last_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(last_name_frame, text='Last Name').pack(side='left')
         last_name_entry = tk.Entry(last_name_frame)
         last_name_entry.pack(side='right')
 
-        button_frame = tk.Frame(self)
-        button_frame.pack(expand=True, padx=self.parent.padding * 2,
-                          pady=(self.parent.padding, self.parent.padding * 2))
+        button_frame = tk.Frame(main_frame)
+        button_frame.pack(expand=True, padx=self.parent.padding,
+                          pady=(0, self.parent.padding))
         ttk.Button(button_frame, text='Add User',
                    command=lambda: self.add_user(
                        [barcode_entry.get(), first_name_entry.get(), last_name_entry.get()])).pack(side='left')
