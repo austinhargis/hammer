@@ -3,6 +3,8 @@ from tkinter import ttk
 
 from item_info import ItemInfo
 
+from languages import *
+
 
 class ManageItem(ItemInfo):
 
@@ -15,19 +17,11 @@ class ManageItem(ItemInfo):
 
         self.fill_entries()
 
-        button_frame = tk.Frame(self)
-        button_frame.pack(expand=True,
-                          padx=self.parent.padding * 2,
-                          pady=(self.parent.padding, self.parent.padding * 2))
-        ttk.Button(button_frame, text='Save Changes',
+        ttk.Button(self.button_frame, text=languages[self.parent.save_m.data['language']]['prompts']['prompt_manage_item'],
                    command=lambda: [self.parent.update_entry(self.get_item_info(),
                                                              self.entry_id),
                                     self.parent.tab_controller.select(0),
                                     self.destroy()]).pack(side='left')
-        ttk.Button(button_frame,
-                   text='Cancel',
-                   command=lambda: [self.parent.tab_controller.select(0),
-                                    self.destroy()]).pack(side='right')
 
     def fill_entries(self):
         current_item = self.parent.tree.focus()

@@ -3,6 +3,7 @@ from tkinter import ttk
 
 from item_info import ItemInfo
 
+from languages import *
 
 class AddItem(ItemInfo):
 
@@ -13,15 +14,8 @@ class AddItem(ItemInfo):
 
         # self.template.bind('<Return>', lambda event: parent.add_entry(self.template.get_item_info(), self))
 
-        button_frame = tk.Frame(self)
-        button_frame.pack(expand=True, padx=self.parent.padding,
-                          pady=self.parent.padding)
-        ttk.Button(button_frame,
-                   text='Add Item',
+        ttk.Button(self.button_frame,
+                   text=languages[self.parent.save_m.data['language']]['prompts']['prompt_add_item'],
                    command=lambda: [self.parent.add_entry(self.get_item_info()),
                                     self.parent.tab_controller.select(0),
                                     self.destroy()]).pack(side='left')
-        ttk.Button(button_frame,
-                   text='Cancel',
-                   command=lambda: [self.parent.tab_controller.select(0),
-                                    self.destroy()]).pack(side='right')

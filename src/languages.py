@@ -23,7 +23,9 @@ languages = {
         },
         'prompts': {
             'prompt_accept': 'Okay',
+            'prompt_add_item': 'Add Item',
             'prompt_deny': 'Cancel',
+            'prompt_manage_item': 'Save Changes'
         },
         'settings': {
             'check_for_updates': 'Check for Updates',
