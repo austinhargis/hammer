@@ -152,7 +152,7 @@ class Hammer(tk.Tk):
         self.db.drop_table()
         self.refresh_table()
 
-        logging.info('Dropped table')
+        logging.info('Reset tables')
 
     def populate_table(self, current_table=None):
         """
