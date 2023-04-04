@@ -9,7 +9,7 @@ class SaveManager:
         self.parent = parent
 
         self.data = {
-            'automatic_updates': 'disabled',
+            'automatic_update_check': 'enabled',
             'language': 'english',
             'last_update_check': datetime.now().strftime('%I:%M%p %m/%d/%Y'),
             'theme': 'system',

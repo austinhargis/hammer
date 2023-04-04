@@ -13,13 +13,15 @@ class ManageItem(ItemInfo):
 
         self.parent = parent
 
-        self.heading_label.configure(text=languages[self.parent.save_m.data['language']]['iteminfo']['item_manage_heading'])
+        self.heading_label.configure(
+            text=languages[self.parent.save_m.data['language']]['iteminfo']['item_manage_heading'])
 
         self.entry_id = None
 
         self.fill_entries()
 
-        ttk.Button(self.button_frame, text=languages[self.parent.save_m.data['language']]['prompts']['prompt_manage_item'],
+        ttk.Button(self.button_frame,
+                   text=languages[self.parent.save_m.data['language']]['prompts']['prompts_save_changes'],
                    command=lambda: [self.parent.update_entry(self.get_item_info(),
                                                              self.entry_id),
                                     self.parent.tab_controller.select(0),
