@@ -4,6 +4,16 @@ languages = {
             'test_add': 'Add Test Item',
             'table_drop': 'Drop All Tables'
         },
+        'iteminfo': {
+            'item_barcode': 'Barcode',
+            'item_title': 'Title',
+            'item_author': 'Author',
+            'item_description': 'Item Description',
+            'item_publish_date': 'Publish Date',
+            'item_type': 'Item Type',
+            'item_location': 'Location',
+            'item_quantity': 'Item Quantity'
+        },
         'menubar': {
             'file_menu': 'File',
             'checkout_menu': 'Checkout',
