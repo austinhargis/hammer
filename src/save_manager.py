@@ -10,10 +10,14 @@ class SaveManager:
 
         self.data = {
             'automatic_updates': 'disabled',
+            'language': 'english',
             'last_update_check': datetime.now().strftime('%I:%M%p %m/%d/%Y'),
             'theme': 'system',
-            'settings_version': 'v0.1.0a',
+            'settings_version': 'v0.2.0a',
+            'show_checkout_menu': 'enabled',
             'show_developer_menu': 'disabled',
+            'show_help_menu': 'enabled',
+            'show_users_menu': 'enabled',
         }
         self.settings_enabled = 'normal'
 
