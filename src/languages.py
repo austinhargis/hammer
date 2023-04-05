@@ -24,7 +24,10 @@ languages = {
             'item_publish_date': 'Publish Date',
             'item_type': 'Item Type',
             'item_location': 'Location',
-            'item_quantity': 'Item Quantity'
+            'item_quantity': 'Item Quantity',
+            'item_status': 'Status',
+            'item_available': 'Available',
+            'item_unavailable': 'Checked Out'
         },
         'menubar': {
             'file_menu': 'File',

@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+from languages import *
+
 
 class ExpandedInformation(tk.Frame):
 
@@ -19,16 +21,56 @@ class ExpandedInformation(tk.Frame):
         self.location = entry_values[6]
         self.quantity = entry_values[7]
 
-        self.tab()
+        self.window()
 
-    def tab(self):
+    def window(self):
 
-        ttk.Label(self, text=f'ID: {self.id}').pack()
-        ttk.Label(self, text=f'Barcode {self.barcode}').pack()
-        ttk.Label(self, text=f'Title: {self.title}').pack()
-        ttk.Label(self, text=f'Author: {self.author}').pack()
-        ttk.Label(self, text=f'Description: {self.description}').pack()
-        ttk.Label(self, text=f'Publish Date: {self.publish_date}').pack()
-        ttk.Label(self, text=f'Type: {self.type}').pack()
-        ttk.Label(self, text=f'Quantity: {self.quantity}').pack()
-        ttk.Label(self, text=f'Location: {self.location}').pack()
+        main_frame = ttk.Frame(self)
+        main_frame.pack(side='left', anchor='nw')
+
+        barcode_frame = ttk.Frame(main_frame)
+        barcode_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
+        ttk.Label(barcode_frame,
+                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_barcode']}: {self.barcode}")\
+            .pack(side='left')
+
+        title_frame = ttk.Frame(main_frame)
+        title_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(title_frame,
+                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_title']}: {self.title}")\
+            .pack(side='left')
+
+        author_frame = ttk.Frame(main_frame)
+        author_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(author_frame,
+                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_author']}: {self.author}")\
+            .pack(side='left')
+
+        item_status_frame = ttk.Frame(main_frame)
+        item_status_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(item_status_frame,
+                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_status']}: "
+                       f"{self.parent.get_item_status(self.barcode)}").pack(side='left')
+
+        description_frame = ttk.Frame(main_frame)
+        description_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(description_frame,
+                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_description']}: "
+                       f"{self.description}").pack(side='left')
+
+        publish_date_frame = ttk.Frame(main_frame)
+        publish_date_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(publish_date_frame,
+                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_publish_date']}: "
+                       f"{self.publish_date}").pack(side='left')
+
+        location_quantity_frame = ttk.Frame(main_frame)
+        location_quantity_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(location_quantity_frame,
+                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_location']}: "
+                       f"{self.location} / {languages[self.parent.save_m.data['language']]['iteminfo']['item_quantity']}"
+                       f": {self.quantity}").pack(side='left')
+
+
+        ttk.Label(main_frame, text=f'Type: {self.type}').pack(side='left')
+
