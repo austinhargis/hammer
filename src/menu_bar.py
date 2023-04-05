@@ -53,8 +53,8 @@ class MenuBar(tk.Menu):
     def file(self):
         self.file_menu = tk.Menu(self, tearoff=False)
         self.add_cascade(label=languages[self.parent.save_m.data['language']]['menubar']['file_menu'], underline=0, menu=self.file_menu)
-        self.file_menu.add_command(label=languages[self.parent.save_m.data['language']]['settings']['check_for_updates'], underline=1,
-                                   command=lambda: self.parent.create_tab(UpdateChecker, languages[self.parent.save_m.data['language']]['settings']['check_for_updates']))
+        self.file_menu.add_command(label=languages[self.parent.save_m.data['language']]['update']['update_check_for'], underline=1,
+                                   command=lambda: self.parent.create_tab(UpdateChecker, languages[self.parent.save_m.data['language']]['update']['update_check_for']))
         self.file_menu.add_command(label=languages[self.parent.save_m.data['language']]['settings']['settings'], underline=1,
                                    command=lambda: self.parent.create_tab(SettingsWindow, languages[self.parent.save_m.data['language']]['settings']['settings']))
         self.file_menu.add_separator()

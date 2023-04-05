@@ -27,11 +27,11 @@ languages = {
             'prompt_accept': 'Okay',
             'prompt_add_item': 'Add Item',
             'prompt_deny': 'Cancel',
+            'prompt_exit': 'Close',
             'prompts_save_changes': 'Save Changes'
         },
         'settings': {
             'settings_heading': 'Settings',
-            'check_for_updates': 'Check for Updates',
             'settings': 'Settings',
             'setting_enabled': 'Enabled',
             'setting_disabled': 'Disabled',
@@ -42,6 +42,14 @@ languages = {
             'settings_show_developer': 'Show Developer Menu',
             'settings_show_help': 'Show Help Menu',
             'settings_show_users': 'Show Users Menu'
+        },
+        'update': {
+            'update_header': 'Update Checker',
+            'update_last_checked': 'Last Checked',
+            'update_available_version': 'Available Version',
+            'update_your_version': 'Your Version',
+            'update_get': 'Get Update',
+            'update_check_for': 'Check for Updates',
         },
         'users': {
             'user_create_heading': 'Add User',
