@@ -15,11 +15,11 @@ from tkinter import ttk
 
 from add_window import AddItem
 from expanded_info import ExpandedInformation
+from languages import *
 from manage_window import ManageItem
 from database import Database
 from menu_bar import MenuBar
 from save_manager import SaveManager
-from item_info import ItemInfo
 
 if not os.path.isdir(f'{Path.home()}/hammer'):
     os.mkdir(f'{Path.home()}/hammer')
@@ -164,8 +164,8 @@ class Hammer(tk.Tk):
         if current_table is None:
             current_table = self.db.get_all_query()
 
-        for y in range(len(current_table)):
-            self.tree.insert('', tk.END, values=current_table[y])
+        for row in current_table:
+            self.tree.insert('', tk.END, values=row)
 
         if len(self.tree.get_children()) > 0:
             child = self.tree.get_children()[0]
@@ -173,6 +173,18 @@ class Hammer(tk.Tk):
             self.tree.selection_set(child)
 
         logging.info('Populated the table')
+
+    def get_item_status(self, barcode):
+        check_status = self.db.dbCursor.execute(f"""
+            SELECT *
+            FROM checkouts
+            WHERE item_barcode=?
+        """, (barcode,)).fetchall()
+
+        if len(check_status) == 0:
+            return languages[self.save_m.data['language']]['iteminfo']['item_available']
+        else:
+            return languages[self.save_m.data['language']]['iteminfo']['item_unavailable']
 
     def refresh_table(self):
         """
@@ -236,11 +248,11 @@ class Hammer(tk.Tk):
         self.tree = ttk.Treeview(tree_frame,
                                  columns=(
                                      'id', 'barcode', 'title', 'author', 'publish_date', 'type', 'location',
-                                     'quantity'))
+                                     'quantity', 'status'))
         # hide the initial blank column that comes with TreeViews
         self.tree['show'] = 'headings'
         # show only the desired columns (hiding the id)
-        self.tree['displaycolumns'] = ('barcode', 'title', 'author', 'publish_date', 'location', 'quantity')
+        self.tree['displaycolumns'] = ('barcode', 'title', 'author', 'publish_date', 'location', 'quantity', 'status')
 
         self.treeScroll = ttk.Scrollbar(tree_frame, command=self.tree.yview)
         self.tree.configure(yscrollcommand=self.treeScroll.set)
@@ -256,6 +268,8 @@ class Hammer(tk.Tk):
         self.tree.heading('publish_date', text='Publish Date')
         self.tree.heading('location', text='Location')
         self.tree.heading('quantity', text='Quantity')
+        self.tree.heading('type', text='Type')
+        self.tree.heading('status', text='Status')
         self.tree.pack(expand=True, fill='y')
 
         search_frame = tk.Frame(tree_frame)
@@ -272,6 +286,8 @@ class Hammer(tk.Tk):
 
         entry_values = self.tree.item(current_item)['values']
         entry_title = self.tree.item(current_item)['values'][2]
+
+        print(entry_values)
 
         self.create_tab(ExpandedInformation, title=f'{entry_title}', values=entry_values)
 
