@@ -24,19 +24,21 @@ class CreateUser(tk.Frame):
         barcode_frame = tk.Frame(main_frame)
         barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(barcode_frame,
-                  text=languages[self.parent.save_m.data['language']]['users']['user_barcode_label']).pack(side='left')
+                  text=languages[self.parent.save_m.data['language']]['users']['user_barcode']).pack(side='left')
         barcode_entry = tk.Entry(barcode_frame)
         barcode_entry.pack(side='right')
 
         first_name_frame = tk.Frame(main_frame)
         first_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(first_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_first_name_label']).pack(side='left')
+        ttk.Label(first_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_first_name'])\
+            .pack(side='left')
         first_name_entry = tk.Entry(first_name_frame)
         first_name_entry.pack(side='right')
 
         last_name_frame = tk.Frame(main_frame)
         last_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(last_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_last_name_label']).pack(side='left')
+        ttk.Label(last_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_last_name'])\
+            .pack(side='left')
         last_name_entry = tk.Entry(last_name_frame)
         last_name_entry.pack(side='right')
 
