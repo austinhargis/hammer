@@ -4,7 +4,7 @@ from tkinter import ttk
 from languages import *
 
 
-class ItemInfo(tk.Frame):
+class RecordInfoTemplate(tk.Frame):
 
     def __init__(self, parent):
         super().__init__()
@@ -22,13 +22,6 @@ class ItemInfo(tk.Frame):
         self.heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         self.heading_label = ttk.Label(self.heading_frame, font=self.parent.heading_font)
         self.heading_label.pack(side='left')
-
-        self.barcode_frame = ttk.Frame(main_frame)
-        self.barcode_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(self.barcode_frame,
-                  text=languages[self.parent.save_m.data['language']]['iteminfo']['item_barcode']).pack(side='left')
-        self.barcode_text = ttk.Entry(self.barcode_frame)
-        self.barcode_text.pack(side='right')
 
         self.title_frame = ttk.Frame(main_frame)
         self.title_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
@@ -69,20 +62,6 @@ class ItemInfo(tk.Frame):
         self.type_text = ttk.Entry(self.type_frame)
         self.type_text.pack(side='right')
 
-        self.location_frame = ttk.Frame(main_frame)
-        self.location_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(self.location_frame,
-                  text=languages[self.parent.save_m.data['language']]['iteminfo']['item_location']).pack(side='left')
-        self.location_text = ttk.Entry(self.location_frame)
-        self.location_text.pack(side='right')
-
-        self.quantity_frame = ttk.Frame(main_frame)
-        self.quantity_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(self.quantity_frame,
-                  text=languages[self.parent.save_m.data['language']]['iteminfo']['item_quantity']).pack(side='left')
-        self.quantity_text = ttk.Entry(self.quantity_frame)
-        self.quantity_text.pack(side='right')
-
         self.button_frame = ttk.Frame(main_frame)
         self.button_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(self.button_frame,
@@ -91,11 +70,8 @@ class ItemInfo(tk.Frame):
                                     self.destroy()]).pack(side='left')
 
     def get_item_info(self):
-        return [self.barcode_text.get(),
-                self.title_text.get(),
+        return [self.title_text.get(),
                 self.author_text.get(),
                 self.description_text.get('1.0', tk.END),
                 self.publish_date_text.get(),
-                self.type_text.get(),
-                self.location_text.get(),
-                self.quantity_text.get()]
+                self.type_text.get()]

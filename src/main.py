@@ -13,10 +13,11 @@ from pathlib import Path
 import tkinter as tk
 from tkinter import ttk
 
-from add_window import AddItem
+from add_item_from_record_window import AddItemFromRecordWindow
+from add_record_window import AddRecordWindow
 from expanded_info import ExpandedInformation
 from languages import *
-from manage_window import ManageItem
+from manage_record_window import ManageRecordWindow
 from database import Database
 from menu_bar import MenuBar
 from save_manager import SaveManager
@@ -58,22 +59,6 @@ class Hammer(tk.Tk):
         self.tree.bind("<Delete>", lambda event: self.delete_popup_window())
         self.bind("<Escape>", lambda event: self.destroy())
 
-    def add_entry(self, data):
-        """
-            add_entry takes the input from the TopLevel window for
-            inserting data into the database and passes it to the
-            database handler, before refreshing the table and destroying
-            the TopLevel window
-
-            :param data: a list of user inputted data
-            :param window: a TopLevel item
-            :return:
-        """
-        self.db.insert_query(data)
-        self.refresh_table()
-
-        logging.info('Added item into database')
-
     def update_entry(self, data, entry_id):
         self.db.update_query(data, entry_id)
         self.refresh_table()
@@ -85,11 +70,9 @@ class Hammer(tk.Tk):
     def check_focus(self):
         if self.tree.focus() == '':
             self.manage_button.configure(state='disabled')
-            self.delete_button.configure(state='disabled')
             self.after(self.manage_check_delay, self.check_focus)
         else:
             self.manage_button.configure(state='normal')
-            self.delete_button.configure(state='normal')
             self.after(self.manage_check_delay, self.check_focus)
 
     def clear_table(self):
@@ -209,14 +192,11 @@ class Hammer(tk.Tk):
         search_term = entry_box.get()
 
         current_table = self.db.dbCursor.execute(f"""SELECT * 
-                                                     FROM inventory 
-                                                     WHERE barcode LIKE \'%{search_term}%\'
+                                                     FROM item_record 
                                                      OR title LIKE \'%{search_term}%\' 
                                                      OR author LIKE \'%{search_term}%\'
                                                      OR publish_date LIKE \'%{search_term}%\'
-                                                     OR type LIKE \'%{search_term}%\'
-                                                     OR location LIKE \'%{search_term}%\'
-                                                     OR quantity LIKE \'%{search_term}%\'""").fetchall()
+                                                     OR type LIKE \'%{search_term}%\'""").fetchall()
         self.clear_table()
         self.populate_table(current_table)
 
@@ -231,45 +211,39 @@ class Hammer(tk.Tk):
 
         manage_frame = tk.Frame(screen_frame, padx=self.padding, pady=self.padding)
         manage_frame.pack(side='left', anchor='nw')
-        ttk.Button(manage_frame, text='Add',
-                   command=lambda: self.create_tab(AddItem, 'Add Item')).pack()
+        ttk.Button(manage_frame, text='Add Record',
+                   command=lambda: self.create_tab(AddRecordWindow, 'Add Record')).pack()
         self.manage_button = ttk.Button(manage_frame,
-                                        text='Manage',
-                                        command=lambda: self.create_tab(ManageItem, 'Manage Item'))
+                                        text='Manage Record',
+                                        command=lambda: self.create_tab(ManageRecordWindow, 'Manage Record'))
         self.manage_button.pack()
         self.manage_button.configure(state='disabled')
-        self.delete_button = ttk.Button(manage_frame, text='Delete', command=lambda: self.delete_popup_window())
-        self.delete_button.pack()
-        self.delete_button.configure(state='disabled')
+
+        ttk.Button(manage_frame, text='Create Item From Record',
+                   command=lambda: self.create_tab(AddItemFromRecordWindow, 'Create Item From Record')).pack()
 
         # creates the TreeView which will handle displaying all schema in the database
         tree_frame = tk.Frame(screen_frame)
         tree_frame.pack(side='right', anchor='ne')
         self.tree = ttk.Treeview(tree_frame,
                                  columns=(
-                                     'id', 'barcode', 'title', 'author', 'publish_date', 'type', 'location',
-                                     'quantity', 'status'))
+                                     'id', 'title', 'author', 'publish_date', 'type'))
         # hide the initial blank column that comes with TreeViews
         self.tree['show'] = 'headings'
         # show only the desired columns (hiding the id)
-        self.tree['displaycolumns'] = ('barcode', 'title', 'author', 'publish_date', 'location', 'quantity', 'status')
+        self.tree['displaycolumns'] = ('title', 'author', 'publish_date', 'type',)
 
         self.treeScroll = ttk.Scrollbar(tree_frame, command=self.tree.yview)
         self.tree.configure(yscrollcommand=self.treeScroll.set)
         self.treeScroll.pack(side='right', fill='both')
 
         self.tree.heading('id', text='ID')
-        self.tree.heading('barcode', text='Barcode')
-        self.tree.column('barcode', stretch=False, width=150)
         self.tree.heading('title', text='Title')
         self.tree.column('title', stretch=False, width=150)
         self.tree.heading('author', text='Author')
         self.tree.column('author', stretch=False, width=150)
         self.tree.heading('publish_date', text='Publish Date')
-        self.tree.heading('location', text='Location')
-        self.tree.heading('quantity', text='Quantity')
         self.tree.heading('type', text='Type')
-        self.tree.heading('status', text='Status')
         self.tree.pack(expand=True, fill='y')
 
         search_frame = tk.Frame(tree_frame)

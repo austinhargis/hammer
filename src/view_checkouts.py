@@ -52,10 +52,19 @@ class ViewCheckouts(tk.Frame):
         """).fetchall()
 
         for checkout_index in range(len(checkouts)):
-            checkout_titles = self.parent.db.dbCursor.execute(f"""
-                        SELECT title FROM inventory
+            checkout_ids = self.parent.db.dbCursor.execute(f"""
+                        SELECT id FROM items
                         WHERE barcode='{checkouts[checkout_index][1]}'
             """).fetchall()
+
+            print(checkout_ids)
+
+            checkout_titles = self.parent.db.dbCursor.execute(f"""
+                SELECT title FROM item_record
+                WHERE id=?
+            """, list(checkout_ids[0])).fetchall()
+
+            print(checkout_titles)
 
             checkout_ = [checkouts[checkout_index][0], checkouts[checkout_index][1], checkout_titles[0][0]]
 

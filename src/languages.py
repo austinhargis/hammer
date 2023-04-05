@@ -38,7 +38,8 @@ languages = {
         },
         'prompts': {
             'prompt_accept': 'Okay',
-            'prompt_add_item': 'Add Item',
+            'prompt_add_item': 'Add Record',
+            'prompt_add_item_to_record': 'Create Item From Record',
             'prompt_deny': 'Cancel',
             'prompt_exit': 'Close',
             'prompts_save_changes': 'Save Changes'

@@ -15,9 +15,8 @@ class Database:
             self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
             self.dbCursor = self.dbConnection.cursor()
             self.dbCursor.execute(f"""
-                    CREATE TABLE inventory(
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        barcode varchar UNIQUE,
+                    CREATE TABLE item_record(
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,      
                         title varchar,
                         author varchar,
                         publish_date varchar,
@@ -28,6 +27,14 @@ class Database:
                         creation_date datetime,
                         managed_date datetime
                     )""")
+            self.dbCursor.execute(f"""
+                CREATE TABLE items(
+                    id INTEGER,
+                    barcode varchar PRIMARY KEY,
+                    location varchar,
+                    FOREIGN KEY(id) REFERENCES item_record(id)
+                )
+            """)
             self.dbCursor.execute(f"""
                     CREATE TABLE users(
                         user_id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -42,7 +49,7 @@ class Database:
                         item_barcode varchar UNIQUE,
                         creation_date datetime,
                         FOREIGN KEY(user_barcode) REFERENCES users(barcode),
-                        FOREIGN KEY(item_barcode) REFERENCES inventory(barcode)
+                        FOREIGN KEY(item_barcode) REFERENCES items(barcode)
                     )""")
             self.dbConnection.commit()
 
@@ -50,13 +57,14 @@ class Database:
             self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
             self.dbCursor = self.dbConnection.cursor()
 
-    def insert_query(self, data):
+    def insert_query(self, item_information, item):
         """
             inserts data into the inventory table
-            :param data: a tuple of data to be inserted into the table
+            :param item_information:
+            :param item: a tuple of data to be inserted into the table
             :return: nothing
         """
-        if data[0].replace(' ', '') == '' or data[1].replace(' ', '') == '':
+        if item_information[0].replace(' ', '') == '' or item[0].replace(' ', '') == '':
             popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
             popup.attributes('-topmost', True)
             popup.title("Error!")
@@ -72,11 +80,11 @@ class Database:
             return
 
         try:
-            data = list(data)
-            data.append(datetime.now())
-            data.append(datetime.now())
-            self.dbCursor.execute(f"""INSERT INTO inventory(barcode, title, author, description, publish_date, type, location, quantity, creation_date, managed_date)
-                                      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", data)
+            item_information = list(item_information)
+            item_information.append(datetime.now())
+            item_information.append(datetime.now())
+            self.dbCursor.execute(f"""INSERT INTO item_record(title, author, description, publish_date, type, creation_date, managed_date)
+                                      VALUES (?, ?, ?, ?, ?, ?, ?)""", item_information)
             self.dbConnection.commit()
         except sqlite3.IntegrityError:
             self.unique_conflict()
@@ -123,7 +131,8 @@ class Database:
             :return: nothing
         """
 
-        self.dbCursor.execute("""DELETE FROM inventory""")
+        self.dbCursor.execute("""DELETE FROM item_record""")
+        self.dbCursor.execute("""DELETE FROM items""")
         self.dbCursor.execute("""DELETE FROM checkouts""")
         self.dbCursor.execute("""DELETE FROM users""")
         self.dbConnection.commit()
@@ -137,23 +146,13 @@ class Database:
         """
 
         try:
-            previous_data = self.dbCursor.execute(f"""
-                SELECT barcode
-                FROM inventory
-                WHERE id={row_id}
-            """).fetchall()
+            data = list(data)
+            data.append(datetime.now())
+            self.dbCursor.execute(f"""UPDATE item_record 
+                                      SET title=?, author=?, description=?, publish_date=?, type=?, managed_date=?
+                                      WHERE id={row_id}""", data)
 
-            if not self.is_checked_out(previous_data[0][0]) or previous_data[0][0] == data[0]:
-                data = list(data)
-                data.append(datetime.now())
-                self.dbCursor.execute(f"""UPDATE inventory 
-                                          SET barcode=?, title=?, author=?, description=?, publish_date=?, type=?,
-                                          location=?, quantity=?, managed_date=?
-                                          WHERE id={row_id}""", data)
-
-                self.dbConnection.commit()
-            else:
-                self.cant_change_error()
+            self.dbConnection.commit()
         except sqlite3.IntegrityError:
             self.unique_conflict()
 
@@ -163,7 +162,7 @@ class Database:
             :return: a list of tuples of data in the table
         """
 
-        self.dbCursor.execute("""SELECT * FROM inventory""")
+        self.dbCursor.execute("""SELECT * FROM item_record""")
         return self.dbCursor.fetchall()
 
     def unique_conflict(self):

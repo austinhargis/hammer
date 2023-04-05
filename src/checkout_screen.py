@@ -47,7 +47,7 @@ class CheckoutScreen(tk.Frame):
 
         # Get a list of all items with that item barcode
         items = self.parent.db.dbCursor.execute(f"""
-            SELECT * FROM inventory
+            SELECT * FROM items
             WHERE barcode='{data[1]}'
         """).fetchall()
 
