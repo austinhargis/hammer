@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+from languages import *
+
 
 class CheckinScreen(tk.Frame):
 
@@ -9,20 +11,33 @@ class CheckinScreen(tk.Frame):
 
         self.parent = parent
 
-        barcode_frame = tk.Frame(self)
-        barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=self.parent.padding)
-        ttk.Label(barcode_frame, text='Item Barcode').pack(side='left')
+        main_frame = tk.Frame(self)
+        main_frame.pack(side='left', anchor='nw')
+
+        heading_frame = tk.Frame(main_frame)
+        heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
+        ttk.Label(heading_frame,
+                  text=languages[self.parent.save_m.data['language']]['checking']['checkin_heading'],
+                  font=self.parent.heading_font).pack(
+            side='left')
+
+        barcode_frame = tk.Frame(main_frame)
+        barcode_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(barcode_frame,
+                  text=languages[self.parent.save_m.data['language']]['checking']['checkout_item_barcode']).pack(
+            side='left')
         self.barcode_entry = tk.Entry(barcode_frame)
         self.barcode_entry.pack(side='right')
 
-        button_frame = tk.Frame(self)
-        button_frame.pack(expand=True, padx=self.parent.padding,
-                          pady=(0, self.parent.padding))
-        ttk.Button(button_frame, text='Return Item', command=lambda: [self.check_item_in(),
-                                                                      self.parent.tab_controller.select(0)]).pack(
+        button_frame = tk.Frame(main_frame)
+        button_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Button(button_frame,
+                   text=languages[self.parent.save_m.data['language']]['checking']['checkin_return'],
+                   command=lambda: [self.check_item_in(), self.parent.tab_controller.select(0)]).pack(
             side='left')
-        ttk.Button(button_frame, text='Cancel', command=lambda: [self.parent.tab_controller.select(0),
-                                                                 self.destroy()]).pack(side='right')
+        ttk.Button(button_frame,
+                   text=languages[self.parent.save_m.data['language']]['prompts']['prompt_deny'],
+                   command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
 
     def check_item_in(self):
         items = self.parent.db.dbCursor.execute(f"""
