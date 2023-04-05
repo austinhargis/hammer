@@ -1,5 +1,15 @@
 languages = {
     'english': {
+        'checking': {
+            'checkout_user_barcode': 'User Barcode',
+            'checkout_item_barcode': 'Item Barcode',
+            'checkout_item_title': 'Item Title',
+            'checkout_confirm': 'Checkout',
+            'checkout_heading': 'Check Item Out',
+            'checkout_view': 'View Checkouts',
+            'checkin_return': 'Return Item',
+            'checkin_heading': 'Check Item In'
+        },
         'developer': {
             'test_add': 'Add Test Item',
             'table_drop': 'Drop All Tables'
@@ -53,9 +63,10 @@ languages = {
         },
         'users': {
             'user_create_heading': 'Add User',
-            'user_barcode_label': 'User Barcode',
-            'user_first_name_label': 'First Name',
-            'user_last_name_label': 'Last Name',
+            'user_barcode': 'User Barcode',
+            'user_first_name': 'First Name',
+            'user_last_name': 'Last Name',
+            'user_id': 'ID',
 
             'user_add': 'Add User',
             'user_view': 'View Users',
