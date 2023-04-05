@@ -242,8 +242,7 @@ class Hammer(tk.Tk):
         # show only the desired columns (hiding the id)
         self.tree['displaycolumns'] = ('barcode', 'title', 'author', 'publish_date', 'location', 'quantity')
 
-        self.treeScroll = ttk.Scrollbar(tree_frame)
-        self.treeScroll.configure(command=self.tree.yview_scroll)
+        self.treeScroll = ttk.Scrollbar(tree_frame, command=self.tree.yview)
         self.tree.configure(yscrollcommand=self.treeScroll.set)
         self.treeScroll.pack(side='right', fill='both')
 
