@@ -85,6 +85,8 @@ class ExpandedInformation(tk.Frame):
         self.tree.heading('status', text='Status')
         self.tree.pack(expand=True, fill='y')
 
+        ttk.Button(bottom_frame, text='Delete Item', command=lambda: self.delete_item()).pack()
+
         ttk.Button(tree_frame, text='Close', command=lambda: self.destroy()).pack(side='bottom',
                                                                                   pady=self.parent.padding)
 
@@ -100,3 +102,20 @@ class ExpandedInformation(tk.Frame):
             del item[0]
             item.append(self.parent.get_item_status(item[0]))
             self.tree.insert('', tk.END, values=item)
+
+    def delete_item(self):
+        selected = self.tree.item(self.parent.tree.focus())
+        barcode = selected['values'][0]
+
+        barcode_checkouts = self.parent.db.dbCursor.execute(f"""
+            SELECT *
+            FROM checkouts
+            WHERE item_barcode=?    
+        """, (barcode,)).fetchall()
+
+        if len(barcode_checkouts) == 0:
+            self.parent.db.dbCursor.execute(f"""
+                DELETE FROM items
+                WHERE barcode=?
+            """, (barcode,))
+            self.parent.db.dbConnection.commit()
