@@ -12,6 +12,8 @@ class RecordChildTemplate(tk.Frame):
         selected = self.parent.tree.item(self.parent.tree.focus())
         self.id = selected['values'][0]
 
+        self.get_item_record()
+
         main_frame = ttk.Frame(self)
         main_frame.pack(side='left', anchor='nw')
 
@@ -45,3 +47,10 @@ class RecordChildTemplate(tk.Frame):
             self.barcode_entry.get(),
             self.location_entry.get(),
         ]
+
+    def get_item_record(self):
+        self.record = self.parent.db.dbCursor.execute(f"""
+            SELECT *
+            FROM item_record
+            WHERE id=?
+        """, (self.id,)).fetchall()

@@ -221,6 +221,8 @@ class Hammer(tk.Tk):
 
         ttk.Button(manage_frame, text='Create Item From Record',
                    command=lambda: self.create_tab(AddItemFromRecordWindow, 'Create Item From Record')).pack()
+        ttk.Button(manage_frame, text='Delete Record + Items',
+                   command=lambda: self.delete_entry()).pack()
 
         # creates the TreeView which will handle displaying all schema in the database
         tree_frame = tk.Frame(screen_frame)
@@ -259,9 +261,7 @@ class Hammer(tk.Tk):
         current_item = self.tree.focus()
 
         entry_values = self.tree.item(current_item)['values']
-        entry_title = self.tree.item(current_item)['values'][2]
-
-        print(entry_values)
+        entry_title = self.tree.item(current_item)['values'][1]
 
         self.create_tab(ExpandedInformation, title=f'{entry_title}', values=entry_values)
 

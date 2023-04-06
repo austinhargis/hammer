@@ -95,11 +95,26 @@ class Database:
             :param data: a tuple of the data that needs to be deleted from the table
             :return: nothing
         """
-        item_barcode = data[1]
-        print(item_barcode)
+        print(data)
+        item_barcodes = self.dbCursor.execute(f"""
+            SELECT barcode
+            FROM items
+            WHERE id=?
+        """, (data[0],)).fetchall()
 
-        if not self.is_checked_out(item_barcode):
-            self.dbCursor.execute(f"""DELETE FROM inventory WHERE id={data[0]}""")
+        checkouts_with_barcode = []
+        for barcode in item_barcodes:
+            checkouts = self.dbCursor.execute(f"""
+                SELECT *
+                FROM checkouts
+                WHERE item_barcode=?
+            """, list(barcode,)).fetchall()
+            if len(checkouts) > 0:
+                checkouts_with_barcode.append(checkouts[0])
+
+        if len(checkouts_with_barcode) == 0:
+            self.dbCursor.execute(f"""DELETE FROM items WHERE id={data[0]}""")
+            self.dbCursor.execute(f"""DELETE FROM item_record WHERE id={data[0]}""")
             self.dbConnection.commit()
         else:
             popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
@@ -120,9 +135,21 @@ class Database:
             :return: nothing
         """
 
-        data = [f"Test{random.randint(0, 100)}", "Test1", "Test2", "Test3", "Test4", "Test5", "Test6", "Test7", datetime.now(), datetime.now()]
-        self.dbCursor.execute(f"""INSERT INTO inventory (barcode, title, author, description, publish_date, type, location, quantity, creation_date, managed_date)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)""", data)
+        data = ["Test1", "Test2", "Test3", "Test4", "Test5", datetime.now(), datetime.now()]
+        self.dbCursor.execute(f"""INSERT INTO item_record (title, author, description, publish_date, type, creation_date, managed_date)
+                                  VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
+        self.dbConnection.commit()
+
+    def test_add_item_query(self):
+        selected = self.parent.tree.item(self.parent.tree.focus())
+        record_id = selected['values'][0]
+
+        data = (record_id, f"Test{random.randint(0,1000)}", "Test")
+
+        self.dbCursor.execute(f"""
+            INSERT INTO items (id, barcode, location) 
+            VALUES (?, ?, ?)
+        """, data)
         self.dbConnection.commit()
 
     def drop_table(self):
@@ -190,14 +217,3 @@ class Database:
         ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
 
         popup.mainloop()
-
-    def is_checked_out(self, barcode):
-        checkouts_with_barcode = self.dbCursor.execute(f"""
-                                                SELECT * 
-                                                FROM checkouts
-                                                WHERE item_barcode=?""", (barcode,)).fetchall()
-
-        if len(checkouts_with_barcode) == 0:
-            return False
-        else:
-            return True

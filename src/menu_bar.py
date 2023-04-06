@@ -66,6 +66,9 @@ class MenuBar(tk.Menu):
             self.add_cascade(label=languages[self.parent.save_m.data['language']]['menubar']['developer_menu'], underline=0, menu=self.developer_menu)
             self.developer_menu.add_command(label=languages[self.parent.save_m.data['language']]['developer']['test_add'], underline=1,
                                             command=lambda: self.parent.test_add_item())
+            self.developer_menu.add_command(
+                label='Create Item', underline=1,
+                command=lambda: self.parent.db.test_add_item_query())
             self.developer_menu.add_command(label=languages[self.parent.save_m.data['language']]['developer']['table_drop'], underline=1,
                                             command=lambda: self.parent.drop_table())
 
