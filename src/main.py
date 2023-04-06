@@ -275,9 +275,9 @@ class Hammer(tk.Tk):
             :return:
         """
         if values is not None:
-            self.tab_controller.add(window(self, values), text=title)
+            self.tab_controller.add(window(self, values), text=title[0:10])
         else:
-            self.tab_controller.add(window(self), text=title)
+            self.tab_controller.add(window(self), text=title[0:10])
         tabs = self.tab_controller.tabs()
         self.tab_controller.select(len(tabs) - 1)
 
