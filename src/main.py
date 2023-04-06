@@ -193,7 +193,7 @@ class Hammer(tk.Tk):
 
         current_table = self.db.dbCursor.execute(f"""SELECT * 
                                                      FROM item_record 
-                                                     OR title LIKE \'%{search_term}%\' 
+                                                     WHERE title LIKE \'%{search_term}%\' 
                                                      OR author LIKE \'%{search_term}%\'
                                                      OR publish_date LIKE \'%{search_term}%\'
                                                      OR type LIKE \'%{search_term}%\'""").fetchall()
