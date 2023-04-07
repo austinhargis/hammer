@@ -115,7 +115,7 @@ class Hammer(tk.Tk):
                   wraplength=self.wraplength,
                   justify='center').pack()
         ttk.Label(popup,
-                  text=f'Item: {self.tree.item(self.tree.focus())["values"][2]}').pack()
+                  text=f'Item: {self.tree.item(self.tree.focus())["values"][1]}').pack()
 
         button_frame = tk.Frame(popup)
         button_frame.pack(expand=True)
@@ -250,12 +250,12 @@ class Hammer(tk.Tk):
         ttk.Button(manage_frame, text='Create Item From Record',
                    command=lambda: self.create_tab(AddItemFromRecordWindow, 'Create Item From Record')).pack(fill='x')
         ttk.Button(manage_frame, text='Delete Record + Items',
-                   command=lambda: self.delete_entry()).pack(fill='x')
+                   command=lambda: self.delete_popup_window()).pack(fill='x')
 
         users_frame = ttk.Frame(left_frame)
         users_frame.pack(fill='x', side='top', padx=self.padding)
 
-        ttk.Label(users_frame, text='Users', font=self.heading_font).pack(side='top')
+        ttk.Label(users_frame, text='Users', font=self.heading_font).pack(anchor='nw')
         ttk.Button(users_frame,
                    text='Create User',
                    command=lambda: self.create_tab(CreateUser, 'Create User')).pack(fill='x')
