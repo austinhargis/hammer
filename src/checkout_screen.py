@@ -3,6 +3,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from languages import *
+from popup_window import PopupWindow
 
 
 class CheckoutScreen(tk.Frame):
@@ -70,22 +71,8 @@ class CheckoutScreen(tk.Frame):
                 self.destroy()
 
             except sqlite3.IntegrityError:
-                popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
-                ttk.Label(popup,
-                          text='This item is already checked out to a user. '
-                               'This checkout cannot be completed at this time.',
-                          wraplength=self.parent.wraplength,
-                          justify='center').pack()
-                ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
-
-                popup.mainloop()
+                PopupWindow(self.parent, "Already Checked Out", "This item is already checked out to a user. "
+                                                                "This checkout cnanot be completed at this time.")
 
         else:
-            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
-            ttk.Label(popup,
-                      text='The user or item barcode were invalid.',
-                      wraplength=self.parent.wraplength,
-                      justify='center').pack()
-            ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
-
-            popup.mainloop()
+            PopupWindow(self.parent, "Invalid Barcode", "The user or item barcode were invalid or do not exist.")

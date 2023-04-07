@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from languages import *
+from popup_window import PopupWindow
 
 
 class CheckinScreen(tk.Frame):
@@ -53,24 +54,7 @@ class CheckinScreen(tk.Frame):
             """)
             self.parent.db.dbConnection.commit()
 
-            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
-            ttk.Label(popup,
-                      text='The item was successfully checked in.',
-                      wraplength=self.parent.wraplength,
-                      justify='center').pack()
-            ttk.Button(popup, text='Okay', command=lambda: [self.parent.tab_controller.select(0),
-                                                            popup.destroy(),
-                                                            self.destroy()]) \
-                .pack()
-
-            popup.mainloop()
+            PopupWindow(self.parent, "Check In Successful", "The item was successfully checked in.")
 
         else:
-            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
-            ttk.Label(popup,
-                      text='That item does not exist or is not checked out.',
-                      wraplength=self.parent.wraplength,
-                      justify='center').pack()
-            ttk.Button(popup, text='Okay', command=lambda: popup.destroy()).pack()
-
-            popup.mainloop()
+            PopupWindow(self.parent, "Not Checked Out", "That item does not exist or is not checked out.")

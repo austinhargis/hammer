@@ -5,6 +5,8 @@ import tkinter as tk
 from datetime import datetime
 from tkinter import ttk
 
+from popup_window import PopupWindow
+
 
 class Database:
 
@@ -57,38 +59,6 @@ class Database:
             self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
             self.dbCursor = self.dbConnection.cursor()
 
-    def insert_query(self, item_information, item):
-        """
-            inserts data into the inventory table
-            :param item_information:
-            :param item: a tuple of data to be inserted into the table
-            :return: nothing
-        """
-        if item_information[0].replace(' ', '') == '' or item[0].replace(' ', '') == '':
-            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
-            popup.attributes('-topmost', True)
-            popup.title("Error!")
-            ttk.Label(popup,
-                      text="The barcode and title field must have a value"
-                           "specified before they can be added to the table.",
-                      wraplength=self.parent.wraplength,
-                      justify='center').pack()
-            ttk.Button(popup, text="Continue", command=popup.destroy).pack()
-
-            popup.mainloop()
-
-            return
-
-        try:
-            item_information = list(item_information)
-            item_information.append(datetime.now())
-            item_information.append(datetime.now())
-            self.dbCursor.execute(f"""INSERT INTO item_record(title, author, description, publish_date, type, creation_date, managed_date)
-                                      VALUES (?, ?, ?, ?, ?, ?, ?)""", item_information)
-            self.dbConnection.commit()
-        except sqlite3.IntegrityError:
-            self.unique_conflict()
-
     def delete_query(self, data):
         """
             deletes desired data from the table
@@ -117,17 +87,10 @@ class Database:
             self.dbCursor.execute(f"""DELETE FROM item_record WHERE id={data[0]}""")
             self.dbConnection.commit()
         else:
-            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
-            popup.title('Barcode Currently Checked Out')
-
-            ttk.Label(popup,
-                      text='Warning: An item with this barcode is currently checked out, '
-                           'you CANNOT delete the barcode at this time.',
-                      wraplength=self.parent.wraplength,
-                      justify='center').pack()
-            ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
-
-            popup.mainloop()
+            PopupWindow(self.parent,
+                        title="Item Currently Checked Out",
+                        message="Warning: An item with this barcode is currently checked out, "
+                                "you CANNOT delete this barcode at this time.")
 
     def test_add_query(self):
         """
@@ -193,27 +156,7 @@ class Database:
         return self.dbCursor.fetchall()
 
     def unique_conflict(self):
-        popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
-        popup.title('Barcode In Use')
-
-        ttk.Label(popup,
-                  text='Warning: An item or user already exists with this barcode.'
-                       'Please try a different barcode.',
-                  wraplength=self.parent.wraplength,
-                  justify='center').pack()
-        ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
-
-        popup.mainloop()
-
-    def cant_change_error(self):
-        popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
-        popup.title('Barcode Currently Checked Out')
-
-        ttk.Label(popup,
-                  text='Warning: An item with this barcode is currently checked out, '
-                       'you CANNOT change the barcode at this time.',
-                  wraplength=self.parent.wraplength,
-                  justify='center').pack()
-        ttk.Button(popup, text='Continue', command=lambda: popup.destroy()).pack()
-
-        popup.mainloop()
+        PopupWindow(self.parent,
+                    title="Barcode in Use",
+                    message="Warning: An item or user already exists with this barcode. "
+                            "Please try a different barcode.")

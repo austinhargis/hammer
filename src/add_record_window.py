@@ -4,6 +4,7 @@ from datetime import datetime
 from tkinter import ttk
 
 from record_info_template import RecordInfoTemplate
+from popup_window import PopupWindow
 
 from languages import *
 
@@ -15,7 +16,8 @@ class AddRecordWindow(RecordInfoTemplate):
 
         self.parent = parent
 
-        self.heading_label.configure(text=languages[self.parent.save_m.data['language']]['iteminfo']['item_add_heading'])
+        self.heading_label.configure(
+            text=languages[self.parent.save_m.data['language']]['iteminfo']['item_add_heading'])
 
         ttk.Button(self.button_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_add_item'],
@@ -26,17 +28,8 @@ class AddRecordWindow(RecordInfoTemplate):
     def create_record(self):
         item_information = self.get_item_info()
         if item_information[0].replace(' ', '') == '':
-            popup = tk.Toplevel(padx=self.parent.padding, pady=self.parent.padding)
-            popup.attributes('-topmost', True)
-            popup.title("Error!")
-            ttk.Label(popup,
-                      text="The barcode and title field must have a value"
-                           "specified before they can be added to the table.",
-                      wraplength=self.parent.wraplength,
-                      justify='center').pack()
-            ttk.Button(popup, text="Continue", command=popup.destroy).pack()
-
-            popup.mainloop()
+            PopupWindow(self.parent, "Missing Field", "The title field must have a value specified "
+                                                      "before this item can be added to the table.")
 
             return
 
