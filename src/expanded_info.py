@@ -24,19 +24,19 @@ class ExpandedInformation(tk.Frame):
     def window(self):
 
         main_frame = ttk.Frame(self)
-        main_frame.pack(expand=True, side='left', anchor='nw')
+        main_frame.pack(expand=True, fill='both', side='left', anchor='nw')
 
         top_frame = ttk.Frame(main_frame)
         top_frame.pack(side='top', fill='x', padx=self.parent.padding, pady=self.parent.padding)
 
         left_frame = ttk.Frame(top_frame)
-        left_frame.pack(side='left', anchor='nw')
+        left_frame.pack(fill='x', side='left', anchor='nw')
 
         right_frame = ttk.Frame(top_frame)
-        right_frame.pack(side='right', anchor='ne')
+        right_frame.pack(fill='x', expand=True, side='right', anchor='ne', padx=self.parent.padding)
 
         bottom_frame = ttk.Frame(main_frame)
-        bottom_frame.pack(side='bottom', fill='x', padx=self.parent.padding, pady=self.parent.padding)
+        bottom_frame.pack(side='bottom', expand=True, fill='both', padx=self.parent.padding, pady=self.parent.padding)
 
         title_frame = ttk.Frame(left_frame)
         title_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
@@ -67,7 +67,7 @@ class ExpandedInformation(tk.Frame):
         ttk.Label(type_frame, text=f'Type: {self.type}').pack(side='left')
 
         tree_frame = ttk.Frame(bottom_frame)
-        tree_frame.pack(side='left')
+        tree_frame.pack(expand=True, fill='both', side='top')
 
         self.tree = ttk.Treeview(tree_frame, columns=('barcode', 'location', 'status'))
 
@@ -76,19 +76,22 @@ class ExpandedInformation(tk.Frame):
         # show only the desired columns (hiding the id)
         self.tree['displaycolumns'] = ('barcode', 'location', 'status')
 
-        self.treeScroll = ttk.Scrollbar(tree_frame, command=self.tree.yview)
-        self.tree.configure(yscrollcommand=self.treeScroll.set)
-        self.treeScroll.pack(side='right', fill='both')
+        treeScroll = ttk.Scrollbar(tree_frame, command=self.tree.yview)
+        self.tree.configure(yscrollcommand=treeScroll.set)
+        treeScroll.pack(side='right', fill='both')
 
         self.tree.heading('barcode', text='Barcode')
         self.tree.heading('location', text='Location')
         self.tree.heading('status', text='Status')
-        self.tree.pack(expand=True, fill='y')
+        self.tree.pack(fill='both', expand=True)
 
-        ttk.Button(bottom_frame, text='Delete Item', command=lambda: self.delete_item()).pack()
+        button_frame = ttk.Frame(bottom_frame)
+        button_frame.pack(fill='both', side='bottom')
 
-        ttk.Button(tree_frame, text='Close', command=lambda: self.destroy()).pack(side='bottom',
-                                                                                  pady=self.parent.padding)
+        ttk.Button(button_frame, text='Delete Item', command=lambda: self.delete_item()).pack(side='left')
+
+        ttk.Button(button_frame, text='Close', command=lambda: self.destroy()).pack(side='left',
+                                                                                    pady=self.parent.padding)
 
     def get_record_items(self):
         items = self.parent.db.dbCursor.execute(f"""
