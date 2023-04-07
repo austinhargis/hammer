@@ -80,9 +80,9 @@ class MenuBar(tk.Menu):
             self.developer_menu.add_command(label='View Checkouts', underline=1,
                                             command=lambda: self.parent.create_tab(ViewCheckouts, 'View Checkouts'))
             self.developer_menu.add_command(label=languages[self.parent.save_m.data['language']]['users']['user_view'],
-                                        underline=1,
-                                        command=lambda: self.parent.create_tab(ViewUsers, languages[
-                                            self.parent.save_m.data['language']]['users']['user_view']))
+                                            underline=1,
+                                            command=lambda: self.parent.create_tab(ViewUsers, languages[
+                                                self.parent.save_m.data['language']]['users']['user_view']))
 
     def help(self):
         if self.parent.save_m.data['show_help_menu'] == 'enabled':

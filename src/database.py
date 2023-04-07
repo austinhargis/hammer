@@ -1,9 +1,7 @@
-import sqlite3
 import os
 import random
-import tkinter as tk
+import sqlite3
 from datetime import datetime
-from tkinter import ttk
 
 from popup_window import PopupWindow
 
@@ -78,7 +76,7 @@ class Database:
                 SELECT *
                 FROM checkouts
                 WHERE item_barcode=?
-            """, list(barcode,)).fetchall()
+            """, list(barcode, )).fetchall()
             if len(checkouts) > 0:
                 checkouts_with_barcode.append(checkouts[0])
 
@@ -107,7 +105,7 @@ class Database:
         selected = self.parent.tree.item(self.parent.tree.focus())
         record_id = selected['values'][0]
 
-        data = (record_id, f"Test{random.randint(0,1000)}", "Test")
+        data = (record_id, f"Test{random.randint(0, 1000)}", "Test")
 
         self.dbCursor.execute(f"""
             INSERT INTO items (id, barcode, location) 

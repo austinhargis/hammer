@@ -22,7 +22,8 @@ class UpdateChecker(tk.Frame):
 
     def check_for_update(self):
         self.parent.save_m.data['last_update_check'] = datetime.now().strftime('%I:%M%p %m/%d/%Y')
-        self.last_check.configure(text=f"{languages[self.parent.save_m.data['language']]['update']['update_last_checked']} {self.parent.save_m.data['last_update_check']}")
+        self.last_check.configure(
+            text=f"{languages[self.parent.save_m.data['language']]['update']['update_last_checked']} {self.parent.save_m.data['last_update_check']}")
 
         # Download the latest version file from the server
         urllib.request.urlretrieve('https://raw.githubusercontent.com/austinhargis/hammer/main/version.txt',
@@ -35,16 +36,17 @@ class UpdateChecker(tk.Frame):
             self.server_version = tuple(self.server_version_text.replace('\n', '').split('.'))
             self.current_version = tuple(self.version.split('.'))
 
-        self.server_label.configure(text=f"{languages[self.parent.save_m.data['language']]['update']['update_available_version']} {self.server_version_text}")
+        self.server_label.configure(
+            text=f"{languages[self.parent.save_m.data['language']]['update']['update_available_version']} {self.server_version_text}")
 
         # Determine whether the server version is newer than the current version
         if self.server_version > self.current_version:
             if self.update_button is None:
                 self.update_button = ttk.Button(self.check_update_frame,
-                                               text='Get Update',
-                                               command=lambda: webbrowser.open_new_tab(
-                                                   f'https://github.com/austinhargis/hammer/releases/tag/version_{self.server_version_text}')
-                                               )
+                                                text='Get Update',
+                                                command=lambda: webbrowser.open_new_tab(
+                                                    f'https://github.com/austinhargis/hammer/releases/tag/version_{self.server_version_text}')
+                                                )
                 self.update_button.pack(padx=self.parent.padding)
 
     def window(self):
@@ -68,13 +70,15 @@ class UpdateChecker(tk.Frame):
         server_version_frame = tk.Frame(main_frame)
         server_version_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         self.server_label = ttk.Label(server_version_frame,
-                                      text=languages[self.parent.save_m.data['language']]['update']['update_available_version'])
+                                      text=languages[self.parent.save_m.data['language']]['update'][
+                                          'update_available_version'])
         self.server_label.pack(side='left')
 
         current_version_frame = tk.Frame(main_frame)
         current_version_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(current_version_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['update']['update_your_version']} {self.version}").pack(side='left')
+                  text=f"{languages[self.parent.save_m.data['language']]['update']['update_your_version']} {self.version}").pack(
+            side='left')
 
         self.check_update_frame = tk.Frame(main_frame)
         self.check_update_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))

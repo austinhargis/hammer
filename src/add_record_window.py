@@ -1,12 +1,10 @@
 import sqlite3
-import tkinter as tk
 from datetime import datetime
 from tkinter import ttk
 
-from record_info_template import RecordInfoTemplate
-from popup_window import PopupWindow
-
 from languages import *
+from popup_window import PopupWindow
+from record_info_template import RecordInfoTemplate
 
 
 class AddRecordWindow(RecordInfoTemplate):

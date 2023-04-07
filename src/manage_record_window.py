@@ -1,9 +1,7 @@
-import tkinter as tk
 from tkinter import ttk
 
-from record_info_template import RecordInfoTemplate
-
 from languages import *
+from record_info_template import RecordInfoTemplate
 
 
 class ManageRecordWindow(RecordInfoTemplate):

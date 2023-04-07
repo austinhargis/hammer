@@ -33,11 +33,14 @@ class ViewCheckouts(tk.Frame):
         self.get_checkouts()
 
         self.checkout_tree.heading('user_barcode',
-                                   text=languages[self.parent.save_m.data['language']]['checking']['checkout_user_barcode'])
+                                   text=languages[self.parent.save_m.data['language']]['checking'][
+                                       'checkout_user_barcode'])
         self.checkout_tree.heading('item_barcode',
-                                   text=languages[self.parent.save_m.data['language']]['checking']['checkout_item_barcode'])
+                                   text=languages[self.parent.save_m.data['language']]['checking'][
+                                       'checkout_item_barcode'])
         self.checkout_tree.heading('item_title',
-                                   text=languages[self.parent.save_m.data['language']]['checking']['checkout_item_title'])
+                                   text=languages[self.parent.save_m.data['language']]['checking'][
+                                       'checkout_item_title'])
         self.checkout_tree.pack(fill='both', expand=True, padx=self.parent.padding, pady=(self.parent.padding, 0))
 
         close_frame = tk.Frame(main_frame)

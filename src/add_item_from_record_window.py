@@ -1,5 +1,4 @@
 import sqlite3
-import tkinter as tk
 from tkinter import ttk
 
 from record_child_template import RecordChildTemplate

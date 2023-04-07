@@ -8,24 +8,24 @@
 """
 import logging
 import os
-from pathlib import Path
-
 import tkinter as tk
+from pathlib import Path
 from tkinter import ttk
 
 from add_item_from_record_window import AddItemFromRecordWindow
 from add_record_window import AddRecordWindow
+from database import Database
 from expanded_info import ExpandedInformation
 from languages import *
 from manage_record_window import ManageRecordWindow
-from database import Database
 from menu_bar import MenuBar
 from save_manager import SaveManager
 
 if not os.path.isdir(f'{Path.home()}/hammer'):
     os.mkdir(f'{Path.home()}/hammer')
 
-logging.basicConfig(filename=f'{Path.home()}/hammer/hammer.log', format='%(asctime)s %(message)s', encoding='utf-8', level=logging.INFO,
+logging.basicConfig(filename=f'{Path.home()}/hammer/hammer.log', format='%(asctime)s %(message)s', encoding='utf-8',
+                    level=logging.INFO,
                     filemode='w')
 
 

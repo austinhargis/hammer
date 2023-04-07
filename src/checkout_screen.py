@@ -24,13 +24,17 @@ class CheckoutScreen(tk.Frame):
 
         user_frame = tk.Frame(main_frame)
         user_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(user_frame, text=languages[self.parent.save_m.data['language']]['checking']['checkout_user_barcode']).pack(side='left')
+        ttk.Label(user_frame,
+                  text=languages[self.parent.save_m.data['language']]['checking']['checkout_user_barcode']).pack(
+            side='left')
         self.user_barcode = tk.Entry(user_frame)
         self.user_barcode.pack(side='right')
 
         barcode_frame = tk.Frame(main_frame)
         barcode_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(barcode_frame, text=languages[self.parent.save_m.data['language']]['checking']['checkout_item_barcode']).pack(side='left')
+        ttk.Label(barcode_frame,
+                  text=languages[self.parent.save_m.data['language']]['checking']['checkout_item_barcode']).pack(
+            side='left')
         self.barcode_entry = tk.Entry(barcode_frame)
         self.barcode_entry.pack(side='right')
 

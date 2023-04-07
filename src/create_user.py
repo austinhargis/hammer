@@ -30,14 +30,14 @@ class CreateUser(tk.Frame):
 
         first_name_frame = tk.Frame(main_frame)
         first_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(first_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_first_name'])\
+        ttk.Label(first_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_first_name']) \
             .pack(side='left')
         first_name_entry = tk.Entry(first_name_frame)
         first_name_entry.pack(side='right')
 
         last_name_frame = tk.Frame(main_frame)
         last_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(last_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_last_name'])\
+        ttk.Label(last_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_last_name']) \
             .pack(side='left')
         last_name_entry = tk.Entry(last_name_frame)
         last_name_entry.pack(side='right')

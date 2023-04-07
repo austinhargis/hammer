@@ -41,13 +41,13 @@ class ExpandedInformation(tk.Frame):
         title_frame = ttk.Frame(left_frame)
         title_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(title_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_title']}: {self.title}")\
+                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_title']}: {self.title}") \
             .pack(side='left')
 
         author_frame = ttk.Frame(left_frame)
         author_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(author_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_author']}: {self.author}")\
+                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_author']}: {self.author}") \
             .pack(side='left')
 
         description_frame = ttk.Frame(left_frame)
