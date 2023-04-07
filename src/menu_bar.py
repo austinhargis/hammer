@@ -72,17 +72,13 @@ class MenuBar(tk.Menu):
                 label=languages[self.parent.save_m.data['language']]['developer']['test_add'], underline=1,
                 command=lambda: self.parent.test_add_item())
             self.developer_menu.add_command(
-                label='Create Item', underline=1,
+                label='Create Item on Record', underline=1,
                 command=lambda: self.parent.db.test_add_item_query())
             self.developer_menu.add_command(
                 label=languages[self.parent.save_m.data['language']]['developer']['table_drop'], underline=1,
                 command=lambda: self.parent.drop_table())
-            self.developer_menu.add_command(label='View Checkouts', underline=1,
+            self.developer_menu.add_command(label='View All Checkouts', underline=1,
                                             command=lambda: self.parent.create_tab(ViewCheckouts, 'View Checkouts'))
-            self.developer_menu.add_command(label=languages[self.parent.save_m.data['language']]['users']['user_view'],
-                                            underline=1,
-                                            command=lambda: self.parent.create_tab(ViewUsers, languages[
-                                                self.parent.save_m.data['language']]['users']['user_view']))
 
     def help(self):
         if self.parent.save_m.data['show_help_menu'] == 'enabled':
