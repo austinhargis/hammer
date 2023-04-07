@@ -14,12 +14,16 @@ from tkinter import ttk
 
 from add_item_from_record_window import AddItemFromRecordWindow
 from add_record_window import AddRecordWindow
+from checkin_screen import CheckinScreen
+from checkout_screen import CheckoutScreen
+from create_user import CreateUser
 from database import Database
 from expanded_info import ExpandedInformation
 from languages import *
 from manage_record_window import ManageRecordWindow
 from menu_bar import MenuBar
 from save_manager import SaveManager
+from view_users import ViewUsers
 
 if not os.path.isdir(f'{Path.home()}/hammer'):
     os.mkdir(f'{Path.home()}/hammer')
@@ -202,32 +206,65 @@ class Hammer(tk.Tk):
 
     def window(self):
 
-        screen_frame = tk.Frame(self.tab_controller, padx=self.padding, pady=self.padding)
-        screen_frame.pack()
+        main_frame = ttk.Frame(self.tab_controller)
+        main_frame.pack(padx=self.padding, pady=self.padding)
 
-        self.tab_controller.add(screen_frame, text='Home')
+        self.tab_controller.add(main_frame, text='Home')
         self.tab_controller.pack(expand=1, fill='both')
-        self.tab_controller.bind('<Button-2>', lambda event: self.delete_tab())
 
-        manage_frame = tk.Frame(screen_frame, padx=self.padding, pady=self.padding)
-        manage_frame.pack(side='left', anchor='nw')
+        left_frame = ttk.Frame(main_frame)
+        left_frame.pack(side='left', anchor='nw')
+
+        right_frame = ttk.Frame(main_frame)
+        right_frame.pack(fill='both', expand=True, side='right', anchor='ne', padx=self.padding)
+
+        top_right_frame = tk.Frame(right_frame)
+        top_right_frame.pack(expand=True, fill='both', side='top')
+
+        bottom_right_frame = ttk.Frame(right_frame)
+        bottom_right_frame.pack(fill='both', side='bottom')
+
+        checkout_frame = ttk.Frame(left_frame)
+        checkout_frame.pack(fill='x', side='top', anchor='nw', padx=self.padding, pady=(0, self.padding))
+
+        ttk.Label(checkout_frame, text='Item Check', font=self.heading_font).pack(anchor='nw')
+        ttk.Button(checkout_frame,
+                   text='Check In',
+                   command=lambda: self.create_tab(CheckinScreen, 'Check In')).pack(fill='x')
+        ttk.Button(checkout_frame,
+                   text='Checkout',
+                   command=lambda: self.create_tab(CheckoutScreen, 'Checkout')).pack(fill='x')
+
+        manage_frame = ttk.Frame(left_frame)
+        manage_frame.pack(fill='x', side='top', anchor='nw', padx=self.padding, pady=(0, self.padding))
+
+        ttk.Label(manage_frame, text='Manage Items', font=self.heading_font).pack(anchor='nw')
         ttk.Button(manage_frame, text='Add Record',
-                   command=lambda: self.create_tab(AddRecordWindow, 'Add Record')).pack()
+                   command=lambda: self.create_tab(AddRecordWindow, 'Add Record')).pack(fill='x')
         self.manage_button = ttk.Button(manage_frame,
                                         text='Manage Record',
                                         command=lambda: self.create_tab(ManageRecordWindow, 'Manage Record'))
-        self.manage_button.pack()
+        self.manage_button.pack(fill='x')
         self.manage_button.configure(state='disabled')
 
         ttk.Button(manage_frame, text='Create Item From Record',
-                   command=lambda: self.create_tab(AddItemFromRecordWindow, 'Create Item From Record')).pack()
+                   command=lambda: self.create_tab(AddItemFromRecordWindow, 'Create Item From Record')).pack(fill='x')
         ttk.Button(manage_frame, text='Delete Record + Items',
-                   command=lambda: self.delete_entry()).pack()
+                   command=lambda: self.delete_entry()).pack(fill='x')
+
+        users_frame = ttk.Frame(left_frame)
+        users_frame.pack(fill='x', side='top', padx=self.padding)
+
+        ttk.Label(users_frame, text='Users', font=self.heading_font).pack(side='top')
+        ttk.Button(users_frame,
+                   text='Create User',
+                   command=lambda: self.create_tab(CreateUser, 'Create User')).pack(fill='x')
+        ttk.Button(users_frame,
+                   text='View Users',
+                   command=lambda: self.create_tab(ViewUsers, 'View Users')).pack(fill='x')
 
         # creates the TreeView which will handle displaying all schema in the database
-        tree_frame = tk.Frame(screen_frame)
-        tree_frame.pack(side='right', anchor='ne')
-        self.tree = ttk.Treeview(tree_frame,
+        self.tree = ttk.Treeview(top_right_frame,
                                  columns=(
                                      'id', 'title', 'author', 'publish_date', 'type'))
         # hide the initial blank column that comes with TreeViews
@@ -235,7 +272,7 @@ class Hammer(tk.Tk):
         # show only the desired columns (hiding the id)
         self.tree['displaycolumns'] = ('title', 'author', 'publish_date', 'type',)
 
-        self.treeScroll = ttk.Scrollbar(tree_frame, command=self.tree.yview)
+        self.treeScroll = ttk.Scrollbar(top_right_frame, command=self.tree.yview)
         self.tree.configure(yscrollcommand=self.treeScroll.set)
         self.treeScroll.pack(side='right', fill='both')
 
@@ -246,12 +283,13 @@ class Hammer(tk.Tk):
         self.tree.column('author', stretch=False, width=150)
         self.tree.heading('publish_date', text='Publish Date')
         self.tree.heading('type', text='Type')
-        self.tree.pack(expand=True, fill='y')
+        self.tree.pack(expand=True, fill='both', padx=self.padding, pady=self.padding)
 
-        search_frame = tk.Frame(tree_frame)
-        search_frame.pack(fill='both', expand=True, pady=self.padding)
+        search_frame = tk.Frame(bottom_right_frame)
+        search_frame.pack(fill='both', pady=self.padding)
+        ttk.Label(search_frame, text='Search:', font=self.heading_font).pack(side='left', padx=self.padding)
         search_box = tk.Entry(search_frame)
-        search_box.pack(side='left', padx=self.padding)
+        search_box.pack(side='left', padx=(0, self.padding), pady=self.padding)
         ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
 
         self.bind('<Return>', lambda event: self.search_table(search_box))
@@ -280,9 +318,6 @@ class Hammer(tk.Tk):
             self.tab_controller.add(window(self), text=title[0:10])
         tabs = self.tab_controller.tabs()
         self.tab_controller.select(len(tabs) - 1)
-
-    def delete_tab(self, event):
-        pass
 
 
 if __name__ == "__main__":

@@ -63,7 +63,7 @@ class Database:
             :param data: a tuple of the data that needs to be deleted from the table
             :return: nothing
         """
-        print(data)
+
         item_barcodes = self.dbCursor.execute(f"""
             SELECT barcode
             FROM items
