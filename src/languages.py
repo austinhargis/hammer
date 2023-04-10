@@ -14,7 +14,10 @@ languages = {
             'test_add': 'Add Test Item',
             'table_drop': 'Drop All Tables'
         },
-        'iteminfo': {
+        'general': {
+            'home_tab': 'Home'
+        },
+        'item_info': {
             'item_add_heading': 'Create Item',
             'item_manage_heading': 'Manage Item Info',
             'item_barcode': 'Barcode',
@@ -27,7 +30,12 @@ languages = {
             'item_quantity': 'Item Quantity',
             'item_status': 'Status',
             'item_available': 'Available',
-            'item_unavailable': 'Checked Out'
+            'item_unavailable': 'Checked Out',
+            'item_check_heading': 'Item Check',
+            'item_action_check_in': 'Check In',
+            'item_action_check_out': 'Check Out',
+            'item_record_add': 'Add Record',
+            'item_record_manage': 'Manage Record',
         },
         'menubar': {
             'file_menu': 'File',
@@ -40,6 +48,8 @@ languages = {
             'prompt_accept': 'Okay',
             'prompt_add_item': 'Add Record',
             'prompt_add_item_to_record': 'Create Item From Record',
+            'prompt_confirm': 'Confirm',
+            'prompt_delete': 'Are you sure you would like to delete this?',
             'prompt_deny': 'Cancel',
             'prompt_exit': 'Close',
             'prompts_save_changes': 'Save Changes'

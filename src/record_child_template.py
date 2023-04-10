@@ -34,6 +34,12 @@ class RecordChildTemplate(tk.Frame):
         self.location_entry = ttk.Entry(location_frame)
         self.location_entry.pack(side='right')
 
+        description_frame = ttk.Frame(main_frame)
+        description_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(description_frame, text='Descriptor').pack(side='left')
+        self.description_entry = ttk.Entry(description_frame)
+        self.description_entry.pack(side='right')
+
         self.button_frame = ttk.Frame(main_frame)
         self.button_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(self.button_frame,
@@ -46,6 +52,7 @@ class RecordChildTemplate(tk.Frame):
             self.id,
             self.barcode_entry.get(),
             self.location_entry.get(),
+            self.description_entry.get()
         ]
 
     def get_item_record(self):

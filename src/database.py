@@ -15,42 +15,51 @@ class Database:
             self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
             self.dbCursor = self.dbConnection.cursor()
             self.dbCursor.execute(f"""
-                    CREATE TABLE item_record(
-                        id INTEGER PRIMARY KEY AUTOINCREMENT,      
-                        title varchar,
-                        author varchar,
-                        publish_date varchar,
-                        type varchar,
-                        location varchar,
-                        quantity varchar,
-                        description varchar,
-                        creation_date datetime,
-                        managed_date datetime
-                    )""")
+                CREATE TABLE item_record(
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,      
+                    title varchar,
+                    author varchar,
+                    publish_date varchar,
+                    type varchar,
+                    location varchar,
+                    quantity varchar,
+                    description varchar,
+                    creation_date datetime,
+                    managed_date datetime
+                )""")
+            self.dbCursor.execute(f"""
+                CREATE TABLE locations(
+                    location_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    barcode varchar UNIQUE NOT NULL,
+                    name varchar
+                )
+                """)
             self.dbCursor.execute(f"""
                 CREATE TABLE items(
                     id INTEGER,
-                    barcode varchar PRIMARY KEY,
-                    location varchar,
-                    FOREIGN KEY(id) REFERENCES item_record(id)
+                    barcode varchar PRIMARY KEY NOT NULL,
+                    location_id varchar,
+                    description varchar,
+                    FOREIGN KEY(id) REFERENCES item_record(id),
+                    FOREIGN KEY(location_id) REFERENCES locations(location_id)
                 )
-            """)
+                """)
             self.dbCursor.execute(f"""
-                    CREATE TABLE users(
-                        user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                        barcode varchar UNIQUE,
-                        first_name varchar,
-                        last_name varchar,
-                        creation_date date
-                    )""")
+                CREATE TABLE users(
+                    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    barcode varchar UNIQUE,
+                    first_name varchar,
+                    last_name varchar,
+                    creation_date date
+                )""")
             self.dbCursor.execute(f"""
-                    CREATE TABLE checkouts(
-                        user_barcode varchar,
-                        item_barcode varchar UNIQUE,
-                        creation_date datetime,
-                        FOREIGN KEY(user_barcode) REFERENCES users(barcode),
-                        FOREIGN KEY(item_barcode) REFERENCES items(barcode)
-                    )""")
+                CREATE TABLE checkouts(
+                    user_barcode varchar,
+                    item_barcode varchar UNIQUE,
+                    creation_date datetime,
+                    FOREIGN KEY(user_barcode) REFERENCES users(barcode),
+                    FOREIGN KEY(item_barcode) REFERENCES items(barcode)
+                )""")
             self.dbConnection.commit()
 
         else:
