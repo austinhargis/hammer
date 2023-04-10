@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 from languages import *
-
+from popup_window import PopupWindow
 
 class ExpandedInformation(tk.Frame):
 
@@ -41,25 +41,25 @@ class ExpandedInformation(tk.Frame):
         title_frame = ttk.Frame(left_frame)
         title_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(title_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_title']}: {self.title}") \
+                  text=f"{languages[self.parent.save_m.data['language']]['item_info']['item_title']}: {self.title}") \
             .pack(side='left')
 
         author_frame = ttk.Frame(left_frame)
         author_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(author_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_author']}: {self.author}") \
+                  text=f"{languages[self.parent.save_m.data['language']]['item_info']['item_author']}: {self.author}") \
             .pack(side='left')
 
         description_frame = ttk.Frame(left_frame)
         description_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(description_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_description']}: "
+                  text=f"{languages[self.parent.save_m.data['language']]['item_info']['item_description']}: "
                        f"{self.description}").pack(side='left')
 
         publish_date_frame = ttk.Frame(right_frame)
         publish_date_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(publish_date_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['iteminfo']['item_publish_date']}: "
+                  text=f"{languages[self.parent.save_m.data['language']]['item_info']['item_publish_date']}: "
                        f"{self.publish_date}").pack(side='left')
 
         type_frame = ttk.Frame(right_frame)
@@ -69,12 +69,12 @@ class ExpandedInformation(tk.Frame):
         tree_frame = ttk.Frame(bottom_frame)
         tree_frame.pack(expand=True, fill='both', side='top')
 
-        self.tree = ttk.Treeview(tree_frame, columns=('barcode', 'location', 'status'))
+        self.tree = ttk.Treeview(tree_frame, columns=('barcode', 'location', 'description', 'status'))
 
         # hide the initial blank column that comes with TreeViews
         self.tree['show'] = 'headings'
         # show only the desired columns (hiding the id)
-        self.tree['displaycolumns'] = ('barcode', 'location', 'status')
+        self.tree['displaycolumns'] = ('barcode', 'location', 'description', 'status')
 
         treeScroll = ttk.Scrollbar(tree_frame, command=self.tree.yview)
         self.tree.configure(yscrollcommand=treeScroll.set)
@@ -82,16 +82,24 @@ class ExpandedInformation(tk.Frame):
 
         self.tree.heading('barcode', text='Barcode')
         self.tree.heading('location', text='Location')
+        self.tree.heading('description', text='Description')
         self.tree.heading('status', text='Status')
         self.tree.pack(fill='both', expand=True)
 
         button_frame = ttk.Frame(bottom_frame)
         button_frame.pack(fill='both', side='bottom')
 
-        ttk.Button(button_frame, text='Delete Item', command=lambda: self.delete_item()).pack(side='left')
+        ttk.Button(button_frame, text='Delete Item', command=lambda: [self.delete_item(), self.refresh_table()]).pack(side='left')
 
         ttk.Button(button_frame, text='Close', command=lambda: self.destroy()).pack(side='left',
                                                                                     pady=self.parent.padding)
+
+    def refresh_table(self):
+
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        self.get_record_items()
 
     def get_record_items(self):
         items = self.parent.db.dbCursor.execute(f"""
@@ -107,7 +115,7 @@ class ExpandedInformation(tk.Frame):
             self.tree.insert('', tk.END, values=item)
 
     def delete_item(self):
-        selected = self.tree.item(self.parent.tree.focus())
+        selected = self.tree.item(self.tree.focus())
         barcode = selected['values'][0]
 
         barcode_checkouts = self.parent.db.dbCursor.execute(f"""
@@ -122,3 +130,7 @@ class ExpandedInformation(tk.Frame):
                 WHERE barcode=?
             """, (barcode,))
             self.parent.db.dbConnection.commit()
+        else:
+            PopupWindow(self.parent,
+                        'Barcode Checked Out',
+                        'This item cannot be deleted at this time because it is currently checked out.')

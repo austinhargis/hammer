@@ -19,16 +19,16 @@ class SettingsWindow(tk.Frame):
 
         self.parent = parent
 
-        main_frame = tk.Frame(self)
+        main_frame = ttk.Frame(self)
         main_frame.pack(side='left', anchor='nw')
 
-        heading_frame = tk.Frame(main_frame)
+        heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(heading_frame,
                   text=languages[self.parent.save_m.data['language']]['settings']['settings_heading'],
                   font=self.parent.heading_font).pack(side='left')
 
-        theme_frame = tk.Frame(main_frame)
+        theme_frame = ttk.Frame(main_frame)
         theme_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(theme_frame,
                   text=languages[self.parent.save_m.data['language']]['settings']['settings_theme']).pack(side='left')
@@ -38,7 +38,7 @@ class SettingsWindow(tk.Frame):
         theme_dropdown.pack(side='right')
         theme_dropdown.configure(state=self.parent.save_m.settings_enabled)
 
-        update_frame = tk.Frame(main_frame)
+        update_frame = ttk.Frame(main_frame)
         update_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(update_frame,
                   text=languages[self.parent.save_m.data['language']]['settings']['settings_update_check']).pack(
@@ -51,7 +51,7 @@ class SettingsWindow(tk.Frame):
         update_dropdown.pack(side='right')
         update_dropdown.configure(state='disabled')
 
-        checkout_frame = tk.Frame(main_frame)
+        checkout_frame = ttk.Frame(main_frame)
         checkout_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(checkout_frame,
                   text=languages[self.parent.save_m.data['language']]['settings']['settings_show_checkout']).pack(
@@ -64,7 +64,7 @@ class SettingsWindow(tk.Frame):
         checkout_dropdown.pack(side='right')
         checkout_dropdown.configure(state=self.parent.save_m.settings_enabled)
 
-        developer_frame = tk.Frame(main_frame)
+        developer_frame = ttk.Frame(main_frame)
         developer_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(developer_frame,
                   text=languages[self.parent.save_m.data['language']]['settings']['settings_show_developer']).pack(
@@ -77,7 +77,7 @@ class SettingsWindow(tk.Frame):
         developer_dropdown.pack(side='right')
         developer_dropdown.configure(state=self.parent.save_m.settings_enabled)
 
-        help_frame = tk.Frame(main_frame)
+        help_frame = ttk.Frame(main_frame)
         help_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(help_frame,
                   text=languages[self.parent.save_m.data['language']]['settings']['settings_show_help']).pack(
@@ -90,7 +90,7 @@ class SettingsWindow(tk.Frame):
         help_dropdown.pack(side='right')
         help_dropdown.configure(state=self.parent.save_m.settings_enabled)
 
-        users_frame = tk.Frame(main_frame)
+        users_frame = ttk.Frame(main_frame)
         users_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(users_frame,
                   text=languages[self.parent.save_m.data['language']]['settings']['settings_show_users']).pack(
@@ -103,7 +103,7 @@ class SettingsWindow(tk.Frame):
         users_dropdown.pack(side='right')
         users_dropdown.configure(state=self.parent.save_m.settings_enabled)
 
-        save_settings_frame = tk.Frame(main_frame)
+        save_settings_frame = ttk.Frame(main_frame)
         save_settings_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(save_settings_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompts_save_changes'],

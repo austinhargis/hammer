@@ -51,42 +51,42 @@ class UpdateChecker(tk.Frame):
 
     def window(self):
 
-        main_frame = tk.Frame(self)
+        main_frame = ttk.Frame(self)
         main_frame.pack(side='left', anchor='nw')
 
-        title_frame = tk.Frame(main_frame)
+        title_frame = ttk.Frame(main_frame)
         title_frame.pack(fill='both', padx=self.parent.padding,
                          pady=self.parent.padding)
         ttk.Label(title_frame,
                   text=languages[self.parent.save_m.data['language']]['update']['update_header'],
                   font=self.parent.heading_font).pack(side='left')
 
-        subtitle_frame = tk.Frame(main_frame)
+        subtitle_frame = ttk.Frame(main_frame)
         subtitle_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         self.last_check = ttk.Label(subtitle_frame,
                                     text=f"{languages[self.parent.save_m.data['language']]['update']['update_last_checked']} {self.parent.save_m.data['last_update_check']}")
         self.last_check.pack(side='left')
 
-        server_version_frame = tk.Frame(main_frame)
+        server_version_frame = ttk.Frame(main_frame)
         server_version_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         self.server_label = ttk.Label(server_version_frame,
                                       text=languages[self.parent.save_m.data['language']]['update'][
                                           'update_available_version'])
         self.server_label.pack(side='left')
 
-        current_version_frame = tk.Frame(main_frame)
+        current_version_frame = ttk.Frame(main_frame)
         current_version_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(current_version_frame,
                   text=f"{languages[self.parent.save_m.data['language']]['update']['update_your_version']} {self.version}").pack(
             side='left')
 
-        self.check_update_frame = tk.Frame(main_frame)
+        self.check_update_frame = ttk.Frame(main_frame)
         self.check_update_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(self.check_update_frame,
                    text=languages[self.parent.save_m.data['language']]['update']['update_check_for'],
                    command=lambda: self.check_for_update()).pack(side='left')
 
-        quit_frame = tk.Frame(main_frame)
+        quit_frame = ttk.Frame(main_frame)
         quit_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(quit_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],

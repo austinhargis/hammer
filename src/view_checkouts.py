@@ -4,23 +4,23 @@ from tkinter import ttk
 from languages import *
 
 
-class ViewCheckouts(tk.Frame):
+class ViewCheckouts(ttk.Frame):
 
     def __init__(self, parent):
         super().__init__()
 
         self.parent = parent
 
-        main_frame = tk.Frame(self)
+        main_frame = ttk.Frame(self)
         main_frame.pack(fill='both', expand=True)
 
-        heading_frame = tk.Frame(main_frame)
+        heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(main_frame,
                   text=languages[self.parent.save_m.data['language']]['checking']['checkout_view'],
                   font=self.parent.heading_font).pack()
 
-        tree_frame = tk.Frame(main_frame)
+        tree_frame = ttk.Frame(main_frame)
         tree_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         self.checkout_tree = ttk.Treeview(tree_frame, columns=('user_barcode', 'item_barcode', 'item_title'))
         self.checkout_tree['show'] = 'headings'
@@ -43,7 +43,7 @@ class ViewCheckouts(tk.Frame):
                                        'checkout_item_title'])
         self.checkout_tree.pack(fill='both', expand=True, padx=self.parent.padding, pady=(self.parent.padding, 0))
 
-        close_frame = tk.Frame(main_frame)
+        close_frame = ttk.Frame(main_frame)
         close_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Button(close_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],

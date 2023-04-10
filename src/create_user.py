@@ -13,36 +13,36 @@ class CreateUser(tk.Frame):
 
         self.parent = parent
 
-        main_frame = tk.Frame(self)
+        main_frame = ttk.Frame(self)
         main_frame.pack(side='left', anchor='nw')
 
-        title_frame = tk.Frame(main_frame)
+        title_frame = ttk.Frame(main_frame)
         title_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(title_frame, text=languages[self.parent.save_m.data['language']]['users']['user_create_heading'],
                   font=self.parent.heading_font).pack(side='left')
 
-        barcode_frame = tk.Frame(main_frame)
+        barcode_frame = ttk.Frame(main_frame)
         barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(barcode_frame,
                   text=languages[self.parent.save_m.data['language']]['users']['user_barcode']).pack(side='left')
-        barcode_entry = tk.Entry(barcode_frame)
+        barcode_entry = ttk.Entry(barcode_frame)
         barcode_entry.pack(side='right')
 
-        first_name_frame = tk.Frame(main_frame)
+        first_name_frame = ttk.Frame(main_frame)
         first_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(first_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_first_name']) \
             .pack(side='left')
-        first_name_entry = tk.Entry(first_name_frame)
+        first_name_entry = ttk.Entry(first_name_frame)
         first_name_entry.pack(side='right')
 
-        last_name_frame = tk.Frame(main_frame)
+        last_name_frame = ttk.Frame(main_frame)
         last_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(last_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_last_name']) \
             .pack(side='left')
-        last_name_entry = tk.Entry(last_name_frame)
+        last_name_entry = ttk.Entry(last_name_frame)
         last_name_entry.pack(side='right')
 
-        button_frame = tk.Frame(main_frame)
+        button_frame = ttk.Frame(main_frame)
         button_frame.pack(expand=True, padx=self.parent.padding,
                           pady=(0, self.parent.padding))
         ttk.Button(button_frame, text=languages[self.parent.save_m.data['language']]['users']['user_create_heading'],

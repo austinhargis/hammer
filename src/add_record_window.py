@@ -15,7 +15,7 @@ class AddRecordWindow(RecordInfoTemplate):
         self.parent = parent
 
         self.heading_label.configure(
-            text=languages[self.parent.save_m.data['language']]['iteminfo']['item_add_heading'])
+            text=languages[self.parent.save_m.data['language']]['item_info']['item_add_heading'])
 
         ttk.Button(self.button_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_add_item'],

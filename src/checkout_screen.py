@@ -13,32 +13,32 @@ class CheckoutScreen(tk.Frame):
 
         self.parent = parent
 
-        main_frame = tk.Frame(self)
+        main_frame = ttk.Frame(self)
         main_frame.pack(side='left', anchor='nw')
 
-        heading_frame = tk.Frame(main_frame)
+        heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(heading_frame,
                   text=languages[self.parent.save_m.data['language']]['checking']['checkout_heading'],
                   font=self.parent.heading_font).pack(side='left')
 
-        user_frame = tk.Frame(main_frame)
+        user_frame = ttk.Frame(main_frame)
         user_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(user_frame,
                   text=languages[self.parent.save_m.data['language']]['checking']['checkout_user_barcode']).pack(
             side='left')
-        self.user_barcode = tk.Entry(user_frame)
+        self.user_barcode = ttk.Entry(user_frame)
         self.user_barcode.pack(side='right')
 
-        barcode_frame = tk.Frame(main_frame)
+        barcode_frame = ttk.Frame(main_frame)
         barcode_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(barcode_frame,
                   text=languages[self.parent.save_m.data['language']]['checking']['checkout_item_barcode']).pack(
             side='left')
-        self.barcode_entry = tk.Entry(barcode_frame)
+        self.barcode_entry = ttk.Entry(barcode_frame)
         self.barcode_entry.pack(side='right')
 
-        button_frame = tk.Frame(main_frame)
+        button_frame = ttk.Frame(main_frame)
         button_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(button_frame,
                    text=languages[self.parent.save_m.data['language']]['checking']['checkout_confirm'],

@@ -15,7 +15,7 @@ class RecordInfoTemplate(tk.Frame):
         # self.resizable(False, False)
         # self.title(f'{process.capitalize()} Item')
 
-        main_frame = tk.Frame(self)
+        main_frame = ttk.Frame(self)
         main_frame.pack(side='left', anchor='nw')
 
         self.heading_frame = ttk.Frame(main_frame)
@@ -25,7 +25,7 @@ class RecordInfoTemplate(tk.Frame):
 
         self.title_frame = ttk.Frame(main_frame)
         self.title_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(self.title_frame, text=languages[self.parent.save_m.data['language']]['iteminfo']['item_title']).pack(
+        ttk.Label(self.title_frame, text=languages[self.parent.save_m.data['language']]['item_info']['item_title']).pack(
             side='left')
         self.title_text = ttk.Entry(self.title_frame)
         self.title_text.pack(side='right')
@@ -33,14 +33,14 @@ class RecordInfoTemplate(tk.Frame):
         self.author_frame = ttk.Frame(main_frame)
         self.author_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(self.author_frame,
-                  text=languages[self.parent.save_m.data['language']]['iteminfo']['item_author']).pack(side='left')
+                  text=languages[self.parent.save_m.data['language']]['item_info']['item_author']).pack(side='left')
         self.author_text = ttk.Entry(self.author_frame)
         self.author_text.pack(side='right')
 
         self.description_frame = ttk.Frame(main_frame)
         self.description_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(self.description_frame,
-                  text=languages[self.parent.save_m.data['language']]['iteminfo']['item_description']).pack(side='left',
+                  text=languages[self.parent.save_m.data['language']]['item_info']['item_description']).pack(side='left',
                                                                                                             anchor='nw')
         self.description_text_frame = ttk.Frame(self.description_frame)
         self.description_text_frame.pack()
@@ -50,14 +50,14 @@ class RecordInfoTemplate(tk.Frame):
         self.publish_frame = ttk.Frame(main_frame)
         self.publish_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(self.publish_frame,
-                  text=languages[self.parent.save_m.data['language']]['iteminfo']['item_publish_date']).pack(
+                  text=languages[self.parent.save_m.data['language']]['item_info']['item_publish_date']).pack(
             side='left')
         self.publish_date_text = ttk.Entry(self.publish_frame)
         self.publish_date_text.pack(side='right')
 
         self.type_frame = ttk.Frame(main_frame)
         self.type_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(self.type_frame, text=languages[self.parent.save_m.data['language']]['iteminfo']['item_type']).pack(
+        ttk.Label(self.type_frame, text=languages[self.parent.save_m.data['language']]['item_info']['item_type']).pack(
             side='left')
         self.type_text = ttk.Entry(self.type_frame)
         self.type_text.pack(side='right')

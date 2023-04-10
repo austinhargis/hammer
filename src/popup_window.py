@@ -12,7 +12,7 @@ class PopupWindow(tk.Toplevel):
 
         self.parent = parent
 
-        main_frame = tk.Frame(self)
+        main_frame = ttk.Frame(self)
         main_frame.pack(padx=self.parent.padding, pady=self.parent.padding)
 
         ttk.Label(main_frame,
