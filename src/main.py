@@ -20,6 +20,8 @@ from create_user import CreateUser
 from database import Database
 from expanded_info import ExpandedInformation
 from languages import *
+from location_create import LocationCreate
+from location_view import LocationView
 from manage_record_window import ManageRecordWindow
 from menu_bar import MenuBar
 from save_manager import SaveManager
@@ -111,20 +113,20 @@ class Hammer(tk.Tk):
         popup.title('Confirm Delete?')
 
         ttk.Label(popup,
-                  text='Are you sure you would like to delete this?',
+                  text=languages[self.save_m.data['language']]['prompts']['prompt_delete'],
                   wraplength=self.wraplength,
                   justify='center').pack()
         ttk.Label(popup,
                   text=f'Item: {self.tree.item(self.tree.focus())["values"][1]}').pack()
 
-        button_frame = tk.Frame(popup)
+        button_frame = ttk.Frame(popup)
         button_frame.pack(expand=True)
 
         ttk.Button(button_frame,
-                   text='Confirm',
+                   text=languages[self.save_m.data['language']]['prompts']['prompt_confirm'],
                    command=lambda: [self.delete_entry(), popup.destroy()]).pack(side='left')
         ttk.Button(button_frame,
-                   text='Cancel',
+                   text=languages[self.save_m.data['language']]['prompts']['prompt_deny'],
                    command=lambda: popup.destroy()).pack(side='right')
 
         popup.mainloop()
@@ -169,9 +171,9 @@ class Hammer(tk.Tk):
         """, (barcode,)).fetchall()
 
         if len(check_status) == 0:
-            return languages[self.save_m.data['language']]['iteminfo']['item_available']
+            return languages[self.save_m.data['language']]['item_info']['item_available']
         else:
-            return languages[self.save_m.data['language']]['iteminfo']['item_unavailable']
+            return languages[self.save_m.data['language']]['item_info']['item_unavailable']
 
     def refresh_table(self):
         """
@@ -197,10 +199,12 @@ class Hammer(tk.Tk):
 
         current_table = self.db.dbCursor.execute(f"""SELECT * 
                                                      FROM item_record 
+                                                     INNER JOIN items
+                                                     ON item_record.id = items.id
                                                      WHERE title LIKE \'%{search_term}%\' 
                                                      OR author LIKE \'%{search_term}%\'
                                                      OR publish_date LIKE \'%{search_term}%\'
-                                                     OR type LIKE \'%{search_term}%\'""").fetchall()
+                                                     OR type LIKE \'%{search_term}%\'""")
         self.clear_table()
         self.populate_table(current_table)
 
@@ -209,7 +213,7 @@ class Hammer(tk.Tk):
         main_frame = ttk.Frame(self.tab_controller)
         main_frame.pack(padx=self.padding, pady=self.padding)
 
-        self.tab_controller.add(main_frame, text='Home')
+        self.tab_controller.add(main_frame, text=languages[self.save_m.data['language']]['general']['home_tab'])
         self.tab_controller.pack(expand=1, fill='both')
 
         left_frame = ttk.Frame(main_frame)
@@ -218,7 +222,7 @@ class Hammer(tk.Tk):
         right_frame = ttk.Frame(main_frame)
         right_frame.pack(fill='both', expand=True, side='right', anchor='ne', padx=self.padding)
 
-        top_right_frame = tk.Frame(right_frame)
+        top_right_frame = ttk.Frame(right_frame)
         top_right_frame.pack(expand=True, fill='both', side='top')
 
         bottom_right_frame = ttk.Frame(right_frame)
@@ -227,23 +231,25 @@ class Hammer(tk.Tk):
         checkout_frame = ttk.Frame(left_frame)
         checkout_frame.pack(fill='x', side='top', anchor='nw', padx=self.padding, pady=(0, self.padding))
 
-        ttk.Label(checkout_frame, text='Item Check', font=self.heading_font).pack(anchor='nw')
+        ttk.Label(checkout_frame,
+                  text=languages[self.save_m.data['language']]['item_info']['item_check_heading'],
+                  font=self.heading_font).pack(anchor='nw')
         ttk.Button(checkout_frame,
-                   text='Check In',
-                   command=lambda: self.create_tab(CheckinScreen, 'Check In')).pack(fill='x')
+                   text=languages[self.save_m.data['language']]['item_info']['item_action_check_in'],
+                   command=lambda: self.create_tab(CheckinScreen, languages[self.save_m.data['language']]['item_info']['item_action_check_in'])).pack(fill='x')
         ttk.Button(checkout_frame,
-                   text='Checkout',
-                   command=lambda: self.create_tab(CheckoutScreen, 'Checkout')).pack(fill='x')
+                   text=languages[self.save_m.data['language']]['item_info']['item_action_check_out'],
+                   command=lambda: self.create_tab(CheckoutScreen, languages[self.save_m.data['language']]['item_info']['item_action_check_out'])).pack(fill='x')
 
         manage_frame = ttk.Frame(left_frame)
         manage_frame.pack(fill='x', side='top', anchor='nw', padx=self.padding, pady=(0, self.padding))
 
         ttk.Label(manage_frame, text='Manage Items', font=self.heading_font).pack(anchor='nw')
-        ttk.Button(manage_frame, text='Add Record',
-                   command=lambda: self.create_tab(AddRecordWindow, 'Add Record')).pack(fill='x')
+        ttk.Button(manage_frame, text=languages[self.save_m.data['language']]['item_info']['item_record_add'],
+                   command=lambda: self.create_tab(AddRecordWindow, languages[self.save_m.data['language']]['item_info']['item_record_add'])).pack(fill='x')
         self.manage_button = ttk.Button(manage_frame,
-                                        text='Manage Record',
-                                        command=lambda: self.create_tab(ManageRecordWindow, 'Manage Record'))
+                                        text=languages[self.save_m.data['language']]['item_info']['item_record_manage'],
+                                        command=lambda: self.create_tab(ManageRecordWindow, languages[self.save_m.data['language']]['item_info']['item_record_manage']))
         self.manage_button.pack(fill='x')
         self.manage_button.configure(state='disabled')
 
@@ -251,6 +257,17 @@ class Hammer(tk.Tk):
                    command=lambda: self.create_tab(AddItemFromRecordWindow, 'Create Item From Record')).pack(fill='x')
         ttk.Button(manage_frame, text='Delete Record + Items',
                    command=lambda: self.delete_popup_window()).pack(fill='x')
+
+        location_frame = ttk.Frame(left_frame)
+        location_frame.pack(fill='x', side='top', padx=self.padding)
+
+        ttk.Label(location_frame, text='Locations', font=self.heading_font).pack(anchor='nw')
+        ttk.Button(location_frame,
+                   text='Create Location',
+                   command=lambda: self.create_tab(LocationCreate, 'Create Location')).pack(fill='x')
+        ttk.Button(location_frame,
+                   text='View Locations',
+                   command=lambda: self.create_tab(LocationView, 'View Locations')).pack(fill='x')
 
         users_frame = ttk.Frame(left_frame)
         users_frame.pack(fill='x', side='top', padx=self.padding)
@@ -274,7 +291,7 @@ class Hammer(tk.Tk):
 
         self.treeScroll = ttk.Scrollbar(top_right_frame, command=self.tree.yview)
         self.tree.configure(yscrollcommand=self.treeScroll.set)
-        self.treeScroll.pack(side='right', fill='both')
+        self.treeScroll.pack(side='right', fill='both', pady=self.padding)
 
         self.tree.heading('id', text='ID')
         self.tree.heading('title', text='Title')
@@ -283,12 +300,12 @@ class Hammer(tk.Tk):
         self.tree.column('author', stretch=False, width=150)
         self.tree.heading('publish_date', text='Publish Date')
         self.tree.heading('type', text='Type')
-        self.tree.pack(expand=True, fill='both', padx=self.padding, pady=self.padding)
+        self.tree.pack(expand=True, fill='both', padx=(self.padding, 0), pady=self.padding)
 
-        search_frame = tk.Frame(bottom_right_frame)
+        search_frame = ttk.Frame(bottom_right_frame)
         search_frame.pack(fill='both', pady=self.padding)
         ttk.Label(search_frame, text='Search:', font=self.heading_font).pack(side='left', padx=self.padding)
-        search_box = tk.Entry(search_frame)
+        search_box = ttk.Entry(search_frame)
         search_box.pack(side='left', padx=(0, self.padding), pady=self.padding)
         ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
 
