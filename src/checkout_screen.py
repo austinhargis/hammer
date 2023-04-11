@@ -123,6 +123,7 @@ class CheckoutScreen(tk.Frame):
 
                 logging.info(f'Checked out item with barcode {data[1]} to user with barcode {data[0]}')
                 self.update_tree()
+                self.barcode_entry.delete(0, tk.END)
 
             except sqlite3.IntegrityError:
                 PopupWindow(self.parent, "Already Checked Out", "This item is already checked out to a user. "
@@ -147,6 +148,7 @@ class CheckoutScreen(tk.Frame):
         """, (self.user_barcode.get(),)).fetchall()
 
         self.user_checkouts.configure(text=f'Checkouts: {len(checkouts)}')
+        self.barcode_entry.focus()
 
     def update_tree(self):
         print('update tree')
