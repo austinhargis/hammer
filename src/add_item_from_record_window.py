@@ -16,6 +16,8 @@ class AddItemFromRecordWindow(RecordChildTemplate):
         self.heading_label.configure(text='Create Item From Record')
         self.func_button.configure(text='Add Item to Record', command=lambda: self.create_item())
 
+        self.description_entry.bind('<Return>', lambda event: self.create_item())
+
     def create_item(self):
         try:
             locations_with_barcode = self.parent.db.dbCursor.execute("""

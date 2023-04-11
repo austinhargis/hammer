@@ -49,6 +49,10 @@ class RecordChildTemplate(ttk.Frame):
                    command=lambda: [self.parent.tab_controller.select(0),
                                     self.destroy()]).pack(side='left')
 
+        self.barcode_entry.focus()
+        self.barcode_entry.bind('<Return>', lambda event: self.location_entry.focus())
+        self.location_entry.bind('<Return>', lambda event: self.description_entry.focus())
+
     def get_item_info(self):
         return [
             self.id,
