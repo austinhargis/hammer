@@ -9,7 +9,6 @@ from languages import *
 from settings import SettingsWindow
 from update_checker import UpdateChecker
 from view_checkouts import ViewCheckouts
-from view_users import ViewUsers
 
 
 class MenuBar(tk.Menu):

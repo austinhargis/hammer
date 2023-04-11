@@ -1,6 +1,5 @@
 import logging
 import sqlite3
-from tkinter import ttk
 
 from popup_window import PopupWindow
 from record_child_template import RecordChildTemplate

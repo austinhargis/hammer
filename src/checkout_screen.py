@@ -82,7 +82,8 @@ class CheckoutScreen(tk.Frame):
         self.tree.pack(fill='both', expand=True, padx=(self.parent.padding, 0), pady=(0, self.parent.padding))
 
         button_frame = ttk.Frame(bottom_frame)
-        button_frame.pack(anchor='s', side='bottom', fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        button_frame.pack(anchor='s', side='bottom', fill='both', padx=self.parent.padding,
+                          pady=(0, self.parent.padding))
         ttk.Button(button_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],
                    command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
