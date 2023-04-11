@@ -91,6 +91,7 @@ class CheckoutScreen(tk.Frame):
                    command=lambda: [self.parent.db.dbConnection.commit(), self.parent.tab_controller.select(0)]) \
             .pack(side='right')
 
+        self.user_barcode.focus()
         self.barcode_entry.bind('<Return>', lambda event: self.checkout_to_user())
         self.user_barcode.bind('<Return>', lambda event: self.get_user())
 
