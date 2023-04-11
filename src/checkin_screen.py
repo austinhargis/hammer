@@ -41,6 +41,8 @@ class CheckinScreen(tk.Frame):
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_deny'],
                    command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
 
+        self.barcode_entry.focus()
+
     def check_item_in(self):
         items = self.parent.db.dbCursor.execute(f"""
             SELECT * FROM checkouts
