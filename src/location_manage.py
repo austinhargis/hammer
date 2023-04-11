@@ -15,6 +15,7 @@ class LocationManage(LocationTemplate):
         self.heading_label.configure(text='Manage Location')
         self.func_button.configure(text='Save Location',
                                    command=lambda: [self.update_entry()])
+        self.barcode_entry.bind('<Return>', lambda event: [self.update_entry()])
 
         self.fill_info()
 

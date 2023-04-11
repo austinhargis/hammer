@@ -73,6 +73,11 @@ class RecordInfoTemplate(ttk.Frame):
                    command=lambda: [self.parent.tab_controller.select(0),
                                     self.destroy()]).pack(side='left')
 
+        self.title_text.focus()
+        self.title_text.bind('<Return>', lambda event: self.author_text.focus())
+        self.author_text.bind('<Return>', lambda event: self.description_text.focus())
+        self.publish_date_text.bind('<Return>', lambda event: self.type_text.focus())
+
     def get_item_info(self):
         return [self.title_text.get(),
                 self.author_text.get(),

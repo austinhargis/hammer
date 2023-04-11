@@ -20,6 +20,8 @@ class AddRecordWindow(RecordInfoTemplate):
             text=languages[self.parent.save_m.data['language']]['prompts']['prompt_add_item'],
             command=lambda: [self.create_record()])
 
+        self.type_text.bind('<Return>', lambda event: self.create_record())
+
     def create_record(self):
         item_information = self.get_item_info()
         if item_information[0].replace(' ', '') == '':

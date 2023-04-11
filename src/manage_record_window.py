@@ -13,17 +13,19 @@ class ManageRecordWindow(RecordInfoTemplate):
             text=languages[self.parent.save_m.data['language']]['item_info']['item_manage_heading'])
         self.func_button.configure(
             text=languages[self.parent.save_m.data['language']]['prompts']['prompts_save_changes'],
-            command=lambda: [self.commit_changes(self.get_item_info(), self.entry_id)])
+            command=lambda: [self.commit_changes()])
+
+        self.type_text.bind('<Return>', lambda event: self.commit_changes())
 
         self.entry_id = None
 
         self.fill_entries()
 
-    def commit_changes(self, data, row_id):
+    def commit_changes(self):
         self.parent.db.dbCursor.execute(f"""
             UPDATE item_record 
             SET title=?, author=?, description=?, publish_date=?, type=?
-            WHERE id={row_id}""", data)
+            WHERE id={self.entry_id}""", self.get_item_info())
 
         self.parent.db.dbConnection.commit()
 

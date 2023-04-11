@@ -35,6 +35,9 @@ class LocationTemplate(ttk.Frame):
         ttk.Button(button_frame, text='Close', command=lambda: [self.parent.tab_controller.select(0),
                                                                 self.destroy()]).pack(side='left')
 
+        self.name_entry.focus()
+        self.name_entry.bind('<Return>', lambda event: self.barcode_entry.focus())
+
     def get_all_entries(self):
         return [
             self.barcode_entry.get(),

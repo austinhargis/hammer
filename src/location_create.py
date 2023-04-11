@@ -13,6 +13,7 @@ class LocationCreate(LocationTemplate):
         self.heading_label.configure(text='Create Location')
         self.func_button.configure(text='Create Location',
                                    command=lambda: [self.create_query()])
+        self.barcode_entry.bind('<Return>', lambda event: [self.create_query()])
 
     def create_query(self):
         try:

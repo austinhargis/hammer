@@ -52,6 +52,12 @@ class CreateUser(tk.Frame):
         ttk.Button(button_frame, text=languages[self.parent.save_m.data['language']]['prompts']['prompt_deny'],
                    command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
 
+        barcode_entry.focus()
+        barcode_entry.bind('<Return>', lambda event: first_name_entry.focus())
+        first_name_entry.bind('<Return>', lambda event: last_name_entry.focus())
+        last_name_entry.bind('<Return>', lambda event: self.add_user(
+                       [barcode_entry.get(), first_name_entry.get(), last_name_entry.get()]))
+
     def add_user(self, data):
         try:
             data.append(datetime.now())
