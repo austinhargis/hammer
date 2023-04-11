@@ -13,8 +13,7 @@ class AddItemFromRecordWindow(RecordChildTemplate):
         self.parent = parent
 
         self.heading_label.configure(text='Create Item From Record')
-
-        ttk.Button(self.button_frame, text='Add Item to Record', command=lambda: self.create_item()).pack(side='left')
+        self.func_button.configure(text='Add Item to Record', command=lambda: self.create_item())
 
     def create_item(self):
         try:

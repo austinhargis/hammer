@@ -13,17 +13,16 @@ class ManageRecordWindow(RecordInfoTemplate):
 
         self.heading_label.configure(
             text=languages[self.parent.save_m.data['language']]['item_info']['item_manage_heading'])
+        self.func_button.configure(
+            text=languages[self.parent.save_m.data['language']]['prompts']['prompts_save_changes'],
+            command=lambda: [self.commit_changes(self.get_item_info(), self.entry_id),
+                             self.parent.refresh_table(),
+                             self.parent.tab_controller.select(0),
+                             self.destroy()])
 
         self.entry_id = None
 
         self.fill_entries()
-
-        ttk.Button(self.button_frame,
-                   text=languages[self.parent.save_m.data['language']]['prompts']['prompts_save_changes'],
-                   command=lambda: [self.commit_changes(self.get_item_info(), self.entry_id),
-                                    self.parent.refresh_table(),
-                                    self.parent.tab_controller.select(0),
-                                    self.destroy()]).pack(side='left')
 
     def commit_changes(self, data, row_id):
         self.parent.db.dbCursor.execute(f"""

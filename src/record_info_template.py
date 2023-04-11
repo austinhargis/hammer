@@ -4,7 +4,7 @@ from tkinter import ttk
 from languages import *
 
 
-class RecordInfoTemplate(tk.Frame):
+class RecordInfoTemplate(ttk.Frame):
 
     def __init__(self, parent):
         super().__init__()
@@ -64,6 +64,8 @@ class RecordInfoTemplate(tk.Frame):
 
         self.button_frame = ttk.Frame(main_frame)
         self.button_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        self.func_button = ttk.Button(self.button_frame)
+        self.func_button.pack(side='left')
         ttk.Button(self.button_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_deny'],
                    command=lambda: [self.parent.tab_controller.select(0),

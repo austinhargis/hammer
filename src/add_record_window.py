@@ -16,12 +16,11 @@ class AddRecordWindow(RecordInfoTemplate):
 
         self.heading_label.configure(
             text=languages[self.parent.save_m.data['language']]['item_info']['item_add_heading'])
-
-        ttk.Button(self.button_frame,
-                   text=languages[self.parent.save_m.data['language']]['prompts']['prompt_add_item'],
-                   command=lambda: [self.create_record(),
-                                    self.parent.tab_controller.select(0),
-                                    self.destroy()]).pack(side='left')
+        self.func_button.configure(
+            text=languages[self.parent.save_m.data['language']]['prompts']['prompt_add_item'],
+            command=lambda: [self.create_record(),
+                             self.parent.tab_controller.select(0),
+                             self.destroy()])
 
     def create_record(self):
         item_information = self.get_item_info()

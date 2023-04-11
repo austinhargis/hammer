@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class RecordChildTemplate(tk.Frame):
+class RecordChildTemplate(ttk.Frame):
 
     def __init__(self, parent):
         super().__init__()
@@ -42,6 +42,8 @@ class RecordChildTemplate(tk.Frame):
 
         self.button_frame = ttk.Frame(main_frame)
         self.button_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        self.func_button = ttk.Button(self.button_frame)
+        self.func_button.pack(side='left')
         ttk.Button(self.button_frame,
                    text='Cancel',
                    command=lambda: [self.parent.tab_controller.select(0),
