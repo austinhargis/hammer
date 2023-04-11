@@ -4,6 +4,7 @@ from tkinter import ttk
 from languages import *
 from popup_window import PopupWindow
 
+
 class ExpandedInformation(tk.Frame):
 
     def __init__(self, parent, entry_values):
@@ -54,7 +55,8 @@ class ExpandedInformation(tk.Frame):
         description_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(description_frame,
                   text=f"{languages[self.parent.save_m.data['language']]['item_info']['item_description']}: "
-                       f"{self.description}").pack(side='left')
+                       f"\n{self.description}",
+                  wraplength=500).pack(side='left')
 
         publish_date_frame = ttk.Frame(right_frame)
         publish_date_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
@@ -89,11 +91,13 @@ class ExpandedInformation(tk.Frame):
         button_frame = ttk.Frame(bottom_frame)
         button_frame.pack(fill='both', side='bottom')
 
-        ttk.Button(button_frame, text='Delete Item', command=lambda: [self.delete_item(), self.refresh_table()]).pack(side='left')
+        ttk.Button(button_frame, text='Close',
+                   command=lambda: [self.parent.tab_controller.select(0),
+                                    self.destroy()]).pack(side='right',
+                                                          pady=self.parent.padding)
 
-        ttk.Button(button_frame, text='Close', command=lambda: [self.parent.tab_controller.select(0),
-                                                                self.destroy()]).pack(side='left',
-                                                                                    pady=self.parent.padding)
+        ttk.Button(button_frame, text='Delete Item',
+                   command=lambda: [self.delete_item(), self.refresh_table()]).pack(side='right')
 
     def refresh_table(self):
 
