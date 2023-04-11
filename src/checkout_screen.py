@@ -97,8 +97,6 @@ class CheckoutScreen(tk.Frame):
     def checkout_to_user(self):
         data = (self.user_barcode.get(), self.barcode_entry.get())
 
-        print('checkout')
-
         # Get a list of all items with that item barcode
         items = self.parent.db.dbCursor.execute(f"""
             SELECT * FROM items
@@ -151,13 +149,11 @@ class CheckoutScreen(tk.Frame):
         self.barcode_entry.focus()
 
     def update_tree(self):
-        print('update tree')
-
-        item_id_row = self.parent.db.dbCursor.execute("""
-            SELECT id FROM items
-            WHERE barcode=?""", (self.barcode_entry.get(),)).fetchall()
         title_row = self.parent.db.dbCursor.execute("""
-            SELECT title FROM item_record
-            WHERE id=?""", (item_id_row[0][0],)).fetchall()
+            SELECT title from item_record
+            WHERE id=(
+                SELECT id FROM items
+                WHERE barcode=?)
+        """, (self.barcode_entry.get(),)).fetchall()
 
         self.tree.insert('', tk.END, values=[self.barcode_entry.get(), title_row[0][0]])
