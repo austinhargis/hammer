@@ -15,10 +15,7 @@ class ManageRecordWindow(RecordInfoTemplate):
             text=languages[self.parent.save_m.data['language']]['item_info']['item_manage_heading'])
         self.func_button.configure(
             text=languages[self.parent.save_m.data['language']]['prompts']['prompts_save_changes'],
-            command=lambda: [self.commit_changes(self.get_item_info(), self.entry_id),
-                             self.parent.refresh_table(),
-                             self.parent.tab_controller.select(0),
-                             self.destroy()])
+            command=lambda: [self.commit_changes(self.get_item_info(), self.entry_id)])
 
         self.entry_id = None
 
@@ -31,6 +28,10 @@ class ManageRecordWindow(RecordInfoTemplate):
             WHERE id={row_id}""", data)
 
         self.parent.db.dbConnection.commit()
+
+        self.parent.refresh_table()
+        self.parent.tab_controller.select(0)
+        self.destroy()
 
     def fill_entries(self):
         current_item = self.parent.tree.focus()

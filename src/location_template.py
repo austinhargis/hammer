@@ -32,7 +32,8 @@ class LocationTemplate(ttk.Frame):
         button_frame.pack(fill='both')
         self.func_button = ttk.Button(button_frame)
         self.func_button.pack(side='left')
-        ttk.Button(button_frame, text='Close', command=lambda: self.destroy()).pack(side='left')
+        ttk.Button(button_frame, text='Close', command=lambda: [self.parent.tab_controller.select(0),
+                                                                self.destroy()]).pack(side='left')
 
     def get_all_entries(self):
         return [

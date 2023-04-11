@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 import urllib.request
 import webbrowser
@@ -21,6 +22,8 @@ class UpdateChecker(tk.Frame):
         self.check_for_update()
 
     def check_for_update(self):
+        logging.info('Checked for updates')
+
         self.parent.save_m.data['last_update_check'] = datetime.now().strftime('%I:%M%p %m/%d/%Y')
         self.last_check.configure(
             text=f"{languages[self.parent.save_m.data['language']]['update']['update_last_checked']} {self.parent.save_m.data['last_update_check']}")
@@ -41,6 +44,7 @@ class UpdateChecker(tk.Frame):
 
         # Determine whether the server version is newer than the current version
         if self.server_version > self.current_version:
+            logging.info(f'Update available. Version {self.server_version}')
             if self.update_button is None:
                 self.update_button = ttk.Button(self.check_update_frame,
                                                 text='Get Update',

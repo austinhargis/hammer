@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 from tkinter import ttk
 
@@ -68,3 +69,5 @@ class ViewCheckouts(ttk.Frame):
             checkout_ = [checkouts[checkout_index][0], checkouts[checkout_index][1], checkout_titles[0][0]]
 
             self.checkout_tree.insert('', tk.END, values=checkout_)
+
+            logging.info('Got list of all checkouts')

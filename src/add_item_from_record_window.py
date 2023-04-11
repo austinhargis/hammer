@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 from tkinter import ttk
 
@@ -28,6 +29,7 @@ class AddItemFromRecordWindow(RecordChildTemplate):
                     VALUES (?, ?, ?, ?)
                 """, self.get_item_info())
                 self.parent.db.dbConnection.commit()
+                logging.info(f'Created item {self.get_item_info()[1]} from record {self.get_item_info()[0]}')
                 self.destroy()
             else:
                 PopupWindow(self.parent, 'Barcode Missing', 'Items must have a barcode in order to be created.')

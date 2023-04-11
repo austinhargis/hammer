@@ -117,7 +117,7 @@ class Database:
         data = (record_id, f"Test{random.randint(0, 1000)}", "Test")
 
         self.dbCursor.execute(f"""
-            INSERT INTO items (id, barcode, location) 
+            INSERT INTO items (id, barcode, location_barcode) 
             VALUES (?, ?, ?)
         """, data)
         self.dbConnection.commit()

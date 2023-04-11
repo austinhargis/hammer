@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 from tkinter import ttk
 
@@ -50,7 +51,8 @@ class LocationView(ttk.Frame):
                    command=lambda: self.parent.create_tab(LocationManage, 'Manage Location', self.tree.item(self.tree.focus())['values'][0])).pack()
         ttk.Button(button_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],
-                   command=lambda: self.destroy()).pack()
+                   command=lambda: [self.parent.tab_controller.select(0),
+                                    self.destroy()]).pack()
 
     def get_locations(self):
         locations = self.parent.db.dbCursor.execute("""
@@ -59,3 +61,5 @@ class LocationView(ttk.Frame):
 
         for location_index in range(len(locations)):
             self.tree.insert('', tk.END, values=locations[location_index])
+
+        logging.info('Got all locations')

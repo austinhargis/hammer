@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 from datetime import datetime
 from tkinter import ttk
@@ -18,9 +19,7 @@ class AddRecordWindow(RecordInfoTemplate):
             text=languages[self.parent.save_m.data['language']]['item_info']['item_add_heading'])
         self.func_button.configure(
             text=languages[self.parent.save_m.data['language']]['prompts']['prompt_add_item'],
-            command=lambda: [self.create_record(),
-                             self.parent.tab_controller.select(0),
-                             self.destroy()])
+            command=lambda: [self.create_record()])
 
     def create_record(self):
         item_information = self.get_item_info()
@@ -38,5 +37,11 @@ class AddRecordWindow(RecordInfoTemplate):
                                       VALUES (?, ?, ?, ?, ?, ?, ?)""", item_information)
             self.parent.db.dbConnection.commit()
             self.parent.refresh_table()
+
+            logging.info(f'Created record {item_information[0]}')
+
+            self.parent.tab_controller.select(0)
+            self.destroy()
+
         except sqlite3.IntegrityError:
             self.parent.db.unique_conflict()

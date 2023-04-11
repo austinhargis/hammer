@@ -76,9 +76,11 @@ class Hammer(tk.Tk):
     def check_focus(self):
         if self.tree.focus() == '':
             self.manage_button.configure(state='disabled')
+            self.create_from_record.configure(state='disabled')
             self.after(self.manage_check_delay, self.check_focus)
         else:
             self.manage_button.configure(state='normal')
+            self.create_from_record.configure(state='normal')
             self.after(self.manage_check_delay, self.check_focus)
 
     def clear_table(self):
@@ -170,6 +172,8 @@ class Hammer(tk.Tk):
             WHERE item_barcode=?
         """, (barcode,)).fetchall()
 
+        logging.info(f'Got item status for item {barcode}')
+
         if len(check_status) == 0:
             return languages[self.save_m.data['language']]['item_info']['item_available']
         else:
@@ -199,14 +203,14 @@ class Hammer(tk.Tk):
 
         current_table = self.db.dbCursor.execute(f"""SELECT * 
                                                      FROM item_record 
-                                                     INNER JOIN items
-                                                     ON item_record.id = items.id
                                                      WHERE title LIKE \'%{search_term}%\' 
                                                      OR author LIKE \'%{search_term}%\'
                                                      OR publish_date LIKE \'%{search_term}%\'
                                                      OR type LIKE \'%{search_term}%\'""")
         self.clear_table()
         self.populate_table(current_table)
+
+        logging.info(f'Performed search query "{search_term}"')
 
     def window(self):
 
@@ -236,25 +240,33 @@ class Hammer(tk.Tk):
                   font=self.heading_font).pack(anchor='nw')
         ttk.Button(checkout_frame,
                    text=languages[self.save_m.data['language']]['item_info']['item_action_check_in'],
-                   command=lambda: self.create_tab(CheckinScreen, languages[self.save_m.data['language']]['item_info']['item_action_check_in'])).pack(fill='x')
+                   command=lambda: self.create_tab(CheckinScreen, languages[self.save_m.data['language']]['item_info'][
+                       'item_action_check_in'])).pack(fill='x')
         ttk.Button(checkout_frame,
                    text=languages[self.save_m.data['language']]['item_info']['item_action_check_out'],
-                   command=lambda: self.create_tab(CheckoutScreen, languages[self.save_m.data['language']]['item_info']['item_action_check_out'])).pack(fill='x')
+                   command=lambda: self.create_tab(CheckoutScreen, languages[self.save_m.data['language']]['item_info'][
+                       'item_action_check_out'])).pack(fill='x')
 
         manage_frame = ttk.Frame(left_frame)
         manage_frame.pack(fill='x', side='top', anchor='nw', padx=self.padding, pady=(0, self.padding))
 
         ttk.Label(manage_frame, text='Manage Items', font=self.heading_font).pack(anchor='nw')
         ttk.Button(manage_frame, text=languages[self.save_m.data['language']]['item_info']['item_record_add'],
-                   command=lambda: self.create_tab(AddRecordWindow, languages[self.save_m.data['language']]['item_info']['item_record_add'])).pack(fill='x')
+                   command=lambda: self.create_tab(AddRecordWindow,
+                                                   languages[self.save_m.data['language']]['item_info'][
+                                                       'item_record_add'])).pack(fill='x')
         self.manage_button = ttk.Button(manage_frame,
                                         text=languages[self.save_m.data['language']]['item_info']['item_record_manage'],
-                                        command=lambda: self.create_tab(ManageRecordWindow, languages[self.save_m.data['language']]['item_info']['item_record_manage']))
+                                        command=lambda: self.create_tab(ManageRecordWindow,
+                                                                        languages[self.save_m.data['language']][
+                                                                            'item_info']['item_record_manage']))
         self.manage_button.pack(fill='x')
         self.manage_button.configure(state='disabled')
 
-        ttk.Button(manage_frame, text='Create Item From Record',
-                   command=lambda: self.create_tab(AddItemFromRecordWindow, 'Create Item From Record')).pack(fill='x')
+        self.create_from_record = ttk.Button(manage_frame, text='Create Item From Record',
+                                             command=lambda: self.create_tab(AddItemFromRecordWindow,
+                                                                             'Create Item From Record'))
+        self.create_from_record.pack(fill='x')
         ttk.Button(manage_frame, text='Delete Record + Items',
                    command=lambda: self.delete_popup_window()).pack(fill='x')
 
@@ -335,6 +347,8 @@ class Hammer(tk.Tk):
             self.tab_controller.add(window(self), text=title[0:10])
         tabs = self.tab_controller.tabs()
         self.tab_controller.select(len(tabs) - 1)
+
+        logging.info(f'Created ExpandedInfo tab for {title}')
 
 
 if __name__ == "__main__":

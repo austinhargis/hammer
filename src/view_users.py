@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 from tkinter import ttk
 
@@ -46,7 +47,8 @@ class ViewUsers(ttk.Frame):
         close_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(close_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],
-                   command=lambda: self.destroy()).pack()
+                   command=lambda: [self.parent.tab_controller.select(0),
+                                    self.destroy()]).pack()
 
     def get_users(self):
         users = self.parent.db.dbCursor.execute("""
@@ -55,3 +57,5 @@ class ViewUsers(ttk.Frame):
 
         for user_index in range(len(users)):
             self.user_tree.insert('', tk.END, values=users[user_index])
+
+        logging.info('Got list of all users')

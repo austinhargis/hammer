@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 import tkinter as tk
 from datetime import datetime
@@ -58,6 +59,9 @@ class CreateUser(tk.Frame):
                 INSERT INTO users(barcode, first_name, last_name, creation_date) 
                 VALUES (?, ?, ?, ?)""", data)
             self.parent.db.dbConnection.commit()
+
+            logging.info(f'Created user with barcode {data[0]}')
+
             self.parent.tab_controller.select(0)
             self.destroy()
         except sqlite3.IntegrityError:

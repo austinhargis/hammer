@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 import tkinter as tk
 from tkinter import ttk
@@ -59,8 +60,8 @@ class CheckoutScreen(tk.Frame):
         # Get a list of all users with that user barcode
         users = self.parent.db.dbCursor.execute(f"""
             SELECT * FROM users
-            WHERE barcode='{data[0]}'
-        """).fetchall()
+            WHERE barcode=?
+        """, (data[0],)).fetchall()
 
         if len(items) == 1 and len(users) == 1:
 
@@ -71,12 +72,16 @@ class CheckoutScreen(tk.Frame):
                 """, data)
                 self.parent.db.dbConnection.commit()
 
+                logging.info(f'Checked out item with barcode {data[1]} to user with barcode {data[0]}')
+
                 self.parent.tab_controller.select(0)
                 self.destroy()
 
             except sqlite3.IntegrityError:
                 PopupWindow(self.parent, "Already Checked Out", "This item is already checked out to a user. "
                                                                 "This checkout cnanot be completed at this time.")
+                logging.info(f'Item with barcode {data[1]} is already checked out')
 
         else:
             PopupWindow(self.parent, "Invalid Barcode", "The user or item barcode were invalid or do not exist.")
+            logging.info(f'One or both barcode(s) are invalid')

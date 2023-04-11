@@ -91,7 +91,8 @@ class ExpandedInformation(tk.Frame):
 
         ttk.Button(button_frame, text='Delete Item', command=lambda: [self.delete_item(), self.refresh_table()]).pack(side='left')
 
-        ttk.Button(button_frame, text='Close', command=lambda: self.destroy()).pack(side='left',
+        ttk.Button(button_frame, text='Close', command=lambda: [self.parent.tab_controller.select(0),
+                                                                self.destroy()]).pack(side='left',
                                                                                     pady=self.parent.padding)
 
     def refresh_table(self):

@@ -1,3 +1,4 @@
+import logging
 import sqlite3
 
 from location_template import LocationTemplate
@@ -13,8 +14,7 @@ class LocationManage(LocationTemplate):
 
         self.heading_label.configure(text='Manage Location')
         self.func_button.configure(text='Save Location',
-                                   command=lambda: [self.update_entry(),
-                                                    self.destroy()])
+                                   command=lambda: [self.update_entry()])
 
         self.fill_info()
 
@@ -33,5 +33,11 @@ class LocationManage(LocationTemplate):
                         SET barcode=?, name=?
                         WHERE location_id={self.location_id}""", self.get_all_entries())
             self.parent.db.dbConnection.commit()
+
+            logging.info(f'Updated location with barcode {self.get_all_entries()[0]}')
+
+            self.parent.tab_controller.select(0)
+            self.destroy()
+
         except sqlite3.IntegrityError:
             PopupWindow(self.parent, 'Barcode in Use', 'This barcode is already in use. Please try another.')

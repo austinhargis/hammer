@@ -1,3 +1,4 @@
+import logging
 import tkinter as tk
 from tkinter import ttk
 
@@ -54,7 +55,11 @@ class CheckinScreen(tk.Frame):
             """)
             self.parent.db.dbConnection.commit()
 
+            logging.info(f'Checked in item with barcode {self.barcode_entry.get()}')
+
             PopupWindow(self.parent, "Check In Successful", "The item was successfully checked in.")
+
+            self.parent.tab_controller.select(0)
             self.destroy()
         else:
             PopupWindow(self.parent, "Not Checked Out", "That item does not exist or is not checked out.")
