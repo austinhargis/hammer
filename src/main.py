@@ -76,11 +76,9 @@ class Hammer(tk.Tk):
     def check_focus(self):
         if self.tree.focus() == '':
             self.manage_button.configure(state='disabled')
-            self.create_from_record.configure(state='disabled')
             self.after(self.manage_check_delay, self.check_focus)
         else:
             self.manage_button.configure(state='normal')
-            self.create_from_record.configure(state='normal')
             self.after(self.manage_check_delay, self.check_focus)
 
     def clear_table(self):
@@ -263,10 +261,6 @@ class Hammer(tk.Tk):
         self.manage_button.pack(fill='x')
         self.manage_button.configure(state='disabled')
 
-        self.create_from_record = ttk.Button(manage_frame, text='Create Item From Record',
-                                             command=lambda: self.create_tab(AddItemFromRecordWindow,
-                                                                             'Create Item From Record'))
-        self.create_from_record.pack(fill='x')
         ttk.Button(manage_frame, text='Delete Record + Items',
                    command=lambda: self.delete_popup_window()).pack(fill='x')
 

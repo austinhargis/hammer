@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+from add_item_from_record_window import AddItemFromRecordWindow
 from languages import *
 from popup_window import PopupWindow
 
@@ -11,6 +12,8 @@ class ExpandedInformation(tk.Frame):
         super().__init__()
 
         self.parent = parent
+        self.entry_id = self.parent.tree.item(self.parent.tree.focus())
+        self.entry_id = self.entry_id['values'][0]
 
         self.id = entry_values[0]
         self.title = entry_values[1]
@@ -94,13 +97,23 @@ class ExpandedInformation(tk.Frame):
         ttk.Button(button_frame, text='Close',
                    command=lambda: [self.parent.tab_controller.select(0),
                                     self.destroy()]).pack(side='right',
-                                                          pady=self.parent.padding)
+                                                          pady=self.parent.padding,
+                                                          fill='x')
 
         ttk.Button(button_frame, text='Delete Item',
-                   command=lambda: [self.delete_item(), self.refresh_table()]).pack(side='right')
+                   command=lambda: [self.delete_item(), self.refresh_table()]).pack(side='right',
+                                                                                    fill='x')
+
+        ttk.Button(button_frame, text='Manage Item',
+                   command=lambda: None).pack(side='right',
+                                              fill='x')
+
+        ttk.Button(button_frame, text='Create Item',
+                   command=lambda: [self.parent.create_tab(AddItemFromRecordWindow, 'Create Item',
+                                                           self.entry_id)]).pack(side='right',
+                                                                                 fill='x')
 
     def refresh_table(self):
-
         for item in self.tree.get_children():
             self.tree.delete(item)
 

@@ -7,10 +7,11 @@ from record_child_template import RecordChildTemplate
 
 class AddItemFromRecordWindow(RecordChildTemplate):
 
-    def __init__(self, parent):
-        super().__init__(parent)
+    def __init__(self, parent, entry_id, prev_window):
+        super().__init__(parent, entry_id)
 
         self.parent = parent
+        self.entry_id = entry_id
 
         self.heading_label.configure(text='Create Item From Record')
         self.func_button.configure(text='Add Item to Record', command=lambda: self.create_item())

@@ -3,13 +3,11 @@ from tkinter import ttk
 
 class RecordChildTemplate(ttk.Frame):
 
-    def __init__(self, parent):
+    def __init__(self, parent, entry_id):
         super().__init__()
 
+        self.entry_id = entry_id
         self.parent = parent
-
-        selected = self.parent.tree.item(self.parent.tree.focus())
-        self.id = selected['values'][0]
 
         self.get_item_record()
 
@@ -54,7 +52,7 @@ class RecordChildTemplate(ttk.Frame):
 
     def get_item_info(self):
         return [
-            self.id,
+            self.entry_id,
             self.barcode_entry.get(),
             self.location_entry.get(),
             self.description_entry.get()
@@ -65,4 +63,4 @@ class RecordChildTemplate(ttk.Frame):
             SELECT *
             FROM item_record
             WHERE id=?
-        """, (self.id,)).fetchall()
+        """, (self.entry_id,)).fetchall()
