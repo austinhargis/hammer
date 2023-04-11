@@ -1,7 +1,6 @@
 import logging
 import sqlite3
 from datetime import datetime
-from tkinter import ttk
 
 from languages import *
 from popup_window import PopupWindow

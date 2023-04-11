@@ -1,5 +1,3 @@
-from tkinter import ttk
-
 from languages import *
 from record_info_template import RecordInfoTemplate
 

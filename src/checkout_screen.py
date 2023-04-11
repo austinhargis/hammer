@@ -82,7 +82,8 @@ class CheckoutScreen(tk.Frame):
         self.tree.pack(fill='both', expand=True, padx=(self.parent.padding, 0), pady=(0, self.parent.padding))
 
         button_frame = ttk.Frame(bottom_frame)
-        button_frame.pack(anchor='s', side='bottom', fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        button_frame.pack(anchor='s', side='bottom', fill='both', padx=self.parent.padding,
+                          pady=(0, self.parent.padding))
         ttk.Button(button_frame,
                    text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],
                    command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
@@ -97,8 +98,6 @@ class CheckoutScreen(tk.Frame):
 
     def checkout_to_user(self):
         data = (self.user_barcode.get(), self.barcode_entry.get())
-
-        print('checkout')
 
         # Get a list of all items with that item barcode
         items = self.parent.db.dbCursor.execute(f"""
@@ -124,6 +123,7 @@ class CheckoutScreen(tk.Frame):
 
                 logging.info(f'Checked out item with barcode {data[1]} to user with barcode {data[0]}')
                 self.update_tree()
+                self.barcode_entry.delete(0, tk.END)
 
             except sqlite3.IntegrityError:
                 PopupWindow(self.parent, "Already Checked Out", "This item is already checked out to a user. "
@@ -148,15 +148,14 @@ class CheckoutScreen(tk.Frame):
         """, (self.user_barcode.get(),)).fetchall()
 
         self.user_checkouts.configure(text=f'Checkouts: {len(checkouts)}')
+        self.barcode_entry.focus()
 
     def update_tree(self):
-        print('update tree')
-
-        item_id_row = self.parent.db.dbCursor.execute("""
-            SELECT id FROM items
-            WHERE barcode=?""", (self.barcode_entry.get(),)).fetchall()
         title_row = self.parent.db.dbCursor.execute("""
-            SELECT title FROM item_record
-            WHERE id=?""", (item_id_row[0][0],)).fetchall()
+            SELECT title from item_record
+            WHERE id=(
+                SELECT id FROM items
+                WHERE barcode=?)
+        """, (self.barcode_entry.get(),)).fetchall()
 
         self.tree.insert('', tk.END, values=[self.barcode_entry.get(), title_row[0][0]])
