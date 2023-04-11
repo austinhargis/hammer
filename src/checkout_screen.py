@@ -126,7 +126,7 @@ class CheckoutScreen(tk.Frame):
 
             except sqlite3.IntegrityError:
                 PopupWindow(self.parent, "Already Checked Out", "This item is already checked out to a user. "
-                                                                "This checkout cnanot be completed at this time.")
+                                                                "This checkout cannot be completed at this time.")
                 logging.info(f'Item with barcode {data[1]} is already checked out')
 
         else:
