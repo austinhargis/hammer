@@ -71,6 +71,7 @@ class CheckoutScreen(tk.Frame):
                     VALUES (?, ?) 
                 """, data)
                 self.parent.db.dbConnection.commit()
+                PopupWindow(self.parent, 'Checkout Successful', 'Your checkout was successful.')
 
                 logging.info(f'Checked out item with barcode {data[1]} to user with barcode {data[0]}')
 
