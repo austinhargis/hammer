@@ -38,10 +38,10 @@ class Database:
                 CREATE TABLE items(
                     id INTEGER,
                     barcode varchar PRIMARY KEY NOT NULL,
-                    location_id varchar,
+                    location_barcode varchar,
                     description varchar,
                     FOREIGN KEY(id) REFERENCES item_record(id),
-                    FOREIGN KEY(location_id) REFERENCES locations(location_id)
+                    FOREIGN KEY(location_barcode) REFERENCES locations(location_id)
                 )
                 """)
             self.dbCursor.execute(f"""

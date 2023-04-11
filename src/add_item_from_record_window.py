@@ -17,7 +17,12 @@ class AddItemFromRecordWindow(RecordChildTemplate):
 
     def create_item(self):
         try:
-            if self.get_item_info()[1] != '':
+            locations_with_barcode = self.parent.db.dbCursor.execute("""
+                SELECT * FROM locations
+                WHERE barcode=?
+            """, (self.get_item_info()[2],)).fetchall()
+
+            if self.get_item_info()[1] != '' and len(locations_with_barcode) == 1:
                 self.parent.db.dbCursor.execute("""
                     INSERT INTO items
                     VALUES (?, ?, ?, ?)

@@ -30,7 +30,7 @@ class RecordChildTemplate(ttk.Frame):
 
         location_frame = ttk.Frame(main_frame)
         location_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(location_frame, text='Item Location').pack(side='left')
+        ttk.Label(location_frame, text='Location Barcode').pack(side='left')
         self.location_entry = ttk.Entry(location_frame)
         self.location_entry.pack(side='right')
 
