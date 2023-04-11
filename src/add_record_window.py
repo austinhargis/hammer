@@ -41,6 +41,9 @@ class AddRecordWindow(RecordInfoTemplate):
 
             logging.info(f'Created record {item_information[0]}')
 
+            child = self.parent.tree.get_children()[len(self.parent.tree.get_children()) - 1]
+            self.parent.tree.focus(child)
+            self.parent.tree.selection_set(child)
             self.parent.tab_controller.select(0)
             self.destroy()
 
