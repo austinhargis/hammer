@@ -7,7 +7,7 @@ from record_child_template import RecordChildTemplate
 
 class AddItemFromRecordWindow(RecordChildTemplate):
 
-    def __init__(self, parent, entry_id, prev_window):
+    def __init__(self, parent, entry_id):
         super().__init__(parent, entry_id)
 
         self.parent = parent

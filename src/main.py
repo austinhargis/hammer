@@ -25,7 +25,7 @@ from location_view import LocationView
 from manage_record_window import ManageRecordWindow
 from menu_bar import MenuBar
 from save_manager import SaveManager
-from view_users import ViewUsers
+from user_view_specific import ViewSpecificUser
 
 if not os.path.isdir(f'{Path.home()}/hammer'):
     os.mkdir(f'{Path.home()}/hammer')
@@ -283,8 +283,8 @@ class Hammer(tk.Tk):
                    text='Create User',
                    command=lambda: self.create_tab(CreateUser, 'Create User')).pack(fill='x')
         ttk.Button(users_frame,
-                   text='View Users',
-                   command=lambda: self.create_tab(ViewUsers, 'View Users')).pack(fill='x')
+                   text='View User',
+                   command=lambda: self.create_tab(ViewSpecificUser, 'View User')).pack(fill='x')
 
         # creates the TreeView which will handle displaying all schema in the database
         self.tree = ttk.Treeview(top_right_frame,

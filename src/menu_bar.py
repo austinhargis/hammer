@@ -9,6 +9,7 @@ from languages import *
 from settings import SettingsWindow
 from update_checker import UpdateChecker
 from view_checkouts import ViewCheckouts
+from view_users import ViewUsers
 
 
 class MenuBar(tk.Menu):
@@ -77,7 +78,9 @@ class MenuBar(tk.Menu):
                 label=languages[self.parent.save_m.data['language']]['developer']['table_drop'], underline=1,
                 command=lambda: self.parent.drop_table())
             self.developer_menu.add_command(label='View All Checkouts', underline=1,
-                                            command=lambda: self.parent.create_tab(ViewCheckouts, 'View Checkouts'))
+                                            command=lambda: self.parent.create_tab(ViewCheckouts, 'View All Checkouts'))
+            self.developer_menu.add_command(label='View All Users', underline=1,
+                                            command=lambda: self.parent.create_tab(ViewUsers, 'View All Users'))
 
     def help(self):
         if self.parent.save_m.data['show_help_menu'] == 'enabled':

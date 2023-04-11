@@ -43,8 +43,7 @@ class RecordChildTemplate(ttk.Frame):
         self.func_button.pack(side='left')
         ttk.Button(self.button_frame,
                    text='Cancel',
-                   command=lambda: [self.parent.tab_controller.select(0),
-                                    self.destroy()]).pack(side='left')
+                   command=lambda: [self.destroy()]).pack(side='left')
 
         self.barcode_entry.focus()
         self.barcode_entry.bind('<Return>', lambda event: self.location_entry.focus())
