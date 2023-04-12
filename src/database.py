@@ -16,7 +16,8 @@ class Database:
             self.dbCursor = self.dbConnection.cursor()
             self.dbCursor.execute(f"""
                 CREATE TABLE item_record(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,      
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,  
+                    barcode varchar,    
                     title varchar,
                     author varchar,
                     publish_date varchar,
