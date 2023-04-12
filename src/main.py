@@ -308,6 +308,21 @@ class Hammer(tk.Tk):
         self.tree.heading('type', text='Type')
         self.tree.pack(expand=True, fill='both', padx=(self.padding, 0), pady=self.padding)
 
+        sort_frame = ttk.Frame(top_right_frame)
+        sort_frame.pack(side='bottom')
+        self.sort_col_var = tk.StringVar(sort_frame)
+        sort_column = ttk.OptionMenu(sort_frame, self.sort_col_var, *[
+            'Title', 'Author', 'Publish Date', 'Type'
+        ])
+        sort_column.pack(side='left', padx=(self.padding, 0))
+
+        self.sort_type_var = tk.StringVar(sort_frame)
+        sort_type = ttk.OptionMenu(sort_frame, self.sort_type_var, *[
+            'Ascending', 'Descending'
+        ])
+        sort_type.pack(side='left')
+        ttk.Button(sort_frame, text='Sort', command=lambda: self.sort_tree()).pack(side='left')
+
         search_frame = ttk.Frame(bottom_right_frame)
         search_frame.pack(fill='both', pady=self.padding)
         ttk.Label(search_frame, text='Search:', font=self.heading_font).pack(side='left', padx=self.padding)
@@ -317,6 +332,30 @@ class Hammer(tk.Tk):
 
         self.bind('<Return>', lambda event: self.search_table(search_box))
         self.tree.bind('<Double-1>', lambda event: self.tree_double_click())
+
+    def sort_tree(self):
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        sorts_names = {
+            'Ascending': 'asc',
+            'Descending': 'desc',
+            'Title': 'title',
+            'Author': 'author',
+            'Publish Date': 'publish_date',
+            'Type': 'type'
+        }
+
+        column = sorts_names[self.sort_col_var.get()]
+        direction = sorts_names[self.sort_type_var.get()]
+
+        sort_results = self.db.dbCursor.execute(f"""
+            SELECT * FROM item_record
+            ORDER BY {column} {direction}
+        """).fetchall()
+
+        for item in sort_results:
+            self.tree.insert('', tk.END, values=item)
 
     def tree_double_click(self):
         current_item = self.tree.focus()
