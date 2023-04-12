@@ -18,7 +18,7 @@ from add_item_from_record_window import AddItemFromRecordWindow
 from add_record_window import AddRecordWindow
 from checkin_screen import CheckinScreen
 from checkout_screen import CheckoutScreen
-from create_user import CreateUser
+from user_create import CreateUser
 from database import Database
 from expanded_info import ExpandedInformation
 from languages import *

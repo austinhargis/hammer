@@ -4,7 +4,7 @@ from webbrowser import open_new_tab
 
 from checkin_screen import CheckinScreen
 from checkout_screen import CheckoutScreen
-from create_user import CreateUser
+from user_create import CreateUser
 from languages import *
 from settings import SettingsWindow
 from update_checker import UpdateChecker

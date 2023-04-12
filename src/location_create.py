@@ -17,16 +17,16 @@ class LocationCreate(LocationTemplate):
 
     def create_query(self):
         try:
-            self.parent.db.dbCursor.execute(f"""
-                INSERT INTO locations (barcode, name)
-                VALUES (?, ?)
-            """, self.get_all_entries())
-            self.parent.db.dbConnection.commit()
+            if self.get_all_entries()[0][0:1] == 'L':
+                self.parent.db.dbCursor.execute(f"""
+                    INSERT INTO locations (barcode, name)
+                    VALUES (?, ?)
+                """, self.get_all_entries())
+                self.parent.db.dbConnection.commit()
 
-            logging.info(f'Created location with barcode {self.get_all_entries()[0]}')
+                logging.info(f'Created location with barcode {self.get_all_entries()[0]}')
 
-            self.parent.tab_controller.select(0)
-            self.destroy()
-
+                self.parent.tab_controller.select(0)
+                self.destroy()
         except sqlite3.IntegrityError:
             PopupWindow(self.parent, 'Barcode in Use', 'This barcode is already in use. Please try another one.')
