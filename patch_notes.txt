@@ -1,0 +1,28 @@
+[Additions]
+- Added the ability to sort items in the Records tree.
+- Added the ability for a Record to have items in several locations.
+- Added the ability to create items from a Record.
+- Added a sidebar that features most menubar elements.
+- Added toggles for most menubar items.
+- Added the ability to view a specific user and their information.
+- Added a language option to the Settings.
+    - English is currently the only supported language.
+- Popup windows now have their own dedicated class.
+
+[Changes]
+- Add, delete, and close buttons for several screens have been moved to the right.
+- All text has now been moved to the new language system.
+- The checkout screen now displays information about the user.
+- Entries are now focused by default.
+- Locations must now be created and assigned a barcode and title.
+- Revamped the UI of the Home page.
+- Several items can now be returned at once.
+- Several items can now be checked out at once.
+- Switched the UI to use Tkinter Notebooks and Tabs.
+- The update checker will now take you to the release page for the new version.
+- Updated the UI to use the ttk variants of buttons, labels, etc., where available.
+
+[Fixes]
+- Fixed an issue that caused scrollbars on any Treeview to error out and not function.
+- Fixed an issue that caused UI elements on macOS to have a weird shadow behind them.
+- Fixed dropdown menus not using their ttk variants.
