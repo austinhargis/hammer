@@ -1,6 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
+from user_manage import ManageUser
+
 
 class ViewSpecificUser(ttk.Frame):
 
@@ -65,12 +67,14 @@ class ViewSpecificUser(ttk.Frame):
         self.tree.pack(fill='both', expand=True, padx=(self.parent.padding, 0), pady=(0, self.parent.padding))
 
         ttk.Button(bottom_frame,
+                   text='Manage User',
+                   command=lambda: self.parent.create_tab(ManageUser, 'Manage User', self.barcode_entry.get())).pack()
+        ttk.Button(bottom_frame,
                    text='Close',
                    command=lambda: [self.parent.tab_controller.select(0),
                                     self.destroy()]).pack(side='bottom', pady=(0, self.parent.padding))
 
     def get_user(self):
-        print('get user')
         checkouts = self.parent.db.dbCursor.execute("""
             SELECT barcode, item_record.title 
             FROM items
@@ -87,5 +91,6 @@ class ViewSpecificUser(ttk.Frame):
         for item in checkouts:
             self.tree.insert('', tk.END, values=item)
 
-        self.name_label.configure(text=f'Name: {user_information[0][0]} {user_information[0][1]}')
-        self.creation_date_label.configure(text=f'Created: {user_information[0][2]}')
+        if len(user_information) == 1:
+            self.name_label.configure(text=f'Name: {user_information[0][0]} {user_information[0][1]}')
+            self.creation_date_label.configure(text=f'Created: {user_information[0][2]}')
