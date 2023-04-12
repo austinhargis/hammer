@@ -34,7 +34,7 @@ class SettingsWindow(tk.Frame):
                   text=languages[self.parent.save_m.data['language']]['settings']['settings_theme']).pack(side='left')
         self.theme_var = tk.StringVar(theme_frame)
         self.theme_var.set(self.parent.save_m.data['theme'].capitalize())
-        theme_dropdown = tk.OptionMenu(theme_frame, self.theme_var, *['Dark', 'Light', 'System'])
+        theme_dropdown = ttk.OptionMenu(theme_frame, self.theme_var, *['Dark', 'Light', 'System'])
         theme_dropdown.pack(side='right')
         theme_dropdown.configure(state=self.parent.save_m.settings_enabled)
 
@@ -45,7 +45,7 @@ class SettingsWindow(tk.Frame):
             side='left')
         self.update_var = tk.StringVar(update_frame)
         self.update_var.set(self.parent.save_m.data['automatic_update_check'].capitalize())
-        update_dropdown = tk.OptionMenu(update_frame, self.update_var, *[
+        update_dropdown = ttk.OptionMenu(update_frame, self.update_var, *[
             languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
             languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
         update_dropdown.pack(side='right')
@@ -58,7 +58,7 @@ class SettingsWindow(tk.Frame):
             side='left')
         self.checkout_var = tk.StringVar(checkout_frame)
         self.checkout_var.set(self.parent.save_m.data['show_checkout_menu'].capitalize())
-        checkout_dropdown = tk.OptionMenu(checkout_frame, self.checkout_var, *[
+        checkout_dropdown = ttk.OptionMenu(checkout_frame, self.checkout_var, *[
             languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
             languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
         checkout_dropdown.pack(side='right')
@@ -71,7 +71,7 @@ class SettingsWindow(tk.Frame):
             side='left')
         self.developer_var = tk.StringVar(developer_frame)
         self.developer_var.set(self.parent.save_m.data['show_developer_menu'].capitalize())
-        developer_dropdown = tk.OptionMenu(developer_frame, self.developer_var, *[
+        developer_dropdown = ttk.OptionMenu(developer_frame, self.developer_var, *[
             languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
             languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
         developer_dropdown.pack(side='right')
@@ -84,7 +84,7 @@ class SettingsWindow(tk.Frame):
             side='left')
         self.help_var = tk.StringVar(help_frame)
         self.help_var.set(self.parent.save_m.data['show_help_menu'].capitalize())
-        help_dropdown = tk.OptionMenu(help_frame, self.help_var, *[
+        help_dropdown = ttk.OptionMenu(help_frame, self.help_var, *[
             languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
             languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
         help_dropdown.pack(side='right')
@@ -97,7 +97,7 @@ class SettingsWindow(tk.Frame):
             side='left')
         self.users_var = tk.StringVar(users_frame)
         self.users_var.set(self.parent.save_m.data['show_users_menu'].capitalize())
-        users_dropdown = tk.OptionMenu(users_frame, self.users_var, *[
+        users_dropdown = ttk.OptionMenu(users_frame, self.users_var, *[
             languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
             languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
         users_dropdown.pack(side='right')
