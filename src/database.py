@@ -50,7 +50,12 @@ class Database:
                     barcode varchar UNIQUE,
                     first_name varchar,
                     last_name varchar,
-                    creation_date date
+                    creation_date date,
+                    can_check_out integer,
+                    can_create_records integer,
+                    can_delete_records integer,
+                    birthday date,
+                    email varchar
                 )""")
             self.dbCursor.execute(f"""
                 CREATE TABLE checkouts(
