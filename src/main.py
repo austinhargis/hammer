@@ -12,6 +12,8 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import ttk
 
+import _tkinter
+
 from add_item_from_record_window import AddItemFromRecordWindow
 from add_record_window import AddRecordWindow
 from checkin_screen import CheckinScreen
@@ -385,6 +387,9 @@ class Hammer(tk.Tk):
 
 
 if __name__ == "__main__":
-    root = Hammer()
-    root.after(root.manage_check_delay, root.check_focus)
-    root.mainloop()
+    try:
+        root = Hammer()
+        root.after(root.manage_check_delay, root.check_focus)
+        root.mainloop()
+    except _tkinter.TclError:
+        pass
