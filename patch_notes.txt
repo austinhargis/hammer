@@ -14,6 +14,7 @@
 - All text has now been moved to the new language system.
 - The checkout screen now displays information about the user.
 - Entries are now focused by default.
+- It is now possible to manage the information on a user's account.
 - Locations must now be created and assigned a barcode and title.
 - Revamped the UI of the Home page.
 - Several items can now be returned at once.
