@@ -65,7 +65,6 @@ class Hammer(tk.Tk):
         self.populate_table()
 
         self.tree.bind("<Delete>", lambda event: self.delete_popup_window())
-        self.bind("<Escape>", lambda event: self.destroy())
 
     def update_entry(self, data, entry_id):
         self.db.update_query(data, entry_id)
