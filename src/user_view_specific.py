@@ -16,10 +16,10 @@ class ViewSpecificUser(ttk.Frame):
     def window(self):
 
         main_frame = ttk.Frame(self)
-        main_frame.pack(expand=True, fill='both')
+        main_frame.pack(expand=True, fill='both', padx=self.parent.padding, pady=self.parent.padding)
 
         top_frame = ttk.Frame(main_frame)
-        top_frame.pack(expand=True, fill='both', side='top')
+        top_frame.pack(expand=True, fill='both', side='top', pady=self.parent.padding)
 
         left_frame = ttk.Frame(top_frame)
         left_frame.pack(expand=True, fill='both', side='left')
@@ -51,30 +51,35 @@ class ViewSpecificUser(ttk.Frame):
         self.barcode_entry.bind('<Return>', lambda event: self.get_user())
 
         tree_frame = ttk.Frame(bottom_frame)
-        tree_frame.pack(side='top', fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
+        tree_frame.pack(side='top', fill='both', expand=True)
         self.tree = ttk.Treeview(tree_frame, columns=('item_barcode', 'item_title'))
         self.tree['show'] = 'headings'
         self.tree['displaycolumns'] = ('item_barcode', 'item_title')
 
         self.tree_scroll = ttk.Scrollbar(tree_frame, command=self.tree.yview)
         self.tree.configure(yscrollcommand=self.tree_scroll.set)
-        self.tree_scroll.pack(side='right', fill='both', pady=self.parent.padding)
+        self.tree_scroll.pack(side='right', fill='both')
 
         self.tree.heading('item_barcode',
                           text='Item Barcode')
+        self.tree.column('item_barcode', stretch=False)
         self.tree.heading('item_title',
                           text='Item Title')
         self.tree.pack(fill='both', expand=True, padx=(self.parent.padding, 0), pady=(0, self.parent.padding))
 
         ttk.Button(bottom_frame,
-                   text='Manage User',
-                   command=lambda: self.parent.create_tab(ManageUser, 'Manage User', self.barcode_entry.get())).pack()
-        ttk.Button(bottom_frame,
                    text='Close',
                    command=lambda: [self.parent.tab_controller.select(0),
-                                    self.destroy()]).pack(side='bottom', pady=(0, self.parent.padding))
+                                    self.destroy()]).pack(side='right')
+        ttk.Button(bottom_frame,
+                   text='Manage User',
+                   command=lambda: self.parent.create_tab(ManageUser, 'Manage User', self.barcode_entry.get())).pack(side='right')
 
     def get_user(self):
+
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
         checkouts = self.parent.db.dbCursor.execute("""
             SELECT barcode, item_record.title 
             FROM items
