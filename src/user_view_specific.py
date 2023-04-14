@@ -19,7 +19,7 @@ class ViewSpecificUser(ttk.Frame):
         main_frame.pack(expand=True, fill='both', padx=self.parent.padding, pady=self.parent.padding)
 
         top_frame = ttk.Frame(main_frame)
-        top_frame.pack(expand=True, fill='both', side='top', pady=self.parent.padding)
+        top_frame.pack(expand=True, fill='both', side='top')
 
         left_frame = ttk.Frame(top_frame)
         left_frame.pack(expand=True, fill='both', side='left')
@@ -71,9 +71,12 @@ class ViewSpecificUser(ttk.Frame):
                    text='Close',
                    command=lambda: [self.parent.tab_controller.select(0),
                                     self.destroy()]).pack(side='right')
-        ttk.Button(bottom_frame,
-                   text='Manage User',
-                   command=lambda: self.parent.create_tab(ManageUser, 'Manage User', self.barcode_entry.get())).pack(side='right')
+        self.manage_user_button = ttk.Button(bottom_frame,
+                                             text='Manage User',
+                                             command=lambda: self.parent.create_tab(ManageUser, 'Manage User',
+                                                                                    self.barcode_entry.get()))
+        self.manage_user_button.pack(side='right')
+        self.manage_user_button.configure(state='disabled')
 
     def get_user(self):
 
@@ -99,3 +102,4 @@ class ViewSpecificUser(ttk.Frame):
         if len(user_information) == 1:
             self.name_label.configure(text=f'Name: {user_information[0][0]} {user_information[0][1]}')
             self.creation_date_label.configure(text=f'Created: {user_information[0][2]}')
+            self.manage_user_button.configure(state='normal')
