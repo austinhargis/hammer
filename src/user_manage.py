@@ -22,8 +22,10 @@ class ManageUser(UserTemplate):
 
         self.load_user()
 
+        self.barcode_entry.configure(state='disabled')
+        self.first_name_entry.focus()
+
     def load_user(self):
-        print(self.barcode)
         user_data = self.parent.db.dbCursor.execute(f"""
             SELECT user_id, barcode, first_name, last_name FROM users
             WHERE barcode=?
@@ -35,7 +37,6 @@ class ManageUser(UserTemplate):
         self.last_name_entry.insert('', user_data[0][3])
 
     def manage_user(self):
-
         try:
             if self.get_all_data()[0][0:1] == 'U':
                 self.parent.db.dbCursor.execute(f"""
@@ -44,6 +45,8 @@ class ManageUser(UserTemplate):
                     WHERE user_id={self.user_id}
                 """, self.get_all_data())
                 self.parent.db.dbConnection.commit()
+
+                self.destroy()
 
         except sqlite3.IntegrityError:
             pass
