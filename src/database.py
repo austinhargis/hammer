@@ -116,25 +116,6 @@ class Database:
         self.dbCursor.execute("""DELETE FROM users""")
         self.dbConnection.commit()
 
-    def update_query(self, data, row_id):
-        """
-            allows for the updating of an entry into hammer's database
-            :param data a tuple of all the data for the row
-            :param row_id the ID for the row being updated
-            :return nothing
-        """
-
-        try:
-            data = list(data)
-            data.append(datetime.now())
-            self.dbCursor.execute(f"""UPDATE item_record 
-                                      SET title=?, author=?, description=?, publish_date=?, type=?, managed_date=?
-                                      WHERE id={row_id}""", data)
-
-            self.dbConnection.commit()
-        except sqlite3.IntegrityError:
-            self.unique_conflict()
-
     def get_all_query(self):
         """
             allows for receiving all the data in the table
