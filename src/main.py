@@ -8,6 +8,7 @@
 """
 import logging
 import os
+import sys
 import tkinter as tk
 from pathlib import Path
 from tkinter import ttk
@@ -39,8 +40,8 @@ logging.basicConfig(filename=f'{Path.home()}/hammer/hammer.log', format='%(ascti
 
 class Hammer(tk.Tk):
 
-    def __init__(self):
-        tk.Tk.__init__(self)
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
         self.title(f"hammer")
         self.minsize(400, 300)
         # self.state('zoomed')
@@ -56,7 +57,10 @@ class Hammer(tk.Tk):
         # self.style.configure('Treeview', background='#26242f', fieldbackground='#26242f', fontcolor='white')
 
         self.save_m = SaveManager(self)
-        self.db = Database("hammer.db", self)
+        try:
+            self.db = Database(f"{sys.argv[1]}.db", self)
+        except IndexError:
+            self.db = Database("hammer.db", self)
         self.menu_bar = MenuBar(self)
         self.tab_controller = ttk.Notebook(self)
 
