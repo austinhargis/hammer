@@ -52,11 +52,9 @@ class Hammer(tk.Tk):
         self.padding = 10
         self.wraplength = 200
 
-        # self.style = ttk.Style(self)
-        # self.style.theme_use('clam')
-        # self.style.configure('Treeview', background='#26242f', fieldbackground='#26242f', fontcolor='white')
-
         self.save_m = SaveManager(self)
+        # Attempt to open a database file with the passed argument
+        # If there is no passed argument, open a database titled hammer.db
         try:
             self.db = Database(f"{sys.argv[1]}.db", self)
         except IndexError:
@@ -70,20 +68,14 @@ class Hammer(tk.Tk):
 
         self.tree.bind("<Delete>", lambda event: self.delete_popup_window())
 
-    def update_entry(self, data, entry_id):
-        self.db.update_query(data, entry_id)
-        self.refresh_table()
-
-    def test_add_item(self):
-        self.db.test_add_query()
-        self.refresh_table()
-
     def check_focus(self):
         if self.tree.focus() == '':
             self.manage_button.configure(state='disabled')
+            self.delete_button.configure(state='disabled')
             self.after(self.manage_check_delay, self.check_focus)
         else:
             self.manage_button.configure(state='normal')
+            self.delete_button.configure(state='disabled')
             self.after(self.manage_check_delay, self.check_focus)
 
     def clear_table(self):
@@ -224,7 +216,7 @@ class Hammer(tk.Tk):
         self.tab_controller.pack(expand=1, fill='both')
 
         left_frame = ttk.Frame(main_frame)
-        left_frame.pack(side='left', anchor='nw')
+        left_frame.pack(side='left', anchor='nw', padx=self.padding, pady=self.padding)
 
         right_frame = ttk.Frame(main_frame)
         right_frame.pack(fill='both', expand=True, side='right', anchor='ne', padx=self.padding)
@@ -253,7 +245,8 @@ class Hammer(tk.Tk):
         manage_frame = ttk.Frame(left_frame)
         manage_frame.pack(fill='x', side='top', anchor='nw', padx=self.padding, pady=(0, self.padding))
 
-        ttk.Label(manage_frame, text='Manage Items', font=self.heading_font).pack(anchor='nw')
+        ttk.Label(manage_frame, text=languages[self.save_m.data['language']]['general']['records_heading'],
+                  font=self.heading_font).pack(anchor='nw')
         ttk.Button(manage_frame, text=languages[self.save_m.data['language']]['item_info']['item_record_add'],
                    command=lambda: self.create_tab(AddRecordWindow,
                                                    languages[self.save_m.data['language']]['item_info'][
@@ -266,30 +259,38 @@ class Hammer(tk.Tk):
         self.manage_button.pack(fill='x')
         self.manage_button.configure(state='disabled')
 
-        ttk.Button(manage_frame, text='Delete Record + Items',
-                   command=lambda: self.delete_popup_window()).pack(fill='x')
+        self.delete_button = ttk.Button(manage_frame,
+                                        text=languages[self.save_m.data['language']]['item_info']['item_delete_all'],
+                                        command=lambda: self.delete_popup_window())
+        self.delete_button.pack(fill='x')
+        self.delete_button.configure(state='disabled')
 
         location_frame = ttk.Frame(left_frame)
         location_frame.pack(fill='x', side='top', padx=self.padding)
 
-        ttk.Label(location_frame, text='Locations', font=self.heading_font).pack(anchor='nw')
+        ttk.Label(location_frame, text=languages[self.save_m.data['language']]['locations']['location_heading'],
+                  font=self.heading_font).pack(anchor='nw')
         ttk.Button(location_frame,
-                   text='Create Location',
-                   command=lambda: self.create_tab(LocationCreate, 'Create Location')).pack(fill='x')
+                   text=languages[self.save_m.data['language']]['locations']['location_create'],
+                   command=lambda: self.create_tab(LocationCreate,
+                                                   languages[self.save_m.data['language']]['locations']['location_create'])).pack(fill='x')
         ttk.Button(location_frame,
-                   text='View Locations',
-                   command=lambda: self.create_tab(LocationView, 'View Locations')).pack(fill='x')
+                   text=languages[self.save_m.data['language']]['locations']['location_view'],
+                   command=lambda: self.create_tab(LocationView,
+                                                   languages[self.save_m.data['language']]['locations']['location_view'])).pack(fill='x')
 
         users_frame = ttk.Frame(left_frame)
         users_frame.pack(fill='x', side='top', padx=self.padding)
 
-        ttk.Label(users_frame, text='Users', font=self.heading_font).pack(anchor='nw')
+        ttk.Label(users_frame,
+                  text=languages[self.save_m.data['language']]['users']['users_home_heading'],
+                  font=self.heading_font).pack(anchor='nw')
         ttk.Button(users_frame,
-                   text='Create User',
-                   command=lambda: self.create_tab(CreateUser, 'Create User')).pack(fill='x')
+                   text=languages[self.save_m.data['language']]['users']['user_add'],
+                   command=lambda: self.create_tab(CreateUser, languages[self.save_m.data['language']]['users']['user_add'])).pack(fill='x')
         ttk.Button(users_frame,
-                   text='View User',
-                   command=lambda: self.create_tab(ViewSpecificUser, 'View User')).pack(fill='x')
+                   text=languages[self.save_m.data['language']]['users']['user_specific'],
+                   command=lambda: self.create_tab(ViewSpecificUser, languages[self.save_m.data['language']]['users']['user_specific'])).pack(fill='x')
 
         # creates the TreeView which will handle displaying all schema in the database
         self.tree = ttk.Treeview(top_right_frame,
@@ -300,9 +301,9 @@ class Hammer(tk.Tk):
         # show only the desired columns (hiding the id)
         self.tree['displaycolumns'] = ('title', 'author', 'publish_date', 'type',)
 
-        self.treeScroll = ttk.Scrollbar(top_right_frame, command=self.tree.yview)
-        self.tree.configure(yscrollcommand=self.treeScroll.set)
-        self.treeScroll.pack(side='right', fill='both', pady=self.padding)
+        self.tree_scroll_bar = ttk.Scrollbar(top_right_frame, command=self.tree.yview)
+        self.tree.configure(yscrollcommand=self.tree_scroll_bar.set)
+        self.tree_scroll_bar.pack(side='right', fill='both', pady=self.padding)
 
         self.tree.heading('id', text='ID')
         self.tree.heading('title', text='Title')
@@ -313,27 +314,27 @@ class Hammer(tk.Tk):
         self.tree.heading('type', text='Type')
         self.tree.pack(expand=True, fill='both', padx=(self.padding, 0), pady=self.padding)
 
-        sort_frame = ttk.Frame(top_right_frame)
-        sort_frame.pack(side='bottom')
+        search_frame = ttk.Frame(bottom_right_frame)
+        search_frame.pack(side='left', fill='both', pady=self.padding)
+        ttk.Label(search_frame, text='Search', font=self.heading_font).pack(side='left', padx=self.padding)
+        search_box = ttk.Entry(search_frame)
+        search_box.pack(side='left', padx=(0, self.padding), pady=self.padding)
+        ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
+
+        sort_frame = ttk.Frame(bottom_right_frame)
+        sort_frame.pack(side='left')
         self.sort_col_var = tk.StringVar(sort_frame)
-        sort_column = ttk.OptionMenu(sort_frame, self.sort_col_var, *[
+        sort_column = ttk.OptionMenu(sort_frame, self.sort_col_var, 'Title', *[
             'Title', 'Author', 'Publish Date', 'Type'
         ])
         sort_column.pack(side='left', padx=(self.padding, 0))
 
         self.sort_type_var = tk.StringVar(sort_frame)
-        sort_type = ttk.OptionMenu(sort_frame, self.sort_type_var, *[
+        sort_type = ttk.OptionMenu(sort_frame, self.sort_type_var, 'Ascending', *[
             'Ascending', 'Descending'
         ])
         sort_type.pack(side='left')
         ttk.Button(sort_frame, text='Sort', command=lambda: self.sort_tree()).pack(side='left')
-
-        search_frame = ttk.Frame(bottom_right_frame)
-        search_frame.pack(fill='both', pady=self.padding)
-        ttk.Label(search_frame, text='Search:', font=self.heading_font).pack(side='left', padx=self.padding)
-        search_box = ttk.Entry(search_frame)
-        search_box.pack(side='left', padx=(0, self.padding), pady=self.padding)
-        ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
 
         self.bind('<Return>', lambda event: self.search_table(search_box))
         self.tree.bind('<Double-1>', lambda event: self.tree_double_click())

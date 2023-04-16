@@ -15,7 +15,8 @@ languages = {
             'table_drop': 'Drop All Tables'
         },
         'general': {
-            'home_tab': 'Home'
+            'home_tab': 'Home',
+            'records_heading': 'Item Record',
         },
         'item_info': {
             'item_add_heading': 'Create Item',
@@ -36,6 +37,12 @@ languages = {
             'item_action_check_out': 'Check Out',
             'item_record_add': 'Add Record',
             'item_record_manage': 'Manage Record',
+            'item_delete_all': 'Delete Record + Items'
+        },
+        'locations': {
+            'location_heading': 'Locations',
+            'location_create': 'Create Location',
+            'location_view': 'View Locations'
         },
         'menubar': {
             'file_menu': 'File',
@@ -76,6 +83,7 @@ languages = {
             'update_check_for': 'Check for Updates',
         },
         'users': {
+            'users_home_heading': 'Users',
             'user_create_heading': 'Add User',
             'user_barcode': 'User Barcode',
             'user_first_name': 'First Name',
