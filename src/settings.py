@@ -20,7 +20,7 @@ class SettingsWindow(tk.Frame):
         self.parent = parent
 
         main_frame = ttk.Frame(self)
-        main_frame.pack(side='left', anchor='nw')
+        main_frame.pack(side='left', anchor='nw', expand=True, fill='both')
 
         heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)

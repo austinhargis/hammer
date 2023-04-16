@@ -41,7 +41,7 @@ languages = {
             'file_menu': 'File',
             'checkout_menu': 'Checkout',
             'users_menu': 'Users',
-            'developer_menu': 'Developer',
+            'developer_menu': 'Admin',
             'help_menu': 'Help'
         },
         'prompts': {
@@ -63,7 +63,7 @@ languages = {
             'settings_version': 'Settings Version: ',
             'settings_update_check': 'Automatically Check for Updates',
             'settings_show_checkout': 'Show Checkout Menu',
-            'settings_show_developer': 'Show Developer Menu',
+            'settings_show_developer': 'Show Admin Menu',
             'settings_show_help': 'Show Help Menu',
             'settings_show_users': 'Show Users Menu'
         },
@@ -83,7 +83,8 @@ languages = {
             'user_id': 'ID',
 
             'user_add': 'Add User',
-            'user_view': 'View Users',
+            'user_view': 'View All Users',
+            'user_specific': 'View User',
         }
     }
 }

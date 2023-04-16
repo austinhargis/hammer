@@ -104,29 +104,6 @@ class Database:
                         message="Warning: An item with this barcode is currently checked out, "
                                 "you CANNOT delete this barcode at this time.")
 
-    def test_add_query(self):
-        """
-            a query for adding test data to the database
-            :return: nothing
-        """
-
-        data = ["Test1", "Test2", "Test3", "Test4", "Test5", datetime.now(), datetime.now()]
-        self.dbCursor.execute(f"""INSERT INTO item_record (title, author, description, publish_date, type, creation_date, managed_date)
-                                  VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
-        self.dbConnection.commit()
-
-    def test_add_item_query(self):
-        selected = self.parent.tree.item(self.parent.tree.focus())
-        record_id = selected['values'][0]
-
-        data = (record_id, f"Test{random.randint(0, 1000)}", "Test")
-
-        self.dbCursor.execute(f"""
-            INSERT INTO items (id, barcode, location_barcode) 
-            VALUES (?, ?, ?)
-        """, data)
-        self.dbConnection.commit()
-
     def drop_table(self):
         """
             drops all data from the inventory table
