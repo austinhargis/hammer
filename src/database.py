@@ -52,8 +52,7 @@ class Database:
                     last_name varchar,
                     creation_date date,
                     can_check_out integer,
-                    can_create_records integer,
-                    can_delete_records integer,
+                    can_manage_records integer,
                     birthday date,
                     email varchar
                 )""")
