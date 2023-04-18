@@ -22,7 +22,7 @@ class CreateUser(UserTemplate):
             text=languages[self.parent.save_m.data['language']]['users']['user_create_heading'],
             command=lambda: self.add_user())
 
-        self.email_entry.bind('<Return>', lambda event: self.add_user())
+        self.manage_item_check.bind('<Return>', lambda event: self.add_user())
 
     def add_user(self):
         try:

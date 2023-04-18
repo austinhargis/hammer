@@ -18,7 +18,7 @@ class ManageUser(UserTemplate):
             text='Save User',
             command=lambda: self.manage_user())
 
-        self.email_entry.bind('<Return>', lambda event: self.manage_user())
+        self.manage_item_check.bind('<Return>', lambda event: self.manage_user())
 
         self.load_user()
 
@@ -35,7 +35,7 @@ class ManageUser(UserTemplate):
         self.barcode_entry.insert('', user_data[0][1])
         self.first_name_entry.insert('', user_data[0][2])
         self.last_name_entry.insert('', user_data[0][3])
-        self.birthday_entry.insert('', user_data[0][4])
+        self.birthday_calendar.selection_set(user_data[0][4])
         self.email_entry.insert('', user_data[0][5])
         self.manage_item_value.set(user_data[0][6])
         self.check_out_value.set(user_data[0][7])
