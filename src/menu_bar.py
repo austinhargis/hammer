@@ -41,7 +41,7 @@ class MenuBar(tk.Menu):
         self.help()
 
     def checkout(self):
-        if self.parent.save_m.data['show_checkout_menu'] == 'enabled':
+        if self.parent.save_m.data['show_checkout_menu'] == 'allowed':
             self.checkout_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label='Checkout', underline=0, menu=self.checkout_menu)
             self.checkout_menu.add_command(label='Checkout to User', underline=1,
@@ -49,7 +49,7 @@ class MenuBar(tk.Menu):
             self.checkout_menu.add_command(label='Check Item In', underline=1,
                                            command=lambda: self.parent.create_tab(CheckinScreen, 'Check In Item'))
             self.checkout_menu.add_command(label='View All Checkouts', underline=1,
-                                            command=lambda: self.parent.create_tab(ViewCheckouts, 'View All Checkouts'))
+                                           command=lambda: self.parent.create_tab(ViewCheckouts, 'View All Checkouts'))
 
     def file(self):
         self.file_menu = tk.Menu(self, tearoff=False)
@@ -67,7 +67,7 @@ class MenuBar(tk.Menu):
         self.file_menu.add_command(label="Exit", underline=1, command=self.quit, accelerator='Escape')
 
     def developer(self):
-        if self.parent.save_m.data['show_developer_menu'] == 'enabled':
+        if self.parent.save_m.data['show_developer_menu'] == 'allowed':
             self.developer_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label=languages[self.parent.save_m.data['language']]['menubar']['developer_menu'],
                              underline=0, menu=self.developer_menu)
@@ -76,7 +76,7 @@ class MenuBar(tk.Menu):
                 command=lambda: self.parent.drop_table())
 
     def help(self):
-        if self.parent.save_m.data['show_help_menu'] == 'enabled':
+        if self.parent.save_m.data['show_help_menu'] == 'allowed':
             self.help_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label=languages[self.parent.save_m.data['language']]['menubar']['help_menu'], underline=0,
                              menu=self.help_menu)
@@ -84,7 +84,7 @@ class MenuBar(tk.Menu):
                 'https://github.com/austinhargis/hammer'))
 
     def users(self):
-        if self.parent.save_m.data['show_users_menu'] == 'enabled':
+        if self.parent.save_m.data['show_users_menu'] == 'allowed':
             self.users_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label=languages[self.parent.save_m.data['language']]['menubar']['users_menu'], underline=0,
                              menu=self.users_menu)
@@ -97,9 +97,9 @@ class MenuBar(tk.Menu):
                                         command=lambda: self.parent.create_tab(ViewSpecificUser, languages[
                                             self.parent.save_m.data['language']]['users']['user_specific']))
             self.users_menu.add_command(label=languages[self.parent.save_m.data['language']]['users']['user_view'],
-                                            underline=1,
-                                            command=lambda: self.parent.create_tab(ViewUsers, languages[
-                                                self.parent.save_m.data['language']]['users']['user_view']))
+                                        underline=1,
+                                        command=lambda: self.parent.create_tab(ViewUsers, languages[
+                                            self.parent.save_m.data['language']]['users']['user_view']))
 
     def quit(self):
         sys.exit()

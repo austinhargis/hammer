@@ -35,73 +35,58 @@ class SettingsWindow(tk.Frame):
         self.theme_var = tk.StringVar(theme_frame)
         self.theme_var.set(self.parent.save_m.data['theme'].capitalize())
         theme_dropdown = ttk.OptionMenu(theme_frame, self.theme_var, *['Dark', 'Light', 'System'])
-        theme_dropdown.pack(side='right')
+        theme_dropdown.pack(side='left')
         theme_dropdown.configure(state=self.parent.save_m.settings_enabled)
 
         update_frame = ttk.Frame(main_frame)
         update_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(update_frame,
-                  text=languages[self.parent.save_m.data['language']]['settings']['settings_update_check']).pack(
-            side='left')
         self.update_var = tk.StringVar(update_frame)
-        self.update_var.set(self.parent.save_m.data['automatic_update_check'].capitalize())
-        update_dropdown = ttk.OptionMenu(update_frame, self.update_var, *[
-            languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
-            languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
-        update_dropdown.pack(side='right')
-        update_dropdown.configure(state='disabled')
+        self.update_var.set(self.parent.save_m.data['automatic_update_check'])
+        ttk.Checkbutton(update_frame,
+                        text=languages[self.parent.save_m.data['language']]['settings']['settings_update_check'],
+                        variable=self.update_var,
+                        onvalue='allowed',
+                        offvalue='disallowed').pack(side='left')
 
         checkout_frame = ttk.Frame(main_frame)
         checkout_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(checkout_frame,
-                  text=languages[self.parent.save_m.data['language']]['settings']['settings_show_checkout']).pack(
-            side='left')
         self.checkout_var = tk.StringVar(checkout_frame)
-        self.checkout_var.set(self.parent.save_m.data['show_checkout_menu'].capitalize())
-        checkout_dropdown = ttk.OptionMenu(checkout_frame, self.checkout_var, *[
-            languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
-            languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
-        checkout_dropdown.pack(side='right')
-        checkout_dropdown.configure(state=self.parent.save_m.settings_enabled)
+        self.checkout_var.set(self.parent.save_m.data['show_checkout_menu'])
+        ttk.Checkbutton(checkout_frame,
+                        text=languages[self.parent.save_m.data['language']]['settings']['settings_show_checkout'],
+                        variable=self.checkout_var,
+                        onvalue='allowed',
+                        offvalue='disallowed').pack(side='left')
 
         developer_frame = ttk.Frame(main_frame)
         developer_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(developer_frame,
-                  text=languages[self.parent.save_m.data['language']]['settings']['settings_show_developer']).pack(
-            side='left')
         self.developer_var = tk.StringVar(developer_frame)
-        self.developer_var.set(self.parent.save_m.data['show_developer_menu'].capitalize())
-        developer_dropdown = ttk.OptionMenu(developer_frame, self.developer_var, *[
-            languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
-            languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
-        developer_dropdown.pack(side='right')
-        developer_dropdown.configure(state=self.parent.save_m.settings_enabled)
+        self.developer_var.set(self.parent.save_m.data['show_developer_menu'])
+        ttk.Checkbutton(developer_frame,
+                        text=languages[self.parent.save_m.data['language']]['settings']['settings_show_developer'],
+                        variable=self.developer_var,
+                        onvalue='allowed',
+                        offvalue='disallowed').pack(side='left')
 
         help_frame = ttk.Frame(main_frame)
         help_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(help_frame,
-                  text=languages[self.parent.save_m.data['language']]['settings']['settings_show_help']).pack(
-            side='left')
         self.help_var = tk.StringVar(help_frame)
-        self.help_var.set(self.parent.save_m.data['show_help_menu'].capitalize())
-        help_dropdown = ttk.OptionMenu(help_frame, self.help_var, *[
-            languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
-            languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
-        help_dropdown.pack(side='right')
-        help_dropdown.configure(state=self.parent.save_m.settings_enabled)
+        self.help_var.set(self.parent.save_m.data['show_help_menu'])
+        ttk.Checkbutton(help_frame,
+                        text=languages[self.parent.save_m.data['language']]['settings']['settings_show_help'],
+                        variable=self.help_var,
+                        onvalue='allowed',
+                        offvalue='disallowed').pack(side='left')
 
         users_frame = ttk.Frame(main_frame)
         users_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(users_frame,
-                  text=languages[self.parent.save_m.data['language']]['settings']['settings_show_users']).pack(
-            side='left')
         self.users_var = tk.StringVar(users_frame)
         self.users_var.set(self.parent.save_m.data['show_users_menu'].capitalize())
-        users_dropdown = ttk.OptionMenu(users_frame, self.users_var, *[
-            languages[self.parent.save_m.data['language']]['settings']['setting_enabled'],
-            languages[self.parent.save_m.data['language']]['settings']['setting_disabled']])
-        users_dropdown.pack(side='right')
-        users_dropdown.configure(state=self.parent.save_m.settings_enabled)
+        ttk.Checkbutton(users_frame,
+                        text=languages[self.parent.save_m.data['language']]['settings']['settings_show_users'],
+                        variable=self.update_var,
+                        onvalue='allowed',
+                        offvalue='disallowed').pack(side='left')
 
         save_settings_frame = ttk.Frame(main_frame)
         save_settings_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
@@ -118,12 +103,12 @@ class SettingsWindow(tk.Frame):
             :return:
         """
 
-        self.parent.save_m.data['automatic_update_check'] = self.update_var.get().lower()
-        self.parent.save_m.data['theme'] = self.theme_var.get().lower()
-        self.parent.save_m.data['show_checkout_menu'] = self.developer_var.get().lower()
-        self.parent.save_m.data['show_developer_menu'] = self.developer_var.get().lower()
-        self.parent.save_m.data['show_help_menu'] = self.help_var.get().lower()
-        self.parent.save_m.data['show_users_menu'] = self.users_var.get().lower()
+        self.parent.save_m.data['automatic_update_check'] = self.update_var.get()
+        self.parent.save_m.data['theme'] = self.theme_var.get()
+        self.parent.save_m.data['show_checkout_menu'] = self.checkout_var.get()
+        self.parent.save_m.data['show_developer_menu'] = self.developer_var.get()
+        self.parent.save_m.data['show_help_menu'] = self.help_var.get()
+        self.parent.save_m.data['show_users_menu'] = self.users_var.get()
 
         self.parent.save_m.push_save()
         self.parent.menu_bar.generate()

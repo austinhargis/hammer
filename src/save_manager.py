@@ -9,15 +9,15 @@ class SaveManager:
         self.parent = parent
 
         self.data = {
-            'automatic_update_check': 'enabled',
+            'automatic_update_check': 'allowed',
             'language': 'english',
             'last_update_check': datetime.now().strftime('%I:%M%p %m/%d/%Y'),
             'theme': 'system',
             'settings_version': 'v0.2.0a',
-            'show_checkout_menu': 'enabled',
-            'show_developer_menu': 'disabled',
-            'show_help_menu': 'enabled',
-            'show_users_menu': 'enabled',
+            'show_checkout_menu': 'allowed',
+            'show_developer_menu': 'disallowed',
+            'show_help_menu': 'allowed',
+            'show_users_menu': 'allowed',
         }
         self.settings_enabled = 'normal'
 
