@@ -152,6 +152,7 @@ class CheckoutScreen(tk.Frame):
             PopupWindow(self.parent, 'Checkout Not Permitted', 'You are not presently allowed to checkout items. '
                                                                'If you think this is a mistake, please contact an adminstrator.')
         else:
+            self.barcode_entry.configure(state='normal')
             self.barcode_entry.focus()
 
         self.user_checkouts.configure(text=f'Checkouts: {len(checkouts)}')
