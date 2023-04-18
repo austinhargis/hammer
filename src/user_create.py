@@ -31,8 +31,8 @@ class CreateUser(UserTemplate):
 
             if data[0][0:1] == 'U' and data[1] != '':
                 self.parent.db.dbCursor.execute(f"""
-                    INSERT INTO users(barcode, first_name, last_name, birthday, email, can_manage_records, creation_date) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?)""", data)
+                    INSERT INTO users(barcode, first_name, last_name, birthday, email, can_manage_records, can_check_out, creation_date) 
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)""", data)
                 self.parent.db.dbConnection.commit()
 
                 logging.info(f'Created user with barcode {data[0]}')
