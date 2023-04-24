@@ -4,7 +4,7 @@ from webbrowser import open_new_tab
 
 from checkin_screen import CheckinScreen
 from checkout_screen import CheckoutScreen
-from src.user_view_specific import ViewSpecificUser
+from user_view_specific import ViewSpecificUser
 from user_create import CreateUser
 from languages import *
 from settings import SettingsWindow
