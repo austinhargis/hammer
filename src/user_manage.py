@@ -26,10 +26,11 @@ class ManageUser(UserTemplate):
         self.first_name_entry.focus()
 
     def load_user(self):
-        user_data = self.parent.db.dbCursor.execute(f"""
+        self.parent.db.dbCursor.execute(f"""
             SELECT user_id, barcode, first_name, last_name, birthday, email, can_manage_records, can_check_out FROM users
-            WHERE barcode=?
-        """, (self.barcode,)).fetchall()
+            WHERE barcode=%s
+        """, (self.barcode,))
+        user_data = self.parent.db.dbCursor.fetchall()
 
         self.user_id = user_data[0][0]
         self.barcode_entry.insert('', user_data[0][1])
@@ -45,7 +46,7 @@ class ManageUser(UserTemplate):
             if self.get_all_data()[0][0:1] == 'U':
                 self.parent.db.dbCursor.execute(f"""
                     UPDATE users
-                    SET barcode=?, first_name=?, last_name=?, birthday=?, email=?, can_manage_records=?, can_check_out=?
+                    SET barcode=%s, first_name=%s, last_name=%s, birthday=%s, email=%s, can_manage_records=%s, can_check_out=%s
                     WHERE user_id={self.user_id}
                 """, self.get_all_data())
                 self.parent.db.dbConnection.commit()

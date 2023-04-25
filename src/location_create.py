@@ -20,7 +20,7 @@ class LocationCreate(LocationTemplate):
             if self.get_all_entries()[0][0:1] == 'L':
                 self.parent.db.dbCursor.execute(f"""
                     INSERT INTO locations (barcode, name)
-                    VALUES (?, ?)
+                    VALUES (%s, %s)
                 """, self.get_all_entries())
                 self.parent.db.dbConnection.commit()
 

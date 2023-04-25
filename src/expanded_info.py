@@ -120,11 +120,12 @@ class ExpandedInformation(tk.Frame):
         self.get_record_items()
 
     def get_record_items(self):
-        items = self.parent.db.dbCursor.execute(f"""
+        self.parent.db.dbCursor.execute(f"""
             SELECT * 
             FROM items
-            WHERE id=?
-        """, (self.id,)).fetchall()
+            WHERE id=%s
+        """, (self.id,))
+        items = self.parent.db.dbCursor.fetchall()
 
         for item in items:
             item = list(item)
@@ -136,16 +137,17 @@ class ExpandedInformation(tk.Frame):
         selected = self.tree.item(self.tree.focus())
         barcode = selected['values'][0]
 
-        barcode_checkouts = self.parent.db.dbCursor.execute(f"""
+        self.parent.db.dbCursor.execute(f"""
             SELECT *
             FROM checkouts
-            WHERE item_barcode=?    
-        """, (barcode,)).fetchall()
+            WHERE item_barcode=%s    
+        """, (barcode,))
+        barcode_checkouts = self.parent.db.dbCursor.fetchall()
 
         if len(barcode_checkouts) == 0:
             self.parent.db.dbCursor.execute(f"""
                 DELETE FROM items
-                WHERE barcode=?
+                WHERE barcode=%s
             """, (barcode,))
             self.parent.db.dbConnection.commit()
         else:

@@ -161,11 +161,12 @@ class Hammer(tk.Tk):
         logging.info('Populated the table')
 
     def get_item_status(self, barcode):
-        check_status = self.db.dbCursor.execute(f"""
+        self.db.dbCursor.execute(f"""
             SELECT *
             FROM checkouts
-            WHERE item_barcode=?
-        """, (barcode,)).fetchall()
+            WHERE item_barcode=%s
+        """, (barcode,))
+        check_status = self.db.dbCursor.fetchall()
 
         logging.info(f'Got item status for item {barcode}')
 
@@ -196,12 +197,13 @@ class Hammer(tk.Tk):
         """
         search_term = entry_box.get()
 
-        current_table = self.db.dbCursor.execute(f"""SELECT * 
-                                                     FROM item_record 
-                                                     WHERE title LIKE \'%{search_term}%\' 
-                                                     OR author LIKE \'%{search_term}%\'
-                                                     OR publish_date LIKE \'%{search_term}%\'
-                                                     OR type LIKE \'%{search_term}%\'""")
+        self.db.dbCursor.execute(f"""SELECT * 
+                                     FROM item_record 
+                                     WHERE title LIKE \'%{search_term}%\' 
+                                     OR author LIKE \'%{search_term}%\'
+                                     OR publish_date LIKE \'%{search_term}%\'
+                                     OR type LIKE \'%{search_term}%\'""")
+        current_table = self.db.dbCursor.fetchall()
         self.clear_table()
         self.populate_table(current_table)
 
@@ -355,10 +357,11 @@ class Hammer(tk.Tk):
         column = sorts_names[self.sort_col_var.get()]
         direction = sorts_names[self.sort_type_var.get()]
 
-        sort_results = self.db.dbCursor.execute(f"""
+        self.db.dbCursor.execute(f"""
             SELECT * FROM item_record
             ORDER BY {column} {direction}
-        """).fetchall()
+        """)
+        sort_results = self.db.dbCursor.fetchall()
 
         for item in sort_results:
             self.tree.insert('', tk.END, values=item)

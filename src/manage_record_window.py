@@ -24,7 +24,7 @@ class ManageRecordWindow(RecordInfoTemplate):
     def commit_changes(self):
         self.parent.db.dbCursor.execute(f"""
             UPDATE item_record 
-            SET title=?, author=?, description=?, publish_date=?, type=?
+            SET title=%s, author=%s, description=%s, publish_date=%s, type=%s
             WHERE id={self.entry_id}""", self.get_item_info())
 
         self.parent.db.dbConnection.commit()
@@ -37,10 +37,11 @@ class ManageRecordWindow(RecordInfoTemplate):
         current_item = self.parent.tree.focus()
         self.entry_id = self.parent.tree.item(current_item)['values'][0]
 
-        item_row = self.parent.db.dbCursor.execute(f"""
+        self.parent.db.dbCursor.execute(f"""
             SELECT * FROM item_record
-            WHERE id=?
-        """, (self.entry_id,)).fetchall()
+            WHERE id=%s
+        """, (self.entry_id,))
+        item_row = self.parent.db.dbCursor.fetchall()
 
         self.title_text.insert(0, item_row[0][1])
         self.author_text.insert(0, item_row[0][2])

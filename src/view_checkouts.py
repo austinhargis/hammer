@@ -51,20 +51,23 @@ class ViewCheckouts(ttk.Frame):
                    command=lambda: self.destroy()).pack()
 
     def get_checkouts(self):
-        checkouts = self.parent.db.dbCursor.execute("""
+        self.parent.db.dbCursor.execute("""
             SELECT * FROM checkouts
-        """).fetchall()
+        """)
+        checkouts = self.parent.db.dbCursor.fetchall()
 
         for checkout_index in range(len(checkouts)):
-            checkout_ids = self.parent.db.dbCursor.execute(f"""
+            self.parent.db.dbCursor.execute(f"""
                         SELECT id FROM items
                         WHERE barcode='{checkouts[checkout_index][1]}'
-            """).fetchall()
+            """)
+            checkout_ids = self.parent.db.dbCursor.fetchall()
 
-            checkout_titles = self.parent.db.dbCursor.execute(f"""
+            self.parent.db.dbCursor.execute(f"""
                 SELECT title FROM item_record
-                WHERE id=?
-            """, list(checkout_ids[0])).fetchall()
+                WHERE id=%s
+            """, list(checkout_ids[0]))
+            checkout_titles = self.parent.db.dbCursor.fetchall()
 
             checkout_ = [checkouts[checkout_index][0], checkouts[checkout_index][1], checkout_titles[0][0]]
 

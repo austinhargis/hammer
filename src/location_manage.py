@@ -20,9 +20,10 @@ class LocationManage(LocationTemplate):
         self.fill_info()
 
     def fill_info(self):
-        location_row = self.parent.db.dbCursor.execute(f"""
+        self.parent.db.dbCursor.execute(f"""
                     SELECT * FROM locations
-                    WHERE location_id=?""", (self.location_id,)).fetchall()
+                    WHERE location_id=%s""", (self.location_id,))
+        location_row = self.parent.db.dbCursor.fetchall()
 
         self.barcode_entry.insert(0, location_row[0][1])
         self.name_entry.insert(0, location_row[0][2])
@@ -32,7 +33,7 @@ class LocationManage(LocationTemplate):
             if self.get_all_entries()[0][0:1] == 'L':
                 self.parent.db.dbCursor.execute(f"""
                             UPDATE locations 
-                            SET barcode=?, name=?
+                            SET barcode=%s, name=%s
                             WHERE location_id={self.location_id}""", self.get_all_entries())
                 self.parent.db.dbConnection.commit()
 

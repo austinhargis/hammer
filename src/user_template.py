@@ -1,3 +1,4 @@
+from datetime import datetime
 from tkcalendar import Calendar
 import tkinter as tk
 from tkinter import ttk
@@ -56,24 +57,24 @@ class UserTemplate(ttk.Frame):
         self.birthday_calendar.pack()
         # self.birthday_calendar.s
 
-        self.check_out_value = tk.StringVar(value='disallowed')
+        self.check_out_value = tk.IntVar(value=0)
         check_out_frame = ttk.Frame(main_frame)
         check_out_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         self.check_out_check = ttk.Checkbutton(check_out_frame,
                                                text='Allow Checkouts',
                                                variable=self.check_out_value,
-                                               onvalue='allowed',
-                                               offvalue='disallowed')
+                                               onvalue=1,
+                                               offvalue=0)
         self.check_out_check.pack(side='left')
 
-        self.manage_item_value = tk.StringVar(value='disallowed')
+        self.manage_item_value = tk.IntVar(value=0)
         manage_item_frame = ttk.Frame(main_frame)
         manage_item_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         self.manage_item_check = ttk.Checkbutton(manage_item_frame,
                                                  text='Allow Item Management',
                                                  variable=self.manage_item_value,
-                                                 onvalue='allowed',
-                                                 offvalue='disallowed')
+                                                 onvalue=1,
+                                                 offvalue=0)
         self.manage_item_check.pack(side='left')
 
         button_frame = ttk.Frame(main_frame)
@@ -93,10 +94,11 @@ class UserTemplate(ttk.Frame):
         self.check_out_check.bind('<Return>', lambda event: self.manage_item_check.focus())
 
     def get_all_data(self):
+        self.birthday_calendar.get_date()
         return [self.barcode_entry.get(),
                 self.first_name_entry.get(),
                 self.last_name_entry.get(),
-                self.birthday_calendar.get_date(),
+                datetime.strptime(self.birthday_calendar.get_date(), '%m/%d/%y'),
                 self.email_entry.get(),
                 self.manage_item_value.get(),
                 self.check_out_value.get()]

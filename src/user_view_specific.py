@@ -83,18 +83,20 @@ class ViewSpecificUser(ttk.Frame):
         for item in self.tree.get_children():
             self.tree.delete(item)
 
-        checkouts = self.parent.db.dbCursor.execute("""
+        self.parent.db.dbCursor.execute("""
             SELECT barcode, item_record.title 
             FROM items
             INNER JOIN item_record ON items.id = item_record.id
             INNER JOIN checkouts ON items.barcode = checkouts.item_barcode
-            WHERE user_barcode=?
-        """, (self.barcode_entry.get(),)).fetchall()
+            WHERE user_barcode=%s
+        """, (self.barcode_entry.get(),))
+        checkouts = self.parent.db.dbCursor.fetchall()
 
-        user_information = self.parent.db.dbCursor.execute("""
+        self.parent.db.dbCursor.execute("""
             SELECT first_name, last_name, creation_date FROM users
-            WHERE barcode=?
-        """, (self.barcode_entry.get(),)).fetchall()
+            WHERE barcode=%s
+        """, (self.barcode_entry.get(),))
+        user_information = self.parent.db.dbCursor.fetchall()
 
         for item in checkouts:
             self.tree.insert('', tk.END, values=item)

@@ -6,7 +6,7 @@ from languages import *
 from popup_window import PopupWindow
 
 
-class CheckinScreen(tk.Frame):
+class CheckinScreen(ttk.Frame):
 
     def __init__(self, parent):
         super().__init__()
@@ -67,10 +67,11 @@ class CheckinScreen(tk.Frame):
         self.barcode_entry.focus()
 
     def check_item_in(self):
-        items = self.parent.db.dbCursor.execute(f"""
+        self.parent.db.dbCursor.execute(f"""
             SELECT * FROM checkouts
             WHERE item_barcode='{self.barcode_entry.get()}'
-        """).fetchall()
+        """)
+        items = self.parent.db.dbCursor.fetchall()
 
         if len(items) == 1:
 
@@ -82,13 +83,14 @@ class CheckinScreen(tk.Frame):
 
             logging.info(f'Checked in item with barcode {self.barcode_entry.get()}')
 
-            return_title = self.parent.db.dbCursor.execute("""
+            self.parent.db.dbCursor.execute("""
                 SELECT title FROM item_record
                 WHERE id=(
                     SELECT id FROM items
-                    WHERE barcode=?    
+                    WHERE barcode=%s    
                 )
-            """, (self.barcode_entry.get(),)).fetchall()
+            """, (self.barcode_entry.get(),))
+            return_title = self.parent.db.dbCursor.fetchall()
 
             self.tree.insert('', tk.END, values=[self.barcode_entry.get(), return_title[0][0]])
             self.barcode_entry.delete(0, tk.END)

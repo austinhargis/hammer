@@ -1,6 +1,7 @@
 import os
 import random
 import sqlite3
+import mysql.connector
 from datetime import datetime
 
 from popup_window import PopupWindow
@@ -11,64 +12,83 @@ class Database:
     def __init__(self, filename, parent):
         self.parent = parent
 
-        if filename not in os.listdir(f'{self.parent.data_path}'):
-            self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
-            self.dbCursor = self.dbConnection.cursor()
+        # if filename not in os.listdir(f'{self.parent.data_path}'):
+        self.dbConnection = mysql.connector.connect(
+            host='',
+            user='',
+            password=''
+        )
+        self.dbCursor = self.dbConnection.cursor(buffered=True)
+        try:
+            self.dbCursor.execute("""
+                CREATE DATABASE hammerDB;
+            """)
+            self.dbCursor.execute("""
+                USE hammerDB;
+            """)
             self.dbCursor.execute(f"""
                 CREATE TABLE item_record(
-                    id INTEGER PRIMARY KEY AUTOINCREMENT,     
-                    title varchar,
-                    author varchar,
-                    publish_date varchar,
-                    type varchar,
-                    location varchar,
-                    quantity varchar,
-                    description varchar,
+                    id smallint(255) NOT NULL AUTO_INCREMENT,     
+                    title varchar(255),
+                    author varchar(255),
+                    publish_date varchar(255),
+                    type varchar(255),
+                    location varchar(255),
+                    quantity varchar(255),
+                    description varchar(255),
                     creation_date datetime,
-                    managed_date datetime
+                    managed_date datetime,
+                    PRIMARY KEY (id)
                 )""")
             self.dbCursor.execute(f"""
                 CREATE TABLE locations(
-                    location_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    barcode varchar UNIQUE NOT NULL,
-                    name varchar
+                    location_id smallint(255) AUTO_INCREMENT,
+                    barcode varchar(255) UNIQUE NOT NULL,
+                    name varchar(255),
+                    PRIMARY KEY (location_id)
                 )
                 """)
             self.dbCursor.execute(f"""
                 CREATE TABLE items(
-                    id INTEGER,
-                    barcode varchar PRIMARY KEY NOT NULL,
-                    location_barcode varchar,
-                    description varchar,
+                    id smallint(255),
+                    barcode varchar(255) NOT NULL,
+                    location_barcode varchar(255),
+                    description varchar(255),
+                    PRIMARY KEY (barcode),
                     FOREIGN KEY(id) REFERENCES item_record(id),
-                    FOREIGN KEY(location_barcode) REFERENCES locations(location_id)
+                    FOREIGN KEY(location_barcode) REFERENCES locations(barcode)
                 )
                 """)
             self.dbCursor.execute(f"""
                 CREATE TABLE users(
-                    user_id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    barcode varchar UNIQUE,
-                    first_name varchar,
-                    last_name varchar,
+                    user_id smallint(255) AUTO_INCREMENT,
+                    barcode varchar(255) UNIQUE,
+                    first_name varchar(255),
+                    last_name varchar(255),
                     creation_date date,
-                    can_check_out integer,
-                    can_manage_records integer,
+                    can_check_out boolean,
+                    can_manage_records boolean,
                     birthday date,
-                    email varchar
+                    email varchar(255),
+                    PRIMARY KEY (user_id)
                 )""")
             self.dbCursor.execute(f"""
                 CREATE TABLE checkouts(
-                    user_barcode varchar,
-                    item_barcode varchar UNIQUE,
+                    user_barcode varchar(255),
+                    item_barcode varchar(255) UNIQUE,
                     creation_date datetime,
                     FOREIGN KEY(user_barcode) REFERENCES users(barcode),
                     FOREIGN KEY(item_barcode) REFERENCES items(barcode)
                 )""")
-            self.dbConnection.commit()
+        except mysql.connector.errors.DatabaseError:
+            self.dbCursor.execute("""
+                USE hammerDB;
+            """)
+            # self.dbConnection.commit()
 
-        else:
-            self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
-            self.dbCursor = self.dbConnection.cursor()
+        # else:
+        #     self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
+        #     self.dbCursor = self.dbConnection.cursor()
 
     def delete_query(self, data):
         """
@@ -80,7 +100,7 @@ class Database:
         item_barcodes = self.dbCursor.execute(f"""
             SELECT barcode
             FROM items
-            WHERE id=?
+            WHERE id=%s
         """, (data[0],)).fetchall()
 
         checkouts_with_barcode = []
@@ -88,7 +108,7 @@ class Database:
             checkouts = self.dbCursor.execute(f"""
                 SELECT *
                 FROM checkouts
-                WHERE item_barcode=?
+                WHERE item_barcode=%s
             """, list(barcode, )).fetchall()
             if len(checkouts) > 0:
                 checkouts_with_barcode.append(checkouts[0])

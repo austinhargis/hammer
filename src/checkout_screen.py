@@ -100,23 +100,25 @@ class CheckoutScreen(tk.Frame):
         data = (self.user_barcode.get(), self.barcode_entry.get())
 
         # Get a list of all items with that item barcode
-        items = self.parent.db.dbCursor.execute(f"""
+        self.parent.db.dbCursor.execute(f"""
             SELECT * FROM items
             WHERE barcode='{data[1]}'
-        """).fetchall()
+        """)
+        items = self.parent.db.dbCursor.fetchall()
 
         # Get a list of all users with that user barcode
-        users = self.parent.db.dbCursor.execute(f"""
+        self.parent.db.dbCursor.execute(f"""
             SELECT * FROM users
-            WHERE barcode=?
-        """, (data[0],)).fetchall()
+            WHERE barcode=%s
+        """, (data[0],))
+        users = self.parent.db.dbCursor.fetchall()
 
         if len(items) == 1 and len(users) == 1:
 
             try:
                 self.parent.db.dbCursor.execute("""
                     INSERT INTO checkouts(user_barcode, item_barcode)
-                    VALUES (?, ?) 
+                    VALUES (%s, %s) 
                 """, data)
 
                 self.parent.db.dbConnection.commit()
@@ -135,17 +137,19 @@ class CheckoutScreen(tk.Frame):
             logging.info(f'One or both barcode(s) are invalid')
 
     def get_user(self):
-        user = self.parent.db.dbCursor.execute("""
+        self.parent.db.dbCursor.execute("""
             SELECT * FROM users
-            WHERE barcode=?    
-        """, (self.user_barcode.get(),)).fetchall()
+            WHERE barcode=%s    
+        """, (self.user_barcode.get(),))
+        user = self.parent.db.dbCursor.fetchall()
 
         self.user_name.configure(text=f'User: {user[0][2]} {user[0][3]}')
 
-        checkouts = self.parent.db.dbCursor.execute("""
+        self.parent.db.dbCursor.execute("""
             SELECT * FROM checkouts
-            WHERE user_barcode=?
-        """, (self.user_barcode.get(),)).fetchall()
+            WHERE user_barcode=%s
+        """, (self.user_barcode.get(),))
+        checkouts = self.parent.db.dbCursor.fetchall()
 
         if user[0][5] == 'disallowed':
             self.barcode_entry.configure(state='disabled')
@@ -158,11 +162,12 @@ class CheckoutScreen(tk.Frame):
         self.user_checkouts.configure(text=f'Checkouts: {len(checkouts)}')
 
     def update_tree(self):
-        title_row = self.parent.db.dbCursor.execute("""
+        self.parent.db.dbCursor.execute("""
             SELECT title from item_record
             WHERE id=(
                 SELECT id FROM items
-                WHERE barcode=?)
-        """, (self.barcode_entry.get(),)).fetchall()
+                WHERE barcode=%s)
+        """, (self.barcode_entry.get(),))
+        title_row = self.parent.db.dbCursor.fetchall()
 
         self.tree.insert('', tk.END, values=[self.barcode_entry.get(), title_row[0][0]])

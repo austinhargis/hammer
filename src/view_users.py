@@ -51,9 +51,10 @@ class ViewUsers(ttk.Frame):
                                     self.destroy()]).pack()
 
     def get_users(self):
-        users = self.parent.db.dbCursor.execute("""
+        self.parent.db.dbCursor.execute("""
             SELECT * FROM users
-        """).fetchall()
+        """)
+        users = self.parent.db.dbCursor.fetchall()
 
         for user_index in range(len(users)):
             self.user_tree.insert('', tk.END, values=users[user_index])

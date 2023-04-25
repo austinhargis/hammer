@@ -54,9 +54,10 @@ class LocationView(ttk.Frame):
                                     self.destroy()]).pack()
 
     def get_locations(self):
-        locations = self.parent.db.dbCursor.execute("""
+        self.parent.db.dbCursor.execute("""
             SELECT * FROM locations
-        """).fetchall()
+        """)
+        locations = self.parent.db.dbCursor.fetchall()
 
         for location_index in range(len(locations)):
             self.tree.insert('', tk.END, values=locations[location_index])

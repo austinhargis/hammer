@@ -20,15 +20,16 @@ class AddItemFromRecordWindow(RecordChildTemplate):
 
     def create_item(self):
         try:
-            locations_with_barcode = self.parent.db.dbCursor.execute("""
+            self.parent.db.dbCursor.execute("""
                 SELECT * FROM locations
-                WHERE barcode=?
-            """, (self.get_item_info()[2],)).fetchall()
+                WHERE barcode=%s
+            """, (self.get_item_info()[2],))
+            locations_with_barcode = self.parent.db.dbCursor.fetchall()
 
             if self.get_item_info()[1] != '' and len(locations_with_barcode) == 1:
                 self.parent.db.dbCursor.execute("""
                     INSERT INTO items
-                    VALUES (?, ?, ?, ?)
+                    VALUES (%s, %s, %s, %s)
                 """, self.get_item_info())
                 self.parent.db.dbConnection.commit()
                 logging.info(f'Created item {self.get_item_info()[1]} from record {self.get_item_info()[0]}')

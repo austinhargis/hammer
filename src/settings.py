@@ -81,10 +81,10 @@ class SettingsWindow(tk.Frame):
         users_frame = ttk.Frame(main_frame)
         users_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         self.users_var = tk.StringVar(users_frame)
-        self.users_var.set(self.parent.save_m.data['show_users_menu'].capitalize())
+        self.users_var.set(self.parent.save_m.data['show_users_menu'])
         ttk.Checkbutton(users_frame,
                         text=languages[self.parent.save_m.data['language']]['settings']['settings_show_users'],
-                        variable=self.update_var,
+                        variable=self.users_var,
                         onvalue='allowed',
                         offvalue='disallowed').pack(side='left')
 

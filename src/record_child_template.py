@@ -58,8 +58,9 @@ class RecordChildTemplate(ttk.Frame):
         ]
 
     def get_item_record(self):
-        self.record = self.parent.db.dbCursor.execute(f"""
+        self.parent.db.dbCursor.execute(f"""
             SELECT *
             FROM item_record
-            WHERE id=?
-        """, (self.entry_id,)).fetchall()
+            WHERE id=%s
+        """, (self.entry_id,))
+        self.record = self.parent.db.dbCursor.fetchall()
