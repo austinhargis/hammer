@@ -6,3 +6,4 @@ hammer.db
 *.pkl
 *.txt
 *.spec
+*.env
