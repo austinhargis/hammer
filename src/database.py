@@ -16,7 +16,8 @@ class Database:
         self.dbConnection = mysql.connector.connect(
             host='',
             user='',
-            password=''
+            password='',
+            autocommit=True,
         )
         self.dbCursor = self.dbConnection.cursor(buffered=True)
         try:
