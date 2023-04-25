@@ -11,9 +11,12 @@ import os
 import sys
 import tkinter as tk
 from pathlib import Path
+from subprocess import call
 from tkinter import ttk
 
 import _tkinter
+
+import mysql.connector.errors
 
 from add_item_from_record_window import AddItemFromRecordWindow
 from add_record_window import AddRecordWindow
@@ -28,6 +31,7 @@ from location_view import LocationView
 from manage_record_window import ManageRecordWindow
 from menu_bar import MenuBar
 from save_manager import SaveManager
+from settings import SettingsWindow
 from user_view_specific import ViewSpecificUser
 
 if not os.path.isdir(f'{Path.home()}/hammer'):
@@ -53,14 +57,9 @@ class Hammer(tk.Tk):
         self.wraplength = 200
 
         self.save_m = SaveManager(self)
-        # Attempt to open a database file with the passed argument
-        # If there is no passed argument, open a database titled hammer.db
-        try:
-            self.db = Database(f"{sys.argv[1]}.db", self)
-        except IndexError:
-            self.db = Database("hammer.db", self)
         self.menu_bar = MenuBar(self)
         self.tab_controller = ttk.Notebook(self)
+        self.db = Database(self)
 
         self.window()
         self.config(menu=self.menu_bar)
