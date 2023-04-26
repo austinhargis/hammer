@@ -83,9 +83,9 @@ class Database:
                     FOREIGN KEY(item_barcode) REFERENCES items(barcode)
                 )""")
             self.dbCursor.execute("""
-                INSERT INTO users (barcode, first_name, last_name, password)
-                VALUES (%s, %s, %s, %s)
-            """, ('admin', 'admin', 'admin', bcrypt.hashpw('12345'.encode('utf-8'), bcrypt.gensalt())))
+                INSERT INTO users (barcode, first_name, last_name, password, email)
+                VALUES (%s, %s, %s, %s, %s)
+            """, ('admin', 'admin', 'admin', bcrypt.hashpw('12345'.encode('utf-8'), bcrypt.gensalt()), ''))
         except mysql.connector.errors.DatabaseError:
             self.dbCursor.execute("""
                 USE hammerDB;
