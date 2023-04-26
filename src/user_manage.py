@@ -42,18 +42,15 @@ class ManageUser(UserTemplate):
         self.check_out_value.set(user_data[0][7])
 
     def manage_user(self):
-        try:
-            data = self.get_all_data()
-            data.remove(data.index(3))
-            if self.get_all_data()[0][0:1] == 'U':
-                self.parent.db.dbCursor.execute(f"""
-                    UPDATE users
-                    SET barcode=%s, first_name=%s, last_name=%s, birthday=%s, email=%s, can_manage_records=%s, can_check_out=%s
-                    WHERE user_id={self.user_id}
-                """, data)
-                self.parent.db.dbConnection.commit()
+        data = self.get_all_data()
+        del data[3]
+        self.parent.db.dbCursor.execute(f"""
+            UPDATE users
+            SET barcode=%s, first_name=%s, last_name=%s, birthday=%s, email=%s, can_manage_records=%s, can_check_out=%s
+            WHERE user_id={self.user_id}
+        """, data)
+        self.parent.db.dbConnection.commit()
 
-                self.destroy()
+        self.destroy()
 
-        except sqlite3.IntegrityError:
-            pass
+        print('sucess?')
