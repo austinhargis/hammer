@@ -25,17 +25,17 @@ class HomeTab(ttk.Frame):
         self.window()
         self.populate_table()
         self.after(self.parent.manage_check_delay, self.check_focus)
-        self.tree.bind("<Delete>", lambda event: self.delete_popup_window())
+        self.parent.tree.bind("<Delete>", lambda event: self.delete_popup_window())
         self.parent.config(menu=self.parent.menu_bar)
 
     def check_focus(self):
-        if self.tree.focus() == '':
+        if self.parent.tree.focus() == '':
             self.manage_button.configure(state='disabled')
             self.delete_button.configure(state='disabled')
             self.after(self.parent.manage_check_delay, self.check_focus)
         else:
             self.manage_button.configure(state='normal')
-            self.delete_button.configure(state='disabled')
+            self.delete_button.configure(state='normal')
             self.after(self.parent.manage_check_delay, self.check_focus)
 
     def clear_table(self):
@@ -43,8 +43,8 @@ class HomeTab(ttk.Frame):
             clear_table purges the TreeView of all of its children
             :return:
         """
-        for item in self.tree.get_children():
-            self.tree.delete(item)
+        for item in self.parent.tree.get_children():
+            self.parent.tree.delete(item)
 
     def delete_entry(self):
         """
@@ -53,9 +53,9 @@ class HomeTab(ttk.Frame):
             database, before finally refreshing the table
             :return:
         """
-        current_item = self.tree.focus()
+        current_item = self.parent.tree.focus()
         if current_item != '':
-            self.parent.db.delete_query(self.tree.item(current_item)['values'])
+            self.parent.db.delete_query(self.parent.tree.item(current_item)['values'])
             self.refresh_table()
 
             logging.info('Deleted item from database')
@@ -74,7 +74,7 @@ class HomeTab(ttk.Frame):
                   wraplength=self.parent.wraplength,
                   justify='center').pack()
         ttk.Label(popup,
-                  text=f'Item: {self.tree.item(self.tree.focus())["values"][1]}').pack()
+                  text=f'Item: {self.parent.tree.item(self.parent.tree.focus())["values"][1]}').pack()
 
         button_frame = ttk.Frame(popup)
         button_frame.pack(expand=True)
@@ -111,12 +111,12 @@ class HomeTab(ttk.Frame):
             current_table = self.parent.db.get_all_query()
 
         for row in current_table:
-            self.tree.insert('', tk.END, values=row)
+            self.parent.tree.insert('', tk.END, values=row)
 
-        if len(self.tree.get_children()) > 0:
-            child = self.tree.get_children()[0]
-            self.tree.focus(child)
-            self.tree.selection_set(child)
+        if len(self.parent.tree.get_children()) > 0:
+            child = self.parent.tree.get_children()[0]
+            self.parent.tree.focus(child)
+            self.parent.tree.selection_set(child)
 
         logging.info('Populated the table')
 
@@ -170,8 +170,8 @@ class HomeTab(ttk.Frame):
         logging.info(f'Performed search query "{search_term}"')
 
     def sort_tree(self):
-        for item in self.tree.get_children():
-            self.tree.delete(item)
+        for item in self.parent.tree.get_children():
+            self.parent.tree.delete(item)
 
         sorts_names = {
             'Ascending': 'asc',
@@ -192,13 +192,13 @@ class HomeTab(ttk.Frame):
         sort_results = self.parent.db.dbCursor.fetchall()
 
         for item in sort_results:
-            self.tree.insert('', tk.END, values=item)
+            self.parent.tree.insert('', tk.END, values=item)
 
     def tree_double_click(self):
-        current_item = self.tree.focus()
+        current_item = self.parent.tree.focus()
 
-        entry_values = self.tree.item(current_item)['values']
-        entry_title = self.tree.item(current_item)['values'][1]
+        entry_values = self.parent.tree.item(current_item)['values']
+        entry_title = self.parent.tree.item(current_item)['values'][1]
 
         self.parent.create_tab(ExpandedInformation, title=f'{entry_title}', values=entry_values)
 
@@ -252,7 +252,7 @@ class HomeTab(ttk.Frame):
 
         self.delete_button = ttk.Button(manage_frame,
                                         text=languages[self.parent.save_m.data['language']]['item_info']['item_delete_all'],
-                                        command=lambda: self.parent.delete_popup_window())
+                                        command=lambda: self.delete_popup_window())
         self.delete_button.pack(fill='x')
         self.delete_button.configure(state='disabled')
 
@@ -289,33 +289,33 @@ class HomeTab(ttk.Frame):
                        'user_specific'])).pack(fill='x')
 
         # creates the TreeView which will handle displaying all schema in the database
-        self.tree = ttk.Treeview(top_right_frame,
+        self.parent.tree = ttk.Treeview(top_right_frame,
                                  columns=(
                                      'id', 'title', 'author', 'publish_date', 'type'))
         # hide the initial blank column that comes with TreeViews
-        self.tree['show'] = 'headings'
+        self.parent.tree['show'] = 'headings'
         # show only the desired columns (hiding the id)
-        self.tree['displaycolumns'] = ('title', 'author', 'publish_date', 'type',)
+        self.parent.tree['displaycolumns'] = ('title', 'author', 'publish_date', 'type',)
 
-        self.tree_scroll_bar = ttk.Scrollbar(top_right_frame, command=self.tree.yview)
-        self.tree.configure(yscrollcommand=self.tree_scroll_bar.set)
-        self.tree_scroll_bar.pack(side='right', fill='both', pady=self.parent.padding)
+        self.parent.tree_scroll_bar = ttk.Scrollbar(top_right_frame, command=self.parent.tree.yview)
+        self.parent.tree.configure(yscrollcommand=self.parent.tree_scroll_bar.set)
+        self.parent.tree_scroll_bar.pack(side='right', fill='both', pady=self.parent.padding)
 
-        self.tree.heading('id', text='ID')
-        self.tree.heading('title', text='Title')
-        self.tree.column('title', stretch=False, width=150)
-        self.tree.heading('author', text='Author')
-        self.tree.column('author', stretch=False, width=150)
-        self.tree.heading('publish_date', text='Publish Date')
-        self.tree.heading('type', text='Type')
-        self.tree.pack(expand=True, fill='both', padx=(self.parent.padding, 0), pady=self.parent.padding)
+        self.parent.tree.heading('id', text='ID')
+        self.parent.tree.heading('title', text='Title')
+        self.parent.tree.column('title', stretch=False, width=150)
+        self.parent.tree.heading('author', text='Author')
+        self.parent.tree.column('author', stretch=False, width=150)
+        self.parent.tree.heading('publish_date', text='Publish Date')
+        self.parent.tree.heading('type', text='Type')
+        self.parent.tree.pack(expand=True, fill='both', padx=(self.parent.padding, 0), pady=self.parent.padding)
 
         search_frame = ttk.Frame(bottom_right_frame)
         search_frame.pack(side='left', fill='both', pady=self.parent.padding)
         ttk.Label(search_frame, text='Search', font=self.parent.heading_font).pack(side='left', padx=self.parent.padding)
         search_box = ttk.Entry(search_frame)
         search_box.pack(side='left', padx=(0, self.parent.padding), pady=self.parent.padding)
-        ttk.Button(search_frame, text='Search', command=lambda: self.parent.search_table(search_box)).pack(side='left')
+        ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
 
         sort_frame = ttk.Frame(bottom_right_frame)
         sort_frame.pack(side='left')
@@ -330,7 +330,7 @@ class HomeTab(ttk.Frame):
             'Ascending', 'Descending'
         ])
         sort_type.pack(side='left')
-        ttk.Button(sort_frame, text='Sort', command=lambda: self.parent.sort_tree()).pack(side='left')
+        ttk.Button(sort_frame, text='Sort', command=lambda: self.sort_tree()).pack(side='left')
 
-        self.bind('<Return>', lambda event: self.parent.search_table(search_box))
-        self.tree.bind('<Double-1>', lambda event: self.parent.tree_double_click())
+        self.bind('<Return>', lambda event: self.search_table(search_box))
+        self.parent.tree.bind('<Double-1>', lambda event: self.tree_double_click())

@@ -130,7 +130,7 @@ class ExpandedInformation(tk.Frame):
         for item in items:
             item = list(item)
             del item[0]
-            item.append(self.parent.get_item_status(item[0]))
+            item.append(self.parent.home_tab.get_item_status(item[0]))
             self.tree.insert('', tk.END, values=item)
 
     def delete_item(self):

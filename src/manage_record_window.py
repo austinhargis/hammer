@@ -29,7 +29,7 @@ class ManageRecordWindow(RecordInfoTemplate):
 
         self.parent.db.dbConnection.commit()
 
-        self.parent.refresh_table()
+        self.parent.home_tab.refresh_table()
         self.parent.tab_controller.select(0)
         self.destroy()
 
