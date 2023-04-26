@@ -1,22 +1,21 @@
-import os
-import random
-import sqlite3
+from dotenv import load_dotenv
 import mysql.connector
-from datetime import datetime
+import os
 
 from popup_window import PopupWindow
 
 
 class Database:
 
-    def __init__(self, filename, parent):
+    def __init__(self, parent):
         self.parent = parent
 
-        # if filename not in os.listdir(f'{self.parent.data_path}'):
+        load_dotenv()
+
         self.dbConnection = mysql.connector.connect(
-            host='',
-            user='',
-            password='',
+            host=os.getenv('db_host'),
+            user=os.getenv('db_user'),
+            password=os.getenv('db_password'),
             autocommit=True,
         )
         self.dbCursor = self.dbConnection.cursor(buffered=True)
@@ -86,11 +85,6 @@ class Database:
             self.dbCursor.execute("""
                 USE hammerDB;
             """)
-            # self.dbConnection.commit()
-
-        # else:
-        #     self.dbConnection = sqlite3.connect(f'{self.parent.data_path}/{filename}')
-        #     self.dbCursor = self.dbConnection.cursor()
 
     def delete_query(self, data):
         """

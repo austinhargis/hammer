@@ -12,12 +12,9 @@ import sys
 import tkinter as tk
 from pathlib import Path
 from tkinter import ttk
-
 import _tkinter
 
 from database import Database
-from expanded_info import ExpandedInformation
-from languages import *
 from login import Login
 from menu_bar import MenuBar
 from save_manager import SaveManager
@@ -45,14 +42,9 @@ class Hammer(tk.Tk):
         self.wraplength = 200
 
         self.save_m = SaveManager(self)
-        # Attempt to open a database file with the passed argument
-        # If there is no passed argument, open a database titled hammer.db
-        try:
-            self.db = Database(f"{sys.argv[1]}.db", self)
-        except IndexError:
-            self.db = Database("hammer.db", self)
         self.menu_bar = MenuBar(self)
         self.tab_controller = ttk.Notebook(self)
+        self.db = Database(self)
 
         self.tab_controller.pack(expand=1, fill='both')
 
