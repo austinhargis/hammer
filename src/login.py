@@ -3,6 +3,7 @@ from tkinter import ttk
 
 from home_tab import HomeTab
 
+
 class Login(ttk.Frame):
 
     def __init__(self, parent):
@@ -14,7 +15,7 @@ class Login(ttk.Frame):
 
     def window(self):
         main_frame = ttk.Frame(self)
-        main_frame.pack(side='left', anchor='nw', fill='both', expand=True)
+        main_frame.pack(anchor='nw')
 
         heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
@@ -45,10 +46,7 @@ class Login(ttk.Frame):
         password = self.parent.db.dbCursor.fetchall()
 
         user_password = self.password_entry.get().encode('utf-8')
-        hash_pass = bcrypt.hashpw(user_password, bcrypt.gensalt())
 
         if bcrypt.checkpw(user_password, password[0][0].encode('utf-8')):
             self.parent.create_tab(HomeTab, 'Home')
             self.destroy()
-        else:
-            print('they don\'t')

@@ -32,7 +32,7 @@ class Hammer(tk.Tk):
     def __init__(self, *args, **kwargs):
         tk.Tk.__init__(self, *args, **kwargs)
         self.title(f"hammer")
-        self.minsize(400, 300)
+        self.minsize(800, 600)
         # self.state('zoomed')
 
         self.data_path = f'{Path.home()}/hammer'
