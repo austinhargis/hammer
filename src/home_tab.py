@@ -204,7 +204,7 @@ class HomeTab(ttk.Frame):
 
     def window(self):
         main_frame = ttk.Frame(self)
-        main_frame.pack(padx=self.parent.padding, pady=self.parent.padding)
+        main_frame.pack(expand=True, fill='both', padx=self.parent.padding, pady=self.parent.padding)
 
         left_frame = ttk.Frame(main_frame)
         left_frame.pack(side='left', anchor='nw', padx=self.parent.padding, pady=self.parent.padding)
