@@ -1,9 +1,9 @@
 """
 
     hammer: an inventory management system developed in 
-    python with sqlite3
+    python with mysql
 
-    version: v0.1.0a
+    version: v0.2.0a
 
 """
 import logging
