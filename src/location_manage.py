@@ -1,5 +1,5 @@
 import logging
-import sqlite3
+import mysql.connector
 
 from location_template import LocationTemplate
 from popup_window import PopupWindow
@@ -41,5 +41,5 @@ class LocationManage(LocationTemplate):
 
                 self.parent.tab_controller.select(0)
                 self.destroy()
-        except sqlite3.IntegrityError:
+        except mysql.connector.errors.IntegrityError:
             PopupWindow(self.parent, 'Barcode in Use', 'This barcode is already in use. Please try another.')

@@ -1,6 +1,3 @@
-import sqlite3
-
-from languages import *
 from user_template import UserTemplate
 
 

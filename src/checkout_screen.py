@@ -1,5 +1,5 @@
 import logging
-import sqlite3
+import mysql.connector
 import tkinter as tk
 from tkinter import ttk
 
@@ -127,7 +127,7 @@ class CheckoutScreen(tk.Frame):
                 self.update_tree()
                 self.barcode_entry.delete(0, tk.END)
 
-            except sqlite3.IntegrityError:
+            except mysql.connector.errors.IntegrityError:
                 PopupWindow(self.parent, "Already Checked Out", "This item is already checked out to a user. "
                                                                 "This checkout cannot be completed at this time.")
                 logging.info(f'Item with barcode {data[1]} is already checked out')

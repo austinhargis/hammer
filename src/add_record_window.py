@@ -1,6 +1,6 @@
-import logging
-import sqlite3
 from datetime import datetime
+import logging
+import mysql.connector
 
 from languages import *
 from popup_window import PopupWindow
@@ -39,7 +39,7 @@ class AddRecordWindow(RecordInfoTemplate):
                 INSERT INTO item_record(title, author, description, publish_date, type, creation_date, managed_date)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)""", item_information)
             self.parent.db.dbConnection.commit()
-            self.parent.refresh_table()
+            self.parent.home_tab.refresh_table()
 
             logging.info(f'Created record {item_information[0]}')
 
@@ -49,5 +49,5 @@ class AddRecordWindow(RecordInfoTemplate):
             self.parent.tab_controller.select(0)
             self.destroy()
 
-        except sqlite3.IntegrityError:
+        except mysql.connector.errors.IntegrityError:
             self.parent.db.unique_conflict()

@@ -1,8 +1,6 @@
 import logging
-import sqlite3
-import tkinter as tk
+import mysql.connector
 from datetime import datetime
-from tkinter import ttk
 
 from languages import *
 from user_template import UserTemplate
@@ -37,5 +35,5 @@ class CreateUser(UserTemplate):
             logging.info(f'Created user with barcode {data[0]}')
             self.parent.tab_controller.select(0)
             self.destroy()
-        except sqlite3.IntegrityError:
+        except mysql.connector.errors.IntegrityError:
             self.parent.db.unique_conflict()

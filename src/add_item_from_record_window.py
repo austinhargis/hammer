@@ -1,5 +1,6 @@
 import logging
-import sqlite3
+
+import mysql.connector
 
 from popup_window import PopupWindow
 from record_child_template import RecordChildTemplate
@@ -36,5 +37,5 @@ class AddItemFromRecordWindow(RecordChildTemplate):
                 self.destroy()
             else:
                 PopupWindow(self.parent, 'Barcode Missing', 'Items must have a barcode in order to be created.')
-        except sqlite3.IntegrityError:
+        except mysql.connector.errors.IntegrityError:
             self.parent.db.unique_conflict()
