@@ -1,4 +1,6 @@
 from datetime import datetime
+
+import bcrypt
 from tkcalendar import Calendar
 import tkinter as tk
 from tkinter import ttk
@@ -28,6 +30,13 @@ class UserTemplate(ttk.Frame):
                   text=languages[self.parent.save_m.data['language']]['users']['user_barcode']).pack(side='left')
         self.barcode_entry = ttk.Entry(barcode_frame)
         self.barcode_entry.pack(side='right')
+
+        password_frame = ttk.Frame(main_frame)
+        password_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
+        ttk.Label(password_frame,
+                  text='Password').pack(side='left')
+        self.password_entry = ttk.Entry(password_frame, show='*')
+        self.password_entry.pack(side='right')
 
         first_name_frame = ttk.Frame(main_frame)
         first_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
@@ -94,10 +103,10 @@ class UserTemplate(ttk.Frame):
         self.check_out_check.bind('<Return>', lambda event: self.manage_item_check.focus())
 
     def get_all_data(self):
-        self.birthday_calendar.get_date()
         return [self.barcode_entry.get(),
                 self.first_name_entry.get(),
                 self.last_name_entry.get(),
+                bcrypt.hashpw(self.password_entry.get().encode('utf-8'), bcrypt.gensalt()),
                 datetime.strptime(self.birthday_calendar.get_date(), '%m/%d/%y'),
                 self.email_entry.get(),
                 self.manage_item_value.get(),

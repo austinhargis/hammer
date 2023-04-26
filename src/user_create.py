@@ -29,15 +29,13 @@ class CreateUser(UserTemplate):
             data = self.get_all_data()
             data.append(datetime.now())
 
-            if data[0][0:1] == 'U' and data[1] != '':
-                self.parent.db.dbCursor.execute(f"""
-                    INSERT INTO users(barcode, first_name, last_name, birthday, email, can_manage_records, can_check_out, creation_date) 
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)""", data)
-                self.parent.db.dbConnection.commit()
+            self.parent.db.dbCursor.execute(f"""
+                INSERT INTO users(barcode, first_name, last_name, password, birthday, email, can_manage_records, can_check_out, creation_date) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""", data)
+            self.parent.db.dbConnection.commit()
 
-                logging.info(f'Created user with barcode {data[0]}')
-
-                self.parent.tab_controller.select(0)
-                self.destroy()
+            logging.info(f'Created user with barcode {data[0]}')
+            self.parent.tab_controller.select(0)
+            self.destroy()
         except sqlite3.IntegrityError:
             self.parent.db.unique_conflict()

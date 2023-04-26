@@ -12,6 +12,8 @@ from update_checker import UpdateChecker
 from view_checkouts import ViewCheckouts
 from view_users import ViewUsers
 
+from login import Login
+
 
 class MenuBar(tk.Menu):
 
@@ -74,6 +76,11 @@ class MenuBar(tk.Menu):
             self.developer_menu.add_command(
                 label=languages[self.parent.save_m.data['language']]['developer']['table_drop'], underline=1,
                 command=lambda: self.parent.drop_table())
+            self.developer_menu.add_command(
+                label='TEST LOGIN',
+                underline=1,
+                command=lambda: self.parent.create_tab(Login, 'Login')
+            )
 
     def help(self):
         if self.parent.save_m.data['show_help_menu'] == 'allowed':

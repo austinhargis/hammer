@@ -66,6 +66,7 @@ class Database:
                     barcode varchar(255) UNIQUE,
                     first_name varchar(255),
                     last_name varchar(255),
+                    password varchar(255),
                     creation_date date,
                     can_check_out boolean,
                     can_manage_records boolean,
@@ -98,19 +99,21 @@ class Database:
             :return: nothing
         """
 
-        item_barcodes = self.dbCursor.execute(f"""
+        self.dbCursor.execute(f"""
             SELECT barcode
             FROM items
             WHERE id=%s
-        """, (data[0],)).fetchall()
+        """, (data[0],))
+        item_barcodes = self.dbCursor.fetchall()
 
         checkouts_with_barcode = []
         for barcode in item_barcodes:
-            checkouts = self.dbCursor.execute(f"""
+            self.dbCursor.execute(f"""
                 SELECT *
                 FROM checkouts
                 WHERE item_barcode=%s
-            """, list(barcode, )).fetchall()
+            """, list(barcode, ))
+            checkouts = self.dbCursor.fetchall()
             if len(checkouts) > 0:
                 checkouts_with_barcode.append(checkouts[0])
 
