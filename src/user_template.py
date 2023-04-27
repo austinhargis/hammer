@@ -66,6 +66,16 @@ class UserTemplate(ttk.Frame):
         self.birthday_calendar.pack()
         # self.birthday_calendar.s
 
+        self.is_admin_value = tk.IntVar(value=0)
+        admin_frame = ttk.Frame(main_frame)
+        admin_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
+        self.admin_check = ttk.Checkbutton(admin_frame,
+                                           text='Is User Admin',
+                                           variable=self.is_admin_value,
+                                           onvalue=1,
+                                           offvalue=0)
+        self.admin_check.pack(side='left')
+
         self.check_out_value = tk.IntVar(value=0)
         check_out_frame = ttk.Frame(main_frame)
         check_out_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
@@ -85,6 +95,16 @@ class UserTemplate(ttk.Frame):
                                                  onvalue=1,
                                                  offvalue=0)
         self.manage_item_check.pack(side='left')
+
+        self.can_modify_users = tk.IntVar(value=0)
+        modify_user_frame = ttk.Frame(main_frame)
+        modify_user_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
+        self.modify_user_check = ttk.Checkbutton(modify_user_frame,
+                                                 text='Allow Item Management',
+                                                 variable=self.can_modify_users,
+                                                 onvalue=1,
+                                                 offvalue=0)
+        self.modify_user_check.pack(side='left')
 
         button_frame = ttk.Frame(main_frame)
         button_frame.pack(expand=True, padx=self.parent.padding,
@@ -109,5 +129,7 @@ class UserTemplate(ttk.Frame):
                 bcrypt.hashpw(self.password_entry.get().encode('utf-8'), bcrypt.gensalt()),
                 datetime.strptime(self.birthday_calendar.get_date(), '%m/%d/%y'),
                 self.email_entry.get(),
+                self.is_admin_value.get(),
                 self.manage_item_value.get(),
-                self.check_out_value.get()]
+                self.check_out_value.get(),
+                self.can_modify_users.get()]

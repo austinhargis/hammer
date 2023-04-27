@@ -27,8 +27,19 @@ class ViewSpecificUser(ttk.Frame):
         right_frame = ttk.Frame(top_frame)
         right_frame.pack(expand=True, fill='both', side='left')
 
+        ttk.Label(right_frame, font=self.parent.heading_font).pack()
+
+        self.barcode_label = ttk.Label(right_frame)
+        self.barcode_label.pack(anchor='nw')
+
         self.name_label = ttk.Label(right_frame)
         self.name_label.pack(anchor='nw')
+
+        self.birthday_label = ttk.Label(right_frame)
+        self.birthday_label.pack(anchor='nw')
+
+        self.email_label = ttk.Label(right_frame)
+        self.email_label.pack(anchor='nw')
 
         self.creation_date_label = ttk.Label(right_frame)
         self.creation_date_label.pack(anchor='nw')
@@ -93,7 +104,7 @@ class ViewSpecificUser(ttk.Frame):
         checkouts = self.parent.db.dbCursor.fetchall()
 
         self.parent.db.dbCursor.execute("""
-            SELECT first_name, last_name, creation_date FROM users
+            SELECT first_name, last_name, birthday, email, creation_date FROM users
             WHERE barcode=%s
         """, (self.barcode_entry.get(),))
         user_information = self.parent.db.dbCursor.fetchall()
@@ -102,6 +113,9 @@ class ViewSpecificUser(ttk.Frame):
             self.tree.insert('', tk.END, values=item)
 
         if len(user_information) == 1:
+            self.barcode_label.configure(text=f'Barcode: {self.barcode_entry.get()}')
             self.name_label.configure(text=f'Name: {user_information[0][0]} {user_information[0][1]}')
-            self.creation_date_label.configure(text=f'Created: {user_information[0][2]}')
+            self.birthday_label.configure(text=f'Birthday: {user_information[0][2]}')
+            self.email_label.configure(text=f'Email: {user_information[0][3]}')
+            self.creation_date_label.configure(text=f'Created: {user_information[0][4]}')
             self.manage_user_button.configure(state='normal')
