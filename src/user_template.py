@@ -100,7 +100,7 @@ class UserTemplate(ttk.Frame):
         modify_user_frame = ttk.Frame(main_frame)
         modify_user_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         self.modify_user_check = ttk.Checkbutton(modify_user_frame,
-                                                 text='Allow Item Management',
+                                                 text='Allow Modification of Users',
                                                  variable=self.can_modify_users,
                                                  onvalue=1,
                                                  offvalue=0)
