@@ -2,13 +2,16 @@ import bcrypt
 from dotenv import load_dotenv
 import mysql.connector
 import os
+import threading
 
 from popup_window import PopupWindow
 
 
-class Database:
+class Database(threading.Thread):
 
     def __init__(self, parent):
+        super().__init__()
+
         self.parent = parent
 
         load_dotenv()
@@ -70,6 +73,8 @@ class Database:
                     creation_date date,
                     can_check_out boolean,
                     can_manage_records boolean,
+                    can_modify_users boolean,
+                    is_admin boolean,
                     birthday date,
                     email varchar(255),
                     PRIMARY KEY (user_id)
@@ -83,10 +88,11 @@ class Database:
                     FOREIGN KEY(item_barcode) REFERENCES items(barcode)
                 )""")
             self.dbCursor.execute("""
-                INSERT INTO users (barcode, first_name, last_name, password, email)
-                VALUES (%s, %s, %s, %s, %s)
-            """, ('admin', 'admin', 'admin', bcrypt.hashpw('12345'.encode('utf-8'), bcrypt.gensalt()), ''))
-        except mysql.connector.errors.DatabaseError:
+                INSERT INTO users (barcode, first_name, last_name, password, birthday, email, is_admin, can_check_out, can_manage_records, can_modify_users)
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, ('admin', 'admin', 'admin', bcrypt.hashpw('12345'.encode('utf-8'), bcrypt.gensalt()), '2023-02-01', '', 1, 1, 1, 1))
+        except mysql.connector.errors.DatabaseError as e:
+            print(e)
             self.dbCursor.execute("""
                 USE hammerDB;
             """)
