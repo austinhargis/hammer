@@ -45,6 +45,7 @@ class Hammer(tk.Tk):
         self.menu_bar = MenuBar(self)
         self.tab_controller = ttk.Notebook(self)
         self.db = Database(self)
+        self.db.start()
 
         self.tab_controller.pack(expand=1, fill='both')
 

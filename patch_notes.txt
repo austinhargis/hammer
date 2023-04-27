@@ -8,6 +8,9 @@
 - Added a language option to the Settings.
     - English is currently the only supported language.
 - Popup windows now have their own dedicated class.
+- Using hammer now requires logging into a local account which can be created through the 'Create User' screen.
+    - Accounts are local to the MySQL server that you choose to operate from.
+    - The default credentials are 'admin' and '12345' for the username and password, respectively.
 
 [Changes]
 - Add, delete, and close buttons for several screens have been moved to the right.
@@ -23,6 +26,8 @@
 - The update checker will now take you to the release page for the new version.
 - Updated the UI to use the ttk variants of buttons, labels, etc., where available.
 - hammer can now create a new database with an optional argument at runtime
+- Database calls are now run on a separate thread.
+- hammer now requires a MySQL server to run.
 
 [Fixes]
 - Fixed an issue that caused scrollbars on any Treeview to error out and not function.
