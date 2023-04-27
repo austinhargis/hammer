@@ -96,6 +96,11 @@ class CheckoutScreen(tk.Frame):
         self.barcode_entry.bind('<Return>', lambda event: self.checkout_to_user())
         self.user_barcode.bind('<Return>', lambda event: self.get_user())
 
+        if not bool(self.parent.user_permissions['can_check_out']):
+            self.user_barcode.insert('', self.parent.user_barcode)
+            self.get_user()
+            self.user_barcode.configure(state='disabled')
+
     def checkout_to_user(self):
         data = (self.user_barcode.get(), self.barcode_entry.get())
 
@@ -151,10 +156,11 @@ class CheckoutScreen(tk.Frame):
         """, (self.user_barcode.get(),))
         checkouts = self.parent.db.dbCursor.fetchall()
 
-        if user[0][5] == 'disallowed':
+        if not bool(self.parent.user_permissions['can_check_out']):
             self.barcode_entry.configure(state='disabled')
-            PopupWindow(self.parent, 'Checkout Not Permitted', 'You are not presently allowed to checkout items. '
-                                                               'If you think this is a mistake, please contact an adminstrator.')
+            PopupWindow(self.parent, 'Checkout Not Permitted',
+                        'You are not presently allowed to checkout items. '
+                        'If you think this is a mistake, please contact an administrator.')
         else:
             self.barcode_entry.configure(state='normal')
             self.barcode_entry.focus()

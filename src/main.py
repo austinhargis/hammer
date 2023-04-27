@@ -39,6 +39,8 @@ class Hammer(tk.Tk):
         self.heading_font = ('Arial', 20, 'bold')
         self.manage_check_delay = 250
         self.padding = 10
+        self.user_barcode = None
+        self.user_permissions = None
         self.wraplength = 200
 
         self.save_m = SaveManager(self)
@@ -68,6 +70,21 @@ class Hammer(tk.Tk):
         self.tab_controller.select(len(tabs) - 1)
 
         logging.info(f'Created ExpandedInfo tab for {title}')
+
+    def get_user_permissions(self):
+        self.db.dbCursor.execute("""
+            SELECT is_admin, can_check_out, can_modify_users, can_manage_records
+            FROM users
+            WHERE barcode=%s
+        """, (self.user_barcode,))
+        user_permissions_row = self.db.dbCursor.fetchone()
+
+        self.user_permissions = {
+            'is_admin': user_permissions_row[0],
+            'can_check_out': user_permissions_row[1],
+            'can_modify_users': user_permissions_row[2],
+            'can_manage_records': user_permissions_row[3]
+        }
 
 
 if __name__ == "__main__":

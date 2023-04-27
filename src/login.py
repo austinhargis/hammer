@@ -56,6 +56,8 @@ class Login(ttk.Frame):
 
         try:
             if bcrypt.checkpw(user_password, password[0][0].encode('utf-8')):
+                self.parent.user_barcode = self.user_barcode.get()
+                self.parent.get_user_permissions()
                 self.parent.create_tab(HomeTab, 'Home')
                 self.parent.home_tab = self.parent.tab_controller.nametowidget('.!hometab')
                 self.destroy()

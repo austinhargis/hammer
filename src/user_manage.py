@@ -47,5 +47,5 @@ class ManageUser(UserTemplate):
             WHERE user_id={self.user_id}
         """, self.get_all_data())
         self.parent.db.dbConnection.commit()
-
+        self.parent.get_user_permissions()
         self.destroy()

@@ -20,6 +20,8 @@ class HomeTab(ttk.Frame):
     def __init__(self, parent):
         super().__init__()
 
+        self.delete_button = None
+        self.manage_button = None
         self.parent = parent
 
         self.window()
@@ -226,51 +228,61 @@ class HomeTab(ttk.Frame):
                   font=self.parent.heading_font).pack(anchor='nw')
         ttk.Button(checkout_frame,
                    text=languages[self.parent.save_m.data['language']]['item_info']['item_action_check_in'],
-                   command=lambda: self.parent.create_tab(CheckinScreen, languages[self.parent.save_m.data['language']]['item_info'][
-                       'item_action_check_in'])).pack(fill='x')
+                   command=lambda: self.parent.create_tab(CheckinScreen,
+                                                          languages[self.parent.save_m.data['language']]['item_info'][
+                                                              'item_action_check_in'])).pack(fill='x')
         ttk.Button(checkout_frame,
                    text=languages[self.parent.save_m.data['language']]['item_info']['item_action_check_out'],
-                   command=lambda: self.parent.create_tab(CheckoutScreen, languages[self.parent.save_m.data['language']]['item_info'][
-                       'item_action_check_out'])).pack(fill='x')
+                   command=lambda: self.parent.create_tab(CheckoutScreen,
+                                                          languages[self.parent.save_m.data['language']]['item_info'][
+                                                              'item_action_check_out'])).pack(fill='x')
 
-        manage_frame = ttk.Frame(left_frame)
-        manage_frame.pack(fill='x', side='top', anchor='nw', padx=self.parent.padding, pady=(0, self.parent.padding))
+        if bool(self.parent.user_permissions['can_manage_records']):
+            manage_frame = ttk.Frame(left_frame)
+            manage_frame.pack(fill='x', side='top', anchor='nw', padx=self.parent.padding,
+                              pady=(0, self.parent.padding))
 
-        ttk.Label(manage_frame, text=languages[self.parent.save_m.data['language']]['general']['records_heading'],
-                  font=self.parent.heading_font).pack(anchor='nw')
-        ttk.Button(manage_frame, text=languages[self.parent.save_m.data['language']]['item_info']['item_record_add'],
-                   command=lambda: self.parent.create_tab(AddRecordWindow,
-                                                   languages[self.parent.save_m.data['language']]['item_info'][
-                                                       'item_record_add'])).pack(fill='x')
-        self.manage_button = ttk.Button(manage_frame,
-                                        text=languages[self.parent.save_m.data['language']]['item_info']['item_record_manage'],
-                                        command=lambda: self.parent.create_tab(ManageRecordWindow,
-                                                                        languages[self.parent.save_m.data['language']][
-                                                                            'item_info']['item_record_manage']))
-        self.manage_button.pack(fill='x')
-        self.manage_button.configure(state='disabled')
+            ttk.Label(manage_frame, text=languages[self.parent.save_m.data['language']]['general']['records_heading'],
+                      font=self.parent.heading_font).pack(anchor='nw')
+            ttk.Button(manage_frame,
+                       text=languages[self.parent.save_m.data['language']]['item_info']['item_record_add'],
+                       command=lambda: self.parent.create_tab(AddRecordWindow,
+                                                              languages[self.parent.save_m.data['language']][
+                                                                  'item_info'][
+                                                                  'item_record_add'])).pack(fill='x')
+            self.manage_button = ttk.Button(manage_frame,
+                                            text=languages[self.parent.save_m.data['language']]['item_info'][
+                                                'item_record_manage'],
+                                            command=lambda: self.parent.create_tab(ManageRecordWindow,
+                                                                                   languages[self.parent.save_m.data[
+                                                                                       'language']][
+                                                                                       'item_info'][
+                                                                                       'item_record_manage']))
+            self.manage_button.pack(fill='x')
+            self.manage_button.configure(state='disabled')
 
-        self.delete_button = ttk.Button(manage_frame,
-                                        text=languages[self.parent.save_m.data['language']]['item_info']['item_delete_all'],
-                                        command=lambda: self.delete_popup_window())
-        self.delete_button.pack(fill='x')
-        self.delete_button.configure(state='disabled')
+            self.delete_button = ttk.Button(manage_frame,
+                                            text=languages[self.parent.save_m.data['language']]['item_info'][
+                                                'item_delete_all'],
+                                            command=lambda: self.delete_popup_window())
+            self.delete_button.pack(fill='x')
+            self.delete_button.configure(state='disabled')
 
-        location_frame = ttk.Frame(left_frame)
-        location_frame.pack(fill='x', side='top', padx=self.parent.padding)
+            location_frame = ttk.Frame(left_frame)
+            location_frame.pack(fill='x', side='top', padx=self.parent.padding)
 
-        ttk.Label(location_frame, text=languages[self.parent.save_m.data['language']]['locations']['location_heading'],
-                  font=self.parent.heading_font).pack(anchor='nw')
-        ttk.Button(location_frame,
-                   text=languages[self.parent.save_m.data['language']]['locations']['location_create'],
-                   command=lambda: self.parent.create_tab(LocationCreate,
-                                                   languages[self.parent.save_m.data['language']]['locations'][
-                                                       'location_create'])).pack(fill='x')
-        ttk.Button(location_frame,
-                   text=languages[self.parent.save_m.data['language']]['locations']['location_view'],
-                   command=lambda: self.parent.create_tab(LocationView,
-                                                   languages[self.parent.save_m.data['language']]['locations'][
-                                                       'location_view'])).pack(fill='x')
+            ttk.Label(location_frame, text=languages[self.parent.save_m.data['language']]['locations']['location_heading'],
+                      font=self.parent.heading_font).pack(anchor='nw')
+            ttk.Button(location_frame,
+                       text=languages[self.parent.save_m.data['language']]['locations']['location_create'],
+                       command=lambda: self.parent.create_tab(LocationCreate,
+                                                              languages[self.parent.save_m.data['language']]['locations'][
+                                                                  'location_create'])).pack(fill='x')
+            ttk.Button(location_frame,
+                       text=languages[self.parent.save_m.data['language']]['locations']['location_view'],
+                       command=lambda: self.parent.create_tab(LocationView,
+                                                              languages[self.parent.save_m.data['language']]['locations'][
+                                                                  'location_view'])).pack(fill='x')
 
         users_frame = ttk.Frame(left_frame)
         users_frame.pack(fill='x', side='top', padx=self.parent.padding)
@@ -281,17 +293,19 @@ class HomeTab(ttk.Frame):
         ttk.Button(users_frame,
                    text=languages[self.parent.save_m.data['language']]['users']['user_add'],
                    command=lambda: self.parent.create_tab(CreateUser,
-                                                   languages[self.parent.save_m.data['language']]['users']['user_add'])).pack(
+                                                          languages[self.parent.save_m.data['language']]['users'][
+                                                              'user_add'])).pack(
             fill='x')
         ttk.Button(users_frame,
                    text=languages[self.parent.save_m.data['language']]['users']['user_specific'],
-                   command=lambda: self.parent.create_tab(ViewSpecificUser, languages[self.parent.save_m.data['language']]['users'][
-                       'user_specific'])).pack(fill='x')
+                   command=lambda: self.parent.create_tab(ViewSpecificUser,
+                                                          languages[self.parent.save_m.data['language']]['users'][
+                                                              'user_specific'])).pack(fill='x')
 
         # creates the TreeView which will handle displaying all schema in the database
         self.parent.tree = ttk.Treeview(top_right_frame,
-                                 columns=(
-                                     'id', 'title', 'author', 'publish_date', 'type'))
+                                        columns=(
+                                            'id', 'title', 'author', 'publish_date', 'type'))
         # hide the initial blank column that comes with TreeViews
         self.parent.tree['show'] = 'headings'
         # show only the desired columns (hiding the id)
@@ -312,7 +326,8 @@ class HomeTab(ttk.Frame):
 
         search_frame = ttk.Frame(bottom_right_frame)
         search_frame.pack(side='left', fill='both', pady=self.parent.padding)
-        ttk.Label(search_frame, text='Search', font=self.parent.heading_font).pack(side='left', padx=self.parent.padding)
+        ttk.Label(search_frame, text='Search', font=self.parent.heading_font).pack(side='left',
+                                                                                   padx=self.parent.padding)
         search_box = ttk.Entry(search_frame)
         search_box.pack(side='left', padx=(0, self.parent.padding), pady=self.parent.padding)
         ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
