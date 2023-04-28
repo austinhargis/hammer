@@ -91,8 +91,7 @@ class Database(threading.Thread):
                 INSERT INTO users (barcode, first_name, last_name, password, birthday, email, is_admin, can_check_out, can_manage_records, can_modify_users)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, ('admin', 'admin', 'admin', bcrypt.hashpw('12345'.encode('utf-8'), bcrypt.gensalt()), '2023-02-01', '', 1, 1, 1, 1))
-        except mysql.connector.errors.DatabaseError as e:
-            print(e)
+        except mysql.connector.errors.DatabaseError:
             self.dbCursor.execute("""
                 USE hammerDB;
             """)
