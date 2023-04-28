@@ -76,6 +76,7 @@ class RecordInfoTemplate(ttk.Frame):
         self.title_text.focus()
         self.title_text.bind('<Return>', lambda event: self.author_text.focus())
         self.author_text.bind('<Return>', lambda event: self.description_text.focus())
+        self.description_text.bind('<Return>', lambda event: self.publish_date_text.focus())
         self.publish_date_text.bind('<Return>', lambda event: self.type_text.focus())
 
     def get_item_info(self):
