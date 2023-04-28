@@ -1,7 +1,7 @@
 import logging
-
 import mysql.connector
 
+from languages import *
 from popup_window import PopupWindow
 from record_child_template import RecordChildTemplate
 
@@ -14,8 +14,9 @@ class AddItemFromRecordWindow(RecordChildTemplate):
         self.parent = parent
         self.entry_id = entry_id
 
-        self.heading_label.configure(text='Create Item From Record')
-        self.func_button.configure(text='Add Item to Record', command=lambda: self.create_item())
+        self.heading_label.configure(text=self.parent.get_region_text('prompt_add_item_to_record'))
+        self.func_button.configure(text=self.parent.get_region_text('prompt_add_item_to_record'),
+                                   command=lambda: self.create_item())
 
         self.description_entry.bind('<Return>', lambda event: self.create_item())
 
@@ -36,6 +37,6 @@ class AddItemFromRecordWindow(RecordChildTemplate):
                 logging.info(f'Created item {self.get_item_info()[1]} from record {self.get_item_info()[0]}')
                 self.destroy()
             else:
-                PopupWindow(self.parent, 'Barcode Missing', 'Items must have a barcode in order to be created.')
+                PopupWindow(self.parent, self.parent.get_region_text('missing_barcode_title'), self.parent.get_region_text('missing_barcode_body'))
         except mysql.connector.errors.IntegrityError:
             self.parent.db.unique_conflict()

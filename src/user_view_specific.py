@@ -49,13 +49,13 @@ class ViewSpecificUser(ttk.Frame):
 
         heading_frame = ttk.Frame(left_frame)
         heading_frame.pack(anchor='nw')
-        ttk.Label(heading_frame, text='View User', font=self.parent.heading_font).pack(anchor='nw',
+        ttk.Label(heading_frame, text=self.parent.get_region_text('user_specific'), font=self.parent.heading_font).pack(anchor='nw',
                                                                                        padx=self.parent.padding,
                                                                                        pady=self.parent.padding)
 
         barcode_frame = ttk.Frame(left_frame)
         barcode_frame.pack(anchor='nw', padx=self.parent.padding)
-        ttk.Label(barcode_frame, text='User Barcode').pack(side='left')
+        ttk.Label(barcode_frame, text=self.parent.get_region_text('checkout_user_barcode')).pack(side='left')
         self.barcode_entry = ttk.Entry(barcode_frame)
         self.barcode_entry.pack(side='left')
         self.barcode_entry.focus()
@@ -72,18 +72,18 @@ class ViewSpecificUser(ttk.Frame):
         self.tree_scroll.pack(side='right', fill='both')
 
         self.tree.heading('item_barcode',
-                          text='Item Barcode')
+                          text=self.parent.get_region_text('checkout_item_barcode'))
         self.tree.column('item_barcode', stretch=False)
         self.tree.heading('item_title',
-                          text='Item Title')
+                          text=self.parent.get_region_text('checkout_item_title'))
         self.tree.pack(fill='both', expand=True, padx=(self.parent.padding, 0), pady=(0, self.parent.padding))
 
         ttk.Button(bottom_frame,
-                   text='Close',
+                   text=self.parent.get_region_text('prompt_exit'),
                    command=lambda: [self.parent.tab_controller.select(0),
                                     self.destroy()]).pack(side='right')
         self.manage_user_button = ttk.Button(bottom_frame,
-                                             text='Manage User',
+                                             text=self.parent.get_region_text('user_manage'),
                                              command=lambda: self.parent.create_tab(ManageUser, 'Manage User',
                                                                                     self.barcode_entry.get()))
         self.manage_user_button.pack(side='right')

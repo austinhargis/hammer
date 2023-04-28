@@ -2,7 +2,6 @@ import logging
 import tkinter as tk
 from tkinter import ttk
 
-from languages import *
 from location_manage import LocationManage
 
 
@@ -19,7 +18,7 @@ class LocationView(ttk.Frame):
         heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(heading_frame,
-                  text='Locations',
+                  text=self.parent.get_region_text('location_heading'),
                   font=self.parent.heading_font).pack()
 
         tree_frame = ttk.Frame(main_frame)
@@ -35,21 +34,21 @@ class LocationView(ttk.Frame):
         self.get_locations()
 
         self.tree.heading('location_id',
-                          text='Location ID')
+                          text=self.parent.get_region_text('location_id'))
         self.tree.heading('barcode',
-                          text='Location Barcode')
+                          text=self.parent.get_region_text('location_barcode'))
         self.tree.heading('name',
-                          text='Location Name')
+                          text=self.parent.get_region_text('location_name'))
         self.tree.pack(fill='both', expand=True, padx=(self.parent.padding, 0), pady=(0, self.parent.padding))
 
         button_frame = ttk.Frame(main_frame)
         button_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(button_frame,
-                   text='Manage Location',
-                   command=lambda: self.parent.create_tab(LocationManage, 'Manage Location',
+                   text=self.parent.get_region_text('location_manage'),
+                   command=lambda: self.parent.create_tab(LocationManage, self.parent.get_region_text('location_manage'),
                                                           self.tree.item(self.tree.focus())['values'][0])).pack()
         ttk.Button(button_frame,
-                   text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],
+                   text=self.parent.get_region_text('prompt_exit'),
                    command=lambda: [self.parent.tab_controller.select(0),
                                     self.destroy()]).pack()
 

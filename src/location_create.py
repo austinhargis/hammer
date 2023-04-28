@@ -3,7 +3,6 @@ import logging
 import mysql.connector.errors
 
 from location_template import LocationTemplate
-from popup_window import PopupWindow
 
 
 class LocationCreate(LocationTemplate):
@@ -11,8 +10,8 @@ class LocationCreate(LocationTemplate):
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.heading_label.configure(text='Create Location')
-        self.func_button.configure(text='Create Location',
+        self.heading_label.configure(text=self.parent.get_region_text('location_create'))
+        self.func_button.configure(text=self.parent.get_region_text('location_create'),
                                    command=lambda: [self.create_query()])
         self.barcode_entry.bind('<Return>', lambda event: [self.create_query()])
 
@@ -29,4 +28,4 @@ class LocationCreate(LocationTemplate):
             self.parent.tab_controller.select(0)
             self.destroy()
         except mysql.connector.errors.IntegrityError:
-            PopupWindow(self.parent, 'Barcode in Use', 'This barcode is already in use. Please try another one.')
+            self.barcode_in_use()

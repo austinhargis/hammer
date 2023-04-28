@@ -127,9 +127,8 @@ class Database(threading.Thread):
             self.dbConnection.commit()
         else:
             PopupWindow(self.parent,
-                        title="Item Currently Checked Out",
-                        message="Warning: An item with this barcode is currently checked out, "
-                                "you CANNOT delete this barcode at this time.")
+                        title=self.parent.get_region_text('item_cant_delete_error_title'),
+                        message=self.parent.get_region_text('item_cant_delete_error_body'))
 
     def drop_table(self):
         """
@@ -154,6 +153,5 @@ class Database(threading.Thread):
 
     def unique_conflict(self):
         PopupWindow(self.parent,
-                    title="Barcode in Use",
-                    message="Warning: An item or user already exists with this barcode. "
-                            "Please try a different barcode.")
+                    title=self.parent.get_region_text('item_barcode_in_use_error_title'),
+                    message=self.parent.get_region_text('item_barcode_in_use_error_body'))

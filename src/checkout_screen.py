@@ -46,13 +46,13 @@ class CheckoutScreen(tk.Frame):
         heading_frame = ttk.Frame(left_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(heading_frame,
-                  text=languages[self.parent.save_m.data['language']]['checking']['checkout_heading'],
+                  text=self.parent.get_region_text('checkout_heading'),
                   font=self.parent.heading_font).pack(side='left', anchor='nw')
 
         user_frame = ttk.Frame(left_frame)
         user_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(user_frame,
-                  text=languages[self.parent.save_m.data['language']]['checking']['checkout_user_barcode']).pack(
+                  text=self.parent.get_region_text('checkout_user_barcode')).pack(
             side='left')
         self.user_barcode = ttk.Entry(user_frame)
         self.user_barcode.pack(side='left')
@@ -60,7 +60,7 @@ class CheckoutScreen(tk.Frame):
         barcode_frame = ttk.Frame(left_frame)
         barcode_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(barcode_frame,
-                  text=languages[self.parent.save_m.data['language']]['checking']['checkout_item_barcode']).pack(
+                  text=self.parent.get_region_text('checkout_item_barcode')).pack(
             side='left')
         self.barcode_entry = ttk.Entry(barcode_frame)
         self.barcode_entry.pack(side='left')
@@ -76,19 +76,19 @@ class CheckoutScreen(tk.Frame):
         self.tree_scroll.pack(side='right', fill='both', pady=self.parent.padding)
 
         self.tree.heading('item_barcode',
-                          text='Item Barcode')
+                          text=self.parent.get_region_text('item_barcode'))
         self.tree.heading('item_title',
-                          text='Item Title')
+                          text=self.parent.get_region_text('item_title'))
         self.tree.pack(fill='both', expand=True, padx=(self.parent.padding, 0), pady=(0, self.parent.padding))
 
         button_frame = ttk.Frame(bottom_frame)
         button_frame.pack(anchor='s', side='bottom', fill='both', padx=self.parent.padding,
                           pady=(0, self.parent.padding))
         ttk.Button(button_frame,
-                   text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],
+                   text=self.parent.get_region_text('prompt_exit'),
                    command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
         ttk.Button(button_frame,
-                   text=languages[self.parent.save_m.data['language']]['checking']['checkout_confirm'],
+                   text=self.parent.get_region_text('checkout_confirm'),
                    command=lambda: [self.parent.db.dbConnection.commit(), self.parent.tab_controller.select(0)]) \
             .pack(side='right')
 
@@ -133,12 +133,13 @@ class CheckoutScreen(tk.Frame):
                 self.barcode_entry.delete(0, tk.END)
 
             except mysql.connector.errors.IntegrityError:
-                PopupWindow(self.parent, "Already Checked Out", "This item is already checked out to a user. "
-                                                                "This checkout cannot be completed at this time.")
+                PopupWindow(self.parent, self.parent.get_region_text('checkout_invalid_error_title'),
+                            self.parent.get_region_text('checkout_invalid_error_body'))
                 logging.info(f'Item with barcode {data[1]} is already checked out')
 
         else:
-            PopupWindow(self.parent, "Invalid Barcode", "The user or item barcode were invalid or do not exist.")
+            PopupWindow(self.parent, self.parent.get_region_text('checkout_invalid_barcode_title'),
+                        self.parent.get_region_text('checkout_invalid_barcode_body'))
             logging.info(f'One or both barcode(s) are invalid')
 
     def get_user(self):
@@ -159,17 +160,16 @@ class CheckoutScreen(tk.Frame):
 
             if not bool(self.parent.user_permissions['can_check_out']):
                 self.barcode_entry.configure(state='disabled')
-                PopupWindow(self.parent, 'Checkout Not Permitted',
-                            'You are not presently allowed to checkout items. '
-                            'If you think this is a mistake, please contact an administrator.')
+                PopupWindow(self.parent, self.parent.get_region_text('checkout_not_allowed_error_title'),
+                            self.parent.get_region_text('checkout_not_allowed_error_body'))
             else:
                 self.barcode_entry.configure(state='normal')
                 self.barcode_entry.focus()
 
             self.user_checkouts.configure(text=f'Checkouts: {len(checkouts)}')
         else:
-            PopupWindow(self.parent, 'User Does Not Exist', 'A user with that barcode does not exist. Please check the '
-                                                            'barcode and try again. ')
+            PopupWindow(self.parent, self.parent.get_region_text('checkout_nonexistent_user_error_title'),
+                        self.parent.get_region_text('checkout_nonexistent_user_error_body'))
 
     def update_tree(self):
         self.parent.db.dbCursor.execute("""

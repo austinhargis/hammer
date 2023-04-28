@@ -1,5 +1,7 @@
 from tkinter import ttk
 
+from popup_window import PopupWindow
+
 
 class LocationTemplate(ttk.Frame):
 
@@ -18,26 +20,30 @@ class LocationTemplate(ttk.Frame):
 
         name_frame = ttk.Frame(main_frame)
         name_frame.pack(fill='both')
-        ttk.Label(name_frame, text='Location Name').pack(side='left')
+        ttk.Label(name_frame, text=self.parent.get_region_text('location_name')).pack(side='left')
         self.name_entry = ttk.Entry(name_frame)
         self.name_entry.pack(side='right')
 
         barcode_frame = ttk.Frame(main_frame)
         barcode_frame.pack(fill='both')
-        ttk.Label(barcode_frame, text='Barcode').pack(side='left')
+        ttk.Label(barcode_frame, text=self.parent.get_region_text('location_barcode')).pack(side='left')
         self.barcode_entry = ttk.Entry(barcode_frame)
         self.barcode_entry.pack(side='right')
 
         button_frame = ttk.Frame(main_frame)
         button_frame.pack(fill='both', pady=self.parent.padding)
         self.func_button = ttk.Button(button_frame)
-        self.func_button.pack(side='left', )
-        ttk.Button(button_frame, text='Close',
+        self.func_button.pack(side='left')
+        ttk.Button(button_frame, text=self.parent.get_region_text('prompt_exit'),
                    command=lambda: [self.parent.tab_controller.select(0),
                                     self.destroy()]).pack(side='left', padx=self.parent.padding)
 
         self.name_entry.focus()
         self.name_entry.bind('<Return>', lambda event: self.barcode_entry.focus())
+
+    def barcode_in_use(self):
+        PopupWindow(self.parent, self.parent.get_region_text('location_barcode_in_use_error_title'),
+                    self.parent.get_region_text('location_barcode_in_use_error_body'))
 
     def get_all_entries(self):
         return [

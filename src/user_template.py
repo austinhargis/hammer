@@ -5,8 +5,6 @@ from tkcalendar import Calendar
 import tkinter as tk
 from tkinter import ttk
 
-from languages import *
-
 
 class UserTemplate(ttk.Frame):
 
@@ -27,40 +25,38 @@ class UserTemplate(ttk.Frame):
         barcode_frame = ttk.Frame(main_frame)
         barcode_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(barcode_frame,
-                  text=languages[self.parent.save_m.data['language']]['users']['user_barcode']).pack(side='left')
+                  text=self.parent.get_region_text('user_barcode')).pack(side='left')
         self.barcode_entry = ttk.Entry(barcode_frame)
         self.barcode_entry.pack(side='right')
 
         password_frame = ttk.Frame(main_frame)
         password_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(password_frame,
-                  text='Password').pack(side='left')
+                  text=self.parent.get_region_text('password')).pack(side='left')
         self.password_entry = ttk.Entry(password_frame, show='*')
         self.password_entry.pack(side='right')
 
         first_name_frame = ttk.Frame(main_frame)
         first_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(first_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_first_name']) \
-            .pack(side='left')
+        ttk.Label(first_name_frame, text=self.parent.get_region_text('user_first_name')).pack(side='left')
         self.first_name_entry = ttk.Entry(first_name_frame)
         self.first_name_entry.pack(side='right')
 
         last_name_frame = ttk.Frame(main_frame)
         last_name_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(last_name_frame, text=languages[self.parent.save_m.data['language']]['users']['user_last_name']) \
-            .pack(side='left')
+        ttk.Label(last_name_frame, text=self.parent.get_region_text('user_last_name')).pack(side='left')
         self.last_name_entry = ttk.Entry(last_name_frame)
         self.last_name_entry.pack(side='right')
 
         email_frame = ttk.Frame(main_frame)
         email_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(email_frame, text='Email').pack(side='left')
+        ttk.Label(email_frame, text=self.parent.get_region_text('user_email')).pack(side='left')
         self.email_entry = ttk.Entry(email_frame)
         self.email_entry.pack(side='right')
 
         birthday_frame = ttk.Frame(main_frame)
         birthday_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(birthday_frame, text='Birthday').pack(side='left')
+        ttk.Label(birthday_frame, text=self.parent.get_region_text('user_birthday')).pack(side='left')
         self.birthday_calendar = Calendar(birthday_frame,
                                           selectmode='day')
         self.birthday_calendar.pack()
@@ -70,7 +66,7 @@ class UserTemplate(ttk.Frame):
         admin_frame = ttk.Frame(main_frame)
         admin_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         self.admin_check = ttk.Checkbutton(admin_frame,
-                                           text='Is User Admin',
+                                           text=self.parent.get_region_text('user_is_admin'),
                                            variable=self.is_admin_value,
                                            onvalue=1,
                                            offvalue=0)
@@ -80,7 +76,7 @@ class UserTemplate(ttk.Frame):
         check_out_frame = ttk.Frame(main_frame)
         check_out_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         self.check_out_check = ttk.Checkbutton(check_out_frame,
-                                               text='Allow Checkouts',
+                                               text=self.parent.get_region_text('user_allowed_checkouts'),
                                                variable=self.check_out_value,
                                                onvalue=1,
                                                offvalue=0)
@@ -90,7 +86,7 @@ class UserTemplate(ttk.Frame):
         manage_item_frame = ttk.Frame(main_frame)
         manage_item_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         self.manage_item_check = ttk.Checkbutton(manage_item_frame,
-                                                 text='Allow Item Management',
+                                                 text=self.parent.get_region_text('user_allowed_item_management'),
                                                  variable=self.manage_item_value,
                                                  onvalue=1,
                                                  offvalue=0)
@@ -100,7 +96,7 @@ class UserTemplate(ttk.Frame):
         modify_user_frame = ttk.Frame(main_frame)
         modify_user_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
         self.modify_user_check = ttk.Checkbutton(modify_user_frame,
-                                                 text='Allow Modification of Users',
+                                                 text=self.parent.get_region_text('user_allowed_modification_of_users'),
                                                  variable=self.can_modify_users,
                                                  onvalue=1,
                                                  offvalue=0)
@@ -111,7 +107,7 @@ class UserTemplate(ttk.Frame):
                           pady=(0, self.parent.padding))
         self.confirm_button = ttk.Button(button_frame)
         self.confirm_button.pack(side='left')
-        ttk.Button(button_frame, text=languages[self.parent.save_m.data['language']]['prompts']['prompt_deny'],
+        ttk.Button(button_frame, text=self.parent.get_region_text('prompt_deny'),
                    command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
 
         self.barcode_entry.focus()

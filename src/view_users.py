@@ -2,8 +2,6 @@ import logging
 import tkinter as tk
 from tkinter import ttk
 
-from languages import *
-
 
 class ViewUsers(ttk.Frame):
 
@@ -18,7 +16,7 @@ class ViewUsers(ttk.Frame):
         heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(heading_frame,
-                  text=languages[self.parent.save_m.data['language']]['users']['user_view'],
+                  text=self.parent.get_region_text('user_view'),
                   font=self.parent.heading_font).pack()
 
         tree_frame = ttk.Frame(main_frame)
@@ -34,19 +32,19 @@ class ViewUsers(ttk.Frame):
         self.get_users()
 
         self.user_tree.heading('user_id',
-                               text=languages[self.parent.save_m.data['language']]['users']['user_id'])
+                               text=self.parent.get_region_text('user_id'))
         self.user_tree.heading('barcode',
-                               text=languages[self.parent.save_m.data['language']]['users']['user_barcode'])
+                               text=self.parent.get_region_text('user_barcode'))
         self.user_tree.heading('first_name',
-                               text=languages[self.parent.save_m.data['language']]['users']['user_first_name'])
+                               text=self.parent.get_region_text('user_first_name'))
         self.user_tree.heading('last_name',
-                               text=languages[self.parent.save_m.data['language']]['users']['user_last_name'])
+                               text=self.parent.get_region_text('user_last_name'))
         self.user_tree.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
 
         close_frame = ttk.Frame(main_frame)
         close_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(close_frame,
-                   text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],
+                   text=self.parent.get_region_text('prompt_exit'),
                    command=lambda: [self.parent.tab_controller.select(0),
                                     self.destroy()]).pack()
 

@@ -2,7 +2,6 @@ import tkinter as tk
 from tkinter import ttk
 
 from add_item_from_record_window import AddItemFromRecordWindow
-from languages import *
 from popup_window import PopupWindow
 
 
@@ -45,31 +44,31 @@ class ExpandedInformation(tk.Frame):
         title_frame = ttk.Frame(left_frame)
         title_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(title_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['item_info']['item_title']}: {self.title}") \
+                  text=f"{self.parent.get_region_text('item_title')}: {self.title}") \
             .pack(side='left')
 
         author_frame = ttk.Frame(left_frame)
         author_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(author_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['item_info']['item_author']}: {self.author}") \
+                  text=f"{self.parent.get_region_text('item_author')}: {self.author}") \
             .pack(side='left')
 
         description_frame = ttk.Frame(left_frame)
         description_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(description_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['item_info']['item_description']}: "
+                  text=f"{self.parent.get_region_text('item_description')}: "
                        f"\n{self.description}",
                   wraplength=500).pack(side='left')
 
         publish_date_frame = ttk.Frame(right_frame)
         publish_date_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(publish_date_frame,
-                  text=f"{languages[self.parent.save_m.data['language']]['item_info']['item_publish_date']}: "
+                  text=f"{self.parent.get_region_text('item_publish_date')}: "
                        f"{self.publish_date}").pack(side='left')
 
         type_frame = ttk.Frame(right_frame)
         type_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(type_frame, text=f'Type: {self.type}').pack(side='left')
+        ttk.Label(type_frame, text=f'{self.parent.get_region_text("item_type")} {self.type}').pack(side='left')
 
         tree_frame = ttk.Frame(bottom_frame)
         tree_frame.pack(expand=True, fill='both', side='top')
@@ -85,10 +84,10 @@ class ExpandedInformation(tk.Frame):
         self.tree.configure(yscrollcommand=treeScroll.set)
         treeScroll.pack(side='right', fill='both')
 
-        self.tree.heading('barcode', text='Barcode')
-        self.tree.heading('location', text='Location')
-        self.tree.heading('description', text='Description')
-        self.tree.heading('status', text='Status')
+        self.tree.heading('barcode', text=self.parent.get_region_text('item_barcode'))
+        self.tree.heading('location', text=self.parent.get_region_text('item_location'))
+        self.tree.heading('description', text=self.parent.get_region_text('item_description'))
+        self.tree.heading('status', text=self.parent.get_region_text('item_status'))
         self.tree.pack(fill='both', expand=True)
 
         button_frame = ttk.Frame(bottom_frame)
@@ -100,18 +99,19 @@ class ExpandedInformation(tk.Frame):
                                                           pady=self.parent.padding,
                                                           fill='x')
 
-        self.delete_button = ttk.Button(button_frame, text='Delete Item',
+        self.delete_button = ttk.Button(button_frame, text=self.parent.get_region_text('item_delete'),
                                         command=lambda: [self.delete_item(), self.refresh_table()])
         self.delete_button.pack(side='right', fill='x')
 
         # TODO: Add support for managing item information
-        self.manage_button = ttk.Button(button_frame, text='Manage Item',
+        self.manage_button = ttk.Button(button_frame, text=self.parent.get_region_text('item_manage_heading'),
                                         command=lambda: None)
         self.manage_button.pack(side='right',
                                 fill='x')
 
-        self.create_button = ttk.Button(button_frame, text='Create Item',
-                                        command=lambda: [self.parent.create_tab(AddItemFromRecordWindow, 'Create Item',
+        self.create_button = ttk.Button(button_frame, text=self.parent.get_region_text('item_add_heading'),
+                                        command=lambda: [self.parent.create_tab(AddItemFromRecordWindow,
+                                                                                self.parent.get_region_text('item_add_heading'),
                                                                                 self.entry_id)])
         self.create_button.pack(side='right', fill='x')
 

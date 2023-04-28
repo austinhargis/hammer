@@ -15,9 +15,9 @@ class AddRecordWindow(RecordInfoTemplate):
         self.parent = parent
 
         self.heading_label.configure(
-            text=languages[self.parent.save_m.data['language']]['item_info']['item_add_heading'])
+            text=self.parent.get_region_text('item_add_heading'))
         self.func_button.configure(
-            text=languages[self.parent.save_m.data['language']]['prompts']['prompt_add_item'],
+            text=self.parent.get_region_text('prompt_add_item'),
             command=lambda: [self.create_record()])
 
         self.type_text.bind('<Return>', lambda event: self.create_record())
@@ -25,8 +25,8 @@ class AddRecordWindow(RecordInfoTemplate):
     def create_record(self):
         item_information = self.get_item_info()
         if item_information[0].replace(' ', '') == '':
-            PopupWindow(self.parent, "Missing Field", "The title field must have a value specified "
-                                                      "before this item can be added to the table.")
+            PopupWindow(self.parent, self.parent.get_region_text('missing_item_title'),
+                        self.parent.get_region_text('missing_item_body'))
 
             return
 

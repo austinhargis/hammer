@@ -21,19 +21,19 @@ class RecordChildTemplate(ttk.Frame):
 
         barcode_frame = ttk.Frame(main_frame)
         barcode_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(barcode_frame, text='Item Barcode').pack(side='left')
+        ttk.Label(barcode_frame, text=self.parent.get_region_text('checkout_item_barcode')).pack(side='left')
         self.barcode_entry = ttk.Entry(barcode_frame)
         self.barcode_entry.pack(side='right')
 
         location_frame = ttk.Frame(main_frame)
         location_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(location_frame, text='Location Barcode').pack(side='left')
+        ttk.Label(location_frame, text=self.parent.get_region_text('location_barcode')).pack(side='left')
         self.location_entry = ttk.Entry(location_frame)
         self.location_entry.pack(side='right')
 
         description_frame = ttk.Frame(main_frame)
         description_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        ttk.Label(description_frame, text='Descriptor').pack(side='left')
+        ttk.Label(description_frame, text=self.parent.get_region_text('item_description')).pack(side='left')
         self.description_entry = ttk.Entry(description_frame)
         self.description_entry.pack(side='right')
 
@@ -42,7 +42,7 @@ class RecordChildTemplate(ttk.Frame):
         self.func_button = ttk.Button(self.button_frame)
         self.func_button.pack(side='left')
         ttk.Button(self.button_frame,
-                   text='Cancel',
+                   text=self.parent.get_region_text('prompt_deny'),
                    command=lambda: [self.destroy()]).pack(side='left')
 
         self.barcode_entry.focus()

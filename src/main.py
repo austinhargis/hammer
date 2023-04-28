@@ -8,13 +8,13 @@
 """
 import logging
 import os
-import sys
 import tkinter as tk
 from pathlib import Path
 from tkinter import ttk
 import _tkinter
 
 from database import Database
+from languages import *
 from login import Login
 from menu_bar import MenuBar
 from save_manager import SaveManager
@@ -51,7 +51,7 @@ class Hammer(tk.Tk):
 
         self.tab_controller.pack(expand=1, fill='both')
 
-        self.create_tab(Login, 'Login')
+        self.logout()
 
     def create_tab(self, window, title, values=None):
         """
@@ -71,6 +71,15 @@ class Hammer(tk.Tk):
 
         logging.info(f'Created ExpandedInfo tab for {title}')
 
+    def get_region_text(self, required_key):
+        for key in languages[self.save_m.data['language']]:
+            if required_key in languages[self.save_m.data['language']][key]:
+                return languages[self.save_m.data['language']][key][required_key]
+            else:
+                continue
+        print(f'Could not find key {required_key}')
+        return required_key
+
     def get_user_permissions(self):
         self.db.dbCursor.execute("""
             SELECT is_admin, can_check_out, can_modify_users, can_manage_records
@@ -85,6 +94,14 @@ class Hammer(tk.Tk):
             'can_modify_users': user_permissions_row[2],
             'can_manage_records': user_permissions_row[3]
         }
+
+    def logout(self):
+
+        self.configure(menu=tk.Menu(self))
+        for child_tab in self.tab_controller.tabs():
+            self.tab_controller.forget(child_tab)
+
+        self.create_tab(Login, self.get_region_text('login_heading'))
 
 
 if __name__ == "__main__":

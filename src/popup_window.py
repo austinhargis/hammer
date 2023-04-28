@@ -19,6 +19,6 @@ class PopupWindow(tk.Toplevel):
                   text=message,
                   wraplength=self.parent.wraplength,
                   justify='center').pack()
-        ttk.Button(main_frame, text='Close', command=lambda: self.destroy()).pack()
+        ttk.Button(main_frame, text=self.parent.get_region_text('prompt_exit'), command=lambda: self.destroy()).pack()
 
         self.mainloop()

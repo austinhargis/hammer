@@ -1,8 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
 
-from languages import *
-
 
 class SettingsWindow(tk.Frame):
     """
@@ -25,16 +23,19 @@ class SettingsWindow(tk.Frame):
         heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(heading_frame,
-                  text=languages[self.parent.save_m.data['language']]['settings']['settings_heading'],
+                  text=self.parent.get_region_text('settings_heading'),
                   font=self.parent.heading_font).pack(side='left')
 
         theme_frame = ttk.Frame(main_frame)
         theme_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(theme_frame,
-                  text=languages[self.parent.save_m.data['language']]['settings']['settings_theme']).pack(side='left')
+                  text=self.parent.get_region_text('settings_theme')).pack(side='left')
         self.theme_var = tk.StringVar(theme_frame)
         self.theme_var.set(self.parent.save_m.data['theme'].capitalize())
-        theme_dropdown = ttk.OptionMenu(theme_frame, self.theme_var, *['Dark', 'Light', 'System'])
+        theme_dropdown = ttk.OptionMenu(theme_frame, self.theme_var,
+                                        *[self.parent.get_region_text('settings_theme_dark'),
+                                          self.parent.get_region_text('settings_theme_light'),
+                                          self.parent.get_region_text('settings_theme_system')])
         theme_dropdown.pack(side='left')
         theme_dropdown.configure(state=self.parent.save_m.settings_enabled)
 
@@ -43,7 +44,7 @@ class SettingsWindow(tk.Frame):
         self.update_var = tk.StringVar(update_frame)
         self.update_var.set(self.parent.save_m.data['automatic_update_check'])
         ttk.Checkbutton(update_frame,
-                        text=languages[self.parent.save_m.data['language']]['settings']['settings_update_check'],
+                        text=self.parent.get_region_text('settings_update_check'),
                         variable=self.update_var,
                         onvalue='allowed',
                         offvalue='disallowed').pack(side='left')
@@ -53,7 +54,7 @@ class SettingsWindow(tk.Frame):
         self.checkout_var = tk.StringVar(checkout_frame)
         self.checkout_var.set(self.parent.save_m.data['show_checkout_menu'])
         ttk.Checkbutton(checkout_frame,
-                        text=languages[self.parent.save_m.data['language']]['settings']['settings_show_checkout'],
+                        text=self.parent.get_region_text('settings_show_checkout'),
                         variable=self.checkout_var,
                         onvalue='allowed',
                         offvalue='disallowed').pack(side='left')
@@ -63,7 +64,7 @@ class SettingsWindow(tk.Frame):
         self.developer_var = tk.StringVar(developer_frame)
         self.developer_var.set(self.parent.save_m.data['show_developer_menu'])
         ttk.Checkbutton(developer_frame,
-                        text=languages[self.parent.save_m.data['language']]['settings']['settings_show_developer'],
+                        text=self.parent.get_region_text('settings_show_developer'),
                         variable=self.developer_var,
                         onvalue='allowed',
                         offvalue='disallowed').pack(side='left')
@@ -73,7 +74,7 @@ class SettingsWindow(tk.Frame):
         self.help_var = tk.StringVar(help_frame)
         self.help_var.set(self.parent.save_m.data['show_help_menu'])
         ttk.Checkbutton(help_frame,
-                        text=languages[self.parent.save_m.data['language']]['settings']['settings_show_help'],
+                        text=self.parent.get_region_text('settings_show_help'),
                         variable=self.help_var,
                         onvalue='allowed',
                         offvalue='disallowed').pack(side='left')
@@ -83,7 +84,7 @@ class SettingsWindow(tk.Frame):
         self.users_var = tk.StringVar(users_frame)
         self.users_var.set(self.parent.save_m.data['show_users_menu'])
         ttk.Checkbutton(users_frame,
-                        text=languages[self.parent.save_m.data['language']]['settings']['settings_show_users'],
+                        text=self.parent.get_region_text('settings_show_users'),
                         variable=self.users_var,
                         onvalue='allowed',
                         offvalue='disallowed').pack(side='left')
@@ -91,10 +92,11 @@ class SettingsWindow(tk.Frame):
         save_settings_frame = ttk.Frame(main_frame)
         save_settings_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(save_settings_frame,
-                   text=languages[self.parent.save_m.data['language']]['prompts']['prompts_save_changes'],
+                   text=self.parent.get_region_text('prompt_save_changes'),
                    command=lambda: self.prepare_for_save()).pack()
 
-        ttk.Label(main_frame, text=f'Settings Version: {self.parent.save_m.data["settings_version"]}').pack()
+        ttk.Label(main_frame, text=f'{self.parent.get_region_text("settings_version")} '
+                                   f'{self.parent.save_m.data["settings_version"]}').pack()
 
     def prepare_for_save(self):
         """

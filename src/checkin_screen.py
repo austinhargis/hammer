@@ -25,14 +25,14 @@ class CheckinScreen(ttk.Frame):
         heading_frame = ttk.Frame(top_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(heading_frame,
-                  text=languages[self.parent.save_m.data['language']]['checking']['checkin_heading'],
+                  text=self.parent.get_region_text('checkin_heading'),
                   font=self.parent.heading_font).pack(
             side='left')
 
         barcode_frame = ttk.Frame(top_frame)
         barcode_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(barcode_frame,
-                  text=languages[self.parent.save_m.data['language']]['checking']['checkout_item_barcode']).pack(
+                  text=self.parent.get_region_text('checkout_item_barcode')).pack(
             side='left')
         self.barcode_entry = ttk.Entry(barcode_frame)
         self.barcode_entry.pack(side='left')
@@ -49,18 +49,18 @@ class CheckinScreen(ttk.Frame):
         self.tree_scroll.pack(side='right', fill='both', pady=self.parent.padding)
 
         self.tree.heading('item_barcode',
-                          text='Item Barcode')
+                          text=self.parent.get_region_text('item_barcode'))
         self.tree.heading('item_title',
-                          text='Item Title')
+                          text=self.parent.get_region_text('item_title'))
         self.tree.pack(fill='both', expand=True, padx=(self.parent.padding, 0), pady=(0, self.parent.padding))
 
         button_frame = ttk.Frame(bottom_frame)
         button_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Button(button_frame,
-                   text=languages[self.parent.save_m.data['language']]['prompts']['prompt_deny'],
+                   text=self.parent.get_region_text('prompt_deny'),
                    command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
         ttk.Button(button_frame,
-                   text=languages[self.parent.save_m.data['language']]['checking']['checkin_return'],
+                   text=self.parent.get_region_text('checkin_return'),
                    command=lambda: [self.check_item_in()]).pack(
             side='right')
 
@@ -95,4 +95,5 @@ class CheckinScreen(ttk.Frame):
             self.tree.insert('', tk.END, values=[self.barcode_entry.get(), return_title[0][0]])
             self.barcode_entry.delete(0, tk.END)
         else:
-            PopupWindow(self.parent, "Not Checked Out", "That item does not exist or is not checked out.")
+            PopupWindow(self.parent, self.parent.get_region_text('error_title'),
+                        self.parent.get_region_text('error_body'))

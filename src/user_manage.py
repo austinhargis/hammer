@@ -9,10 +9,10 @@ class ManageUser(UserTemplate):
         self.parent = parent
         self.barcode = barcode
 
-        self.title_label.configure(text='Manage User')
+        self.title_label.configure(text=self.parent.get_region_text('user_manage'))
 
         self.confirm_button.configure(
-            text='Save User',
+            text=self.parent.get_region_text('user_manage_save'),
             command=lambda: self.manage_user())
 
         self.manage_item_check.bind('<Return>', lambda event: self.manage_user())

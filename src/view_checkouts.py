@@ -2,8 +2,6 @@ import logging
 import tkinter as tk
 from tkinter import ttk
 
-from languages import *
-
 
 class ViewCheckouts(ttk.Frame):
 
@@ -18,7 +16,7 @@ class ViewCheckouts(ttk.Frame):
         heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(main_frame,
-                  text=languages[self.parent.save_m.data['language']]['checking']['checkout_view'],
+                  text=self.parent.get_region_text('checkout_view'),
                   font=self.parent.heading_font).pack()
 
         tree_frame = ttk.Frame(main_frame)
@@ -34,20 +32,17 @@ class ViewCheckouts(ttk.Frame):
         self.get_checkouts()
 
         self.checkout_tree.heading('user_barcode',
-                                   text=languages[self.parent.save_m.data['language']]['checking'][
-                                       'checkout_user_barcode'])
+                                   text=self.parent.get_region_text('checkout_user_barcode'))
         self.checkout_tree.heading('item_barcode',
-                                   text=languages[self.parent.save_m.data['language']]['checking'][
-                                       'checkout_item_barcode'])
+                                   text=self.parent.get_region_text('checkout_item_barcode'))
         self.checkout_tree.heading('item_title',
-                                   text=languages[self.parent.save_m.data['language']]['checking'][
-                                       'checkout_item_title'])
+                                   text=self.parent.get_region_text('checkout_item_title'))
         self.checkout_tree.pack(fill='both', expand=True, padx=self.parent.padding, pady=(self.parent.padding, 0))
 
         close_frame = ttk.Frame(main_frame)
         close_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Button(close_frame,
-                   text=languages[self.parent.save_m.data['language']]['prompts']['prompt_exit'],
+                   text=self.parent.get_region_text('prompt_exit'),
                    command=lambda: self.destroy()).pack()
 
     def get_checkouts(self):

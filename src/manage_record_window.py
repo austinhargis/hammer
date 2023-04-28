@@ -10,9 +10,9 @@ class ManageRecordWindow(RecordInfoTemplate):
         self.parent = parent
 
         self.heading_label.configure(
-            text=languages[self.parent.save_m.data['language']]['item_info']['item_manage_heading'])
+            text=self.parent.get_region_text('item_manage_heading'))
         self.func_button.configure(
-            text=languages[self.parent.save_m.data['language']]['prompts']['prompts_save_changes'],
+            text=self.parent.get_region_text('prompt_save_changes'),
             command=lambda: [self.commit_changes()])
 
         self.type_text.bind('<Return>', lambda event: self.commit_changes())

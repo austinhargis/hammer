@@ -13,11 +13,10 @@ class CreateUser(UserTemplate):
 
         self.parent = parent
 
-        self.title_label.configure(text=languages[self.parent.save_m.data['language']]['users'][
-            'user_create_heading'])
+        self.title_label.configure(text=self.parent.get_region_text('user_create_heading'))
 
         self.confirm_button.configure(
-            text=languages[self.parent.save_m.data['language']]['users']['user_create_heading'],
+            text=self.parent.get_region_text('user_create_heading'),
             command=lambda: self.add_user())
 
         self.manage_item_check.bind('<Return>', lambda event: self.add_user())
