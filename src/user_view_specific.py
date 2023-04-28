@@ -19,7 +19,7 @@ class ViewSpecificUser(ttk.Frame):
         main_frame.pack(expand=True, fill='both', padx=self.parent.padding, pady=self.parent.padding)
 
         top_frame = ttk.Frame(main_frame)
-        top_frame.pack(expand=True, fill='both', side='top')
+        top_frame.pack(fill='both', side='top')
 
         left_frame = ttk.Frame(top_frame)
         left_frame.pack(expand=True, fill='both', side='left')
@@ -118,4 +118,6 @@ class ViewSpecificUser(ttk.Frame):
             self.birthday_label.configure(text=f'Birthday: {user_information[0][2]}')
             self.email_label.configure(text=f'Email: {user_information[0][3]}')
             self.creation_date_label.configure(text=f'Created: {user_information[0][4]}')
-            self.manage_user_button.configure(state='normal')
+
+            if bool(self.parent.user_permissions['can_modify_users']):
+                self.manage_user_button.configure(state='normal')
