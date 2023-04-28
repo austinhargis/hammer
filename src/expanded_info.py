@@ -100,18 +100,25 @@ class ExpandedInformation(tk.Frame):
                                                           pady=self.parent.padding,
                                                           fill='x')
 
-        ttk.Button(button_frame, text='Delete Item',
-                   command=lambda: [self.delete_item(), self.refresh_table()]).pack(side='right',
-                                                                                    fill='x')
+        self.delete_button = ttk.Button(button_frame, text='Delete Item',
+                                        command=lambda: [self.delete_item(), self.refresh_table()])
+        self.delete_button.pack(side='right', fill='x')
 
-        ttk.Button(button_frame, text='Manage Item',
-                   command=lambda: None).pack(side='right',
-                                              fill='x')
+        # TODO: Add support for managing item information
+        self.manage_button = ttk.Button(button_frame, text='Manage Item',
+                                        command=lambda: None)
+        self.manage_button.pack(side='right',
+                                fill='x')
 
-        ttk.Button(button_frame, text='Create Item',
-                   command=lambda: [self.parent.create_tab(AddItemFromRecordWindow, 'Create Item',
-                                                           self.entry_id)]).pack(side='right',
-                                                                                 fill='x')
+        self.create_button = ttk.Button(button_frame, text='Create Item',
+                                        command=lambda: [self.parent.create_tab(AddItemFromRecordWindow, 'Create Item',
+                                                                                self.entry_id)])
+        self.create_button.pack(side='right', fill='x')
+
+        if not bool(self.parent.user_permissions['can_manage_records']):
+            self.delete_button.configure(state='disabled')
+            self.manage_button.configure(state='disabled')
+            self.create_button.configure(state='disabled')
 
     def refresh_table(self):
         for item in self.tree.get_children():
