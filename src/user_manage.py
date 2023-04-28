@@ -41,11 +41,20 @@ class ManageUser(UserTemplate):
         self.can_modify_users.set(user_data[0][9])
 
     def manage_user(self):
-        self.parent.db.dbCursor.execute(f"""
-            UPDATE users
-            SET barcode=%s, first_name=%s, last_name=%s, password=%s, birthday=%s, email=%s, is_admin=%s, can_manage_records=%s, can_check_out=%s, can_modify_users=%s
-            WHERE user_id={self.user_id}
-        """, self.get_all_data())
+        if self.password_entry.get() != '':
+            self.parent.db.dbCursor.execute(f"""
+                UPDATE users
+                SET barcode=%s, first_name=%s, last_name=%s, password=%s, birthday=%s, email=%s, is_admin=%s, can_manage_records=%s, can_check_out=%s, can_modify_users=%s
+                WHERE user_id={self.user_id}
+            """, self.get_all_data())
+        else:
+            data = self.get_all_data()
+            del data[3]
+            self.parent.db.dbCursor.execute(f"""
+                            UPDATE users
+                            SET barcode=%s, first_name=%s, last_name=%s, birthday=%s, email=%s, is_admin=%s, can_manage_records=%s, can_check_out=%s, can_modify_users=%s
+                            WHERE user_id={self.user_id}
+            """, data)
         self.parent.db.dbConnection.commit()
         self.parent.get_user_permissions()
         self.destroy()
