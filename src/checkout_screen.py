@@ -148,24 +148,28 @@ class CheckoutScreen(tk.Frame):
         """, (self.user_barcode.get(),))
         user = self.parent.db.dbCursor.fetchall()
 
-        self.user_name.configure(text=f'User: {user[0][2]} {user[0][3]}')
+        if len(user) == 1:
+            self.user_name.configure(text=f'User: {user[0][2]} {user[0][3]}')
 
-        self.parent.db.dbCursor.execute("""
-            SELECT * FROM checkouts
-            WHERE user_barcode=%s
-        """, (self.user_barcode.get(),))
-        checkouts = self.parent.db.dbCursor.fetchall()
+            self.parent.db.dbCursor.execute("""
+                SELECT * FROM checkouts
+                WHERE user_barcode=%s
+            """, (self.user_barcode.get(),))
+            checkouts = self.parent.db.dbCursor.fetchall()
 
-        if not bool(self.parent.user_permissions['can_check_out']):
-            self.barcode_entry.configure(state='disabled')
-            PopupWindow(self.parent, 'Checkout Not Permitted',
-                        'You are not presently allowed to checkout items. '
-                        'If you think this is a mistake, please contact an administrator.')
+            if not bool(self.parent.user_permissions['can_check_out']):
+                self.barcode_entry.configure(state='disabled')
+                PopupWindow(self.parent, 'Checkout Not Permitted',
+                            'You are not presently allowed to checkout items. '
+                            'If you think this is a mistake, please contact an administrator.')
+            else:
+                self.barcode_entry.configure(state='normal')
+                self.barcode_entry.focus()
+
+            self.user_checkouts.configure(text=f'Checkouts: {len(checkouts)}')
         else:
-            self.barcode_entry.configure(state='normal')
-            self.barcode_entry.focus()
-
-        self.user_checkouts.configure(text=f'Checkouts: {len(checkouts)}')
+            PopupWindow(self.parent, 'User Does Not Exist', 'A user with that barcode does not exist. Please check the '
+                                                            'barcode and try again. ')
 
     def update_tree(self):
         self.parent.db.dbCursor.execute("""
