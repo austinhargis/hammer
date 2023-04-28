@@ -28,8 +28,8 @@ class CreateUser(UserTemplate):
             data.append(datetime.now())
 
             self.parent.db.dbCursor.execute(f"""
-                INSERT INTO users(barcode, first_name, last_name, password, birthday, email, can_manage_records, can_check_out, creation_date) 
-                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)""", data)
+                INSERT INTO users(barcode, first_name, last_name, password, birthday, email, is_admin, can_manage_records, can_check_out, can_modify_users, creation_date) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", data)
             self.parent.db.dbConnection.commit()
 
             logging.info(f'Created user with barcode {data[0]}')
