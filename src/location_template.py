@@ -9,7 +9,7 @@ class LocationTemplate(ttk.Frame):
         self.parent = parent
 
         main_frame = ttk.Frame(self)
-        main_frame.pack(side='left', anchor='nw')
+        main_frame.pack(side='left', anchor='nw', padx=self.parent.padding, pady=self.parent.padding)
 
         heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both')
@@ -29,11 +29,12 @@ class LocationTemplate(ttk.Frame):
         self.barcode_entry.pack(side='right')
 
         button_frame = ttk.Frame(main_frame)
-        button_frame.pack(fill='both')
+        button_frame.pack(fill='both', pady=self.parent.padding)
         self.func_button = ttk.Button(button_frame)
-        self.func_button.pack(side='left')
-        ttk.Button(button_frame, text='Close', command=lambda: [self.parent.tab_controller.select(0),
-                                                                self.destroy()]).pack(side='left')
+        self.func_button.pack(side='left', )
+        ttk.Button(button_frame, text='Close',
+                   command=lambda: [self.parent.tab_controller.select(0),
+                                    self.destroy()]).pack(side='left', padx=self.parent.padding)
 
         self.name_entry.focus()
         self.name_entry.bind('<Return>', lambda event: self.barcode_entry.focus())
