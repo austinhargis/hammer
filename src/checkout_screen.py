@@ -96,7 +96,7 @@ class CheckoutScreen(tk.Frame):
         self.barcode_entry.bind('<Return>', lambda event: self.checkout_to_user())
         self.user_barcode.bind('<Return>', lambda event: self.get_user())
 
-        if not bool(self.parent.user_permissions['can_check_out']):
+        if not bool(self.parent.user_permissions['is_admin']):
             self.user_barcode.insert('', self.parent.user_barcode)
             self.get_user()
             self.user_barcode.configure(state='disabled')
