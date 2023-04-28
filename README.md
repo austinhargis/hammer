@@ -29,7 +29,11 @@ tables.
 In order to run hammer yourself from source, you will be required to install:
 - Python 3.11
   - This is the version that we are currently targeting, but it *should* work with any recent version of Python.
+- bcrypt
+  - This can be installed with ```pip install bcrypt```.
 - Python MySQL
   - This can be installed with ```pip install mysql-python-connector```.
+- python-dotenv
+    - This can be installed with ```pip install python-dotenv```.
 - tkcalendar
   - tkcalendar is used to handle date entry in the Create User and Manage User screens. It can be installed with ```pip install tkcalendar```.
