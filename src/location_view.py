@@ -62,3 +62,10 @@ class LocationView(ttk.Frame):
             self.tree.insert('', tk.END, values=locations[location_index])
 
         logging.info('Got all locations')
+
+    def refresh_table(self):
+
+        for item in self.tree.get_children():
+            self.tree.delete(item)
+
+        self.get_locations()

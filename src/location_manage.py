@@ -20,8 +20,8 @@ class LocationManage(LocationTemplate):
 
     def fill_info(self):
         self.parent.db.dbCursor.execute(f"""
-                    SELECT * FROM locations
-                    WHERE location_id=%s""", (self.location_id,))
+            SELECT * FROM locations
+            WHERE location_id=%s""", (self.location_id,))
         location_row = self.parent.db.dbCursor.fetchall()
 
         self.barcode_entry.insert(0, location_row[0][1])
@@ -36,8 +36,11 @@ class LocationManage(LocationTemplate):
             self.parent.db.dbConnection.commit()
 
             logging.info(f'Updated location with barcode {self.get_all_entries()[0]}')
-
-            self.parent.tab_controller.select(0)
+            for tab in self.parent.tab_controller.tabs():
+                tab_object = self.parent.tab_controller.nametowidget(tab)
+                if callable(getattr(tab_object, 'refresh_table', None)):
+                    tab_object.refresh_table()
+                    self.parent.tab_controller.select(tab)
             self.destroy()
         except mysql.connector.errors.IntegrityError:
             self.barcode_in_use()
