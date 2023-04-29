@@ -269,7 +269,7 @@ class HomeTab(ttk.Frame):
             self.delete_button.configure(state='disabled')
 
             location_frame = ttk.Frame(left_frame)
-            location_frame.pack(fill='x', side='top', padx=self.parent.padding)
+            location_frame.pack(fill='x', side='top', padx=self.parent.padding, pady=(0, self.parent.padding))
 
             ttk.Label(location_frame, text=languages[self.parent.save_m.data['language']]['locations']['location_heading'],
                       font=self.parent.heading_font).pack(anchor='nw')
