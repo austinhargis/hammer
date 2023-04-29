@@ -26,6 +26,7 @@ languages = {
         },
         'general': {
             'home_tab': 'Home',
+            'configure_server': 'Configure Server',
             'records_heading': 'Item Record',
         },
         'item_info': {

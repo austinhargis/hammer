@@ -12,7 +12,9 @@ import tkinter as tk
 from pathlib import Path
 from tkinter import ttk
 import _tkinter
+import mysql.connector.errors
 
+from configure_env_window import ConfigureEnvWindow
 from database import Database
 from languages import *
 from login import Login
@@ -30,10 +32,12 @@ logging.basicConfig(filename=f'{Path.home()}/hammer/hammer.log', format='%(ascti
 class Hammer(tk.Tk):
 
     def __init__(self, *args, **kwargs):
+        self.db = Database(self)
+        self.db.start()
+
         tk.Tk.__init__(self, *args, **kwargs)
         self.title(f"hammer")
         self.minsize(800, 600)
-        # self.state('zoomed')
 
         self.data_path = f'{Path.home()}/hammer'
         self.heading_font = ('Arial', 20, 'bold')
@@ -43,11 +47,9 @@ class Hammer(tk.Tk):
         self.user_permissions = None
         self.wraplength = 200
 
+        self.tab_controller = ttk.Notebook(self)
         self.save_m = SaveManager(self)
         self.menu_bar = MenuBar(self)
-        self.tab_controller = ttk.Notebook(self)
-        self.db = Database(self)
-        self.db.start()
 
         self.tab_controller.pack(expand=1, fill='both')
 
@@ -110,3 +112,8 @@ if __name__ == "__main__":
         root.mainloop()
     except _tkinter.TclError:
         pass
+    except mysql.connector.errors.ProgrammingError:
+        app = tk.Toplevel()
+        app.attributes('-topmost')
+        ConfigureEnvWindow().pack()
+        app.mainloop()

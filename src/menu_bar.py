@@ -2,6 +2,7 @@ import sys
 import tkinter as tk
 from webbrowser import open_new_tab
 
+from configure_env_window import ConfigureEnvWindow
 from user_view_specific import ViewSpecificUser
 from user_create import CreateUser
 from settings import SettingsWindow
@@ -44,7 +45,12 @@ class MenuBar(tk.Menu):
                          menu=self.file_menu)
         self.file_menu.add_command(label=self.parent.get_region_text('update_check_for'),
                                    underline=1,
-                                   command=lambda: self.parent.create_tab(UpdateChecker, self.parent.get_region_text('update_check_for')))
+                                   command=lambda: self.parent.create_tab(UpdateChecker, self.parent.get_region_text(
+                                       'update_check_for')))
+        self.file_menu.add_command(label=self.parent.get_region_text(
+                                       'configure_server'),
+                                   command=lambda: self.parent.create_tab(ConfigureEnvWindow, self.parent.get_region_text(
+                                       'configure_server')))
         self.file_menu.add_command(label=self.parent.get_region_text('settings'),
                                    underline=1,
                                    command=lambda: self.parent.create_tab(SettingsWindow,
@@ -68,8 +74,9 @@ class MenuBar(tk.Menu):
             self.help_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label=self.parent.get_region_text('help_menu'), underline=0,
                              menu=self.help_menu)
-            self.help_menu.add_command(label=self.parent.get_region_text('github'), underline=1, command=lambda: open_new_tab(
-                'https://github.com/austinhargis/hammer'))
+            self.help_menu.add_command(label=self.parent.get_region_text('github'), underline=1,
+                                       command=lambda: open_new_tab(
+                                           'https://github.com/austinhargis/hammer'))
 
     def users(self):
         if self.parent.save_m.data['show_users_menu'] == 'allowed':
@@ -83,11 +90,13 @@ class MenuBar(tk.Menu):
             self.users_menu.add_command(label=self.parent.get_region_text('user_specific'),
                                         underline=1,
                                         command=lambda: self.parent.create_tab(ViewSpecificUser,
-                                                                               self.parent.get_region_text('user_specific')))
+                                                                               self.parent.get_region_text(
+                                                                                   'user_specific')))
             self.users_menu.add_command(label=self.parent.get_region_text('user_view'),
                                         underline=1,
                                         command=lambda: self.parent.create_tab(ViewUsers,
-                                                                               self.parent.get_region_text('user_view')))
+                                                                               self.parent.get_region_text(
+                                                                                   'user_view')))
 
     def quit(self):
         sys.exit()
