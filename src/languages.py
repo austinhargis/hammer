@@ -55,7 +55,7 @@ languages = {
             'item_cant_delete_error_title': 'Item Currently Checked Out',
             'item_cant_delete_error_body': 'Warning: An item with this barcode is currently checked out. This barcode CANNOT be deleted at this time.',
             'item_barcode_in_use_error_title': 'Barcode Already in Use',
-            'item_barcode_in_use_error_body': 'Warning: An item or user already exists with this barcode. Please try a different barcode.',
+            'item_barcode_in_use_error_body': 'Warning: This barcode is already in use. Please try a different barcode.',
             'item_delete': 'Delete Item',
         },
         'locations': {

@@ -2,7 +2,6 @@ import bcrypt
 from tkinter import ttk
 
 from home_tab import HomeTab
-from languages import *
 from popup_window import PopupWindow
 
 
@@ -59,11 +58,11 @@ class Login(ttk.Frame):
             if bcrypt.checkpw(user_password, password[0][0].encode('utf-8')):
                 self.parent.user_barcode = self.user_barcode.get()
                 self.parent.get_user_permissions()
-                self.parent.create_tab(HomeTab, languages[self.parent.save_m.data['language']]['general']['home_tab'])
+                self.parent.create_tab(HomeTab, self.parent.get_region_text('home_tab'))
                 self.parent.home_tab = self.parent.tab_controller.nametowidget('.!hometab')
                 self.destroy()
             else:
                 raise IndexError
         except IndexError:
-            PopupWindow(self.parent, languages[self.parent.save_m.data['language']]['login']['error_title'],
-                        languages[self.parent.save_m.data['language']]['login']['error_body'])
+            PopupWindow(self.parent, self.parent.get_region_text('login_error_title'),
+                        self.parent.get_region_text('login_error_body'))

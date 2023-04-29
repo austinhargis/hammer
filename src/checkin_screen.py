@@ -95,5 +95,5 @@ class CheckinScreen(ttk.Frame):
             self.tree.insert('', tk.END, values=[self.barcode_entry.get(), return_title[0][0]])
             self.barcode_entry.delete(0, tk.END)
         else:
-            PopupWindow(self.parent, self.parent.get_region_text('error_title'),
-                        self.parent.get_region_text('error_body'))
+            PopupWindow(self.parent, self.parent.get_region_text('checkin_error_title'),
+                        self.parent.get_region_text('checkin_error_body'))
