@@ -5,5 +5,6 @@ PyInstaller.__main__.run([
     '--onefile',
     '--clean',
     '--noconfirm',
+    '--hidden-import "babel.numbers"',
     '-nhammer',
 ])
