@@ -92,16 +92,6 @@ class HomeTab(ttk.Frame):
 
         logging.info('Initialized delete confirmation')
 
-    def drop_table(self):
-        """
-            drop_table will delete all data within the table
-            :return:
-        """
-        self.parent.db.drop_table()
-        self.refresh_table()
-
-        logging.info('Reset tables')
-
     def populate_table(self, current_table=None):
         """
             populate_table takes the return value of self.db.get_all_query()

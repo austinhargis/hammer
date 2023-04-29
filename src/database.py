@@ -130,18 +130,6 @@ class Database(threading.Thread):
                         title=self.parent.get_region_text('item_cant_delete_error_title'),
                         message=self.parent.get_region_text('item_cant_delete_error_body'))
 
-    def drop_table(self):
-        """
-            drops all data from the inventory table
-            :return: nothing
-        """
-
-        self.dbCursor.execute("""DELETE FROM item_record""")
-        self.dbCursor.execute("""DELETE FROM items""")
-        self.dbCursor.execute("""DELETE FROM checkouts""")
-        self.dbCursor.execute("""DELETE FROM users""")
-        self.dbConnection.commit()
-
     def get_all_query(self):
         """
             allows for receiving all the data in the table

@@ -60,9 +60,6 @@ class MenuBar(tk.Menu):
             self.developer_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label=self.parent.get_region_text('developer_menu'),
                              underline=0, menu=self.developer_menu)
-            self.developer_menu.add_command(
-                label='Drop All Tables', underline=1,
-                command=lambda: self.parent.drop_table())
             self.developer_menu.add_command(label='View All Checkouts', underline=1,
                                             command=lambda: self.parent.create_tab(ViewCheckouts, 'View All Checkouts'))
 
