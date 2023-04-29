@@ -112,7 +112,7 @@ if __name__ == "__main__":
         root.mainloop()
     except _tkinter.TclError:
         pass
-    except mysql.connector.errors.ProgrammingError:
+    except (mysql.connector.errors.ProgrammingError, mysql.connector.errors.DatabaseError):
         app = tk.Toplevel()
         app.attributes('-topmost')
         ConfigureEnvWindow().pack()
