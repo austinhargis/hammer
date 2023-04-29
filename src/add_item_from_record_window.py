@@ -35,6 +35,11 @@ class AddItemFromRecordWindow(RecordChildTemplate):
                 """, self.get_item_info())
                 self.parent.db.dbConnection.commit()
                 logging.info(f'Created item {self.get_item_info()[1]} from record {self.get_item_info()[0]}')
+                for tab in self.parent.tab_controller.tabs():
+                    tab_object = self.parent.tab_controller.nametowidget(tab)
+                    if hasattr(tab_object, 'id'):
+                        if tab_object.id == self.entry_id:
+                            tab_object.refresh_table()
                 self.destroy()
             else:
                 PopupWindow(self.parent, self.parent.get_region_text('missing_barcode_title'), self.parent.get_region_text('missing_barcode_body'))
