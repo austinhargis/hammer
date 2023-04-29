@@ -29,16 +29,15 @@ class LocationManage(LocationTemplate):
 
     def update_entry(self):
         try:
-            if self.get_all_entries()[0][0:1] == 'L':
-                self.parent.db.dbCursor.execute(f"""
-                            UPDATE locations 
-                            SET barcode=%s, name=%s
-                            WHERE location_id={self.location_id}""", self.get_all_entries())
-                self.parent.db.dbConnection.commit()
+            self.parent.db.dbCursor.execute(f"""
+                        UPDATE locations 
+                        SET barcode=%s, name=%s
+                        WHERE location_id={self.location_id}""", self.get_all_entries())
+            self.parent.db.dbConnection.commit()
 
-                logging.info(f'Updated location with barcode {self.get_all_entries()[0]}')
+            logging.info(f'Updated location with barcode {self.get_all_entries()[0]}')
 
-                self.parent.tab_controller.select(0)
-                self.destroy()
+            self.parent.tab_controller.select(0)
+            self.destroy()
         except mysql.connector.errors.IntegrityError:
             self.barcode_in_use()
