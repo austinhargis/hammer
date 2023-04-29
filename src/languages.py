@@ -94,7 +94,7 @@ languages = {
             'prompt_delete': 'Are you sure you would like to delete this?',
             'prompt_deny': 'Cancel',
             'prompt_exit': 'Close',
-            'prompts_save_changes': 'Save Changes'
+            'prompt_save_changes': 'Save Changes'
         },
         'settings': {
             'settings_heading': 'Settings',
