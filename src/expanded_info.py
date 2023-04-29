@@ -117,8 +117,8 @@ class ExpandedInformation(tk.Frame):
 
         if not bool(self.parent.user_permissions['can_manage_records']):
             self.delete_button.configure(state='disabled')
-            self.manage_button.configure(state='disabled')
             self.create_button.configure(state='disabled')
+        self.manage_button.configure(state='disabled')
 
     def refresh_table(self):
         for item in self.tree.get_children():
