@@ -62,7 +62,7 @@ class ViewSpecificUser(ttk.Frame):
         self.barcode_entry.bind('<Return>', lambda event: self.get_user())
 
         tree_frame = ttk.Frame(bottom_frame)
-        tree_frame.pack(side='top', fill='both', expand=True)
+        tree_frame.pack(side='top', fill='both', expand=True, pady=self.parent.padding)
         self.tree = ttk.Treeview(tree_frame, columns=('item_barcode', 'item_title'))
         self.tree['show'] = 'headings'
         self.tree['displaycolumns'] = ('item_barcode', 'item_title')
