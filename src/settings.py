@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 
 
-class SettingsWindow(tk.Frame):
+class SettingsWindow(ttk.Frame):
     """
         This is, without a doubt, some of the worst code I have ever written.
         To anyone looking through this, I am very sorry.
@@ -46,16 +46,6 @@ class SettingsWindow(tk.Frame):
         ttk.Checkbutton(update_frame,
                         text=self.parent.get_region_text('settings_update_check'),
                         variable=self.update_var,
-                        onvalue='allowed',
-                        offvalue='disallowed').pack(side='left')
-
-        checkout_frame = ttk.Frame(main_frame)
-        checkout_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
-        self.checkout_var = tk.StringVar(checkout_frame)
-        self.checkout_var.set(self.parent.save_m.data['show_checkout_menu'])
-        ttk.Checkbutton(checkout_frame,
-                        text=self.parent.get_region_text('settings_show_checkout'),
-                        variable=self.checkout_var,
                         onvalue='allowed',
                         offvalue='disallowed').pack(side='left')
 
