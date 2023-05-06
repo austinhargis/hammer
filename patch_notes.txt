@@ -24,8 +24,6 @@
 - Several items can now be checked out at once.
 - Switched the UI to use Tkinter Notebooks and Tabs.
 - The update checker will now take you to the release page for the new version.
-- Updated the UI to use the ttk variants of buttons, labels, etc., where available.
-- hammer can now create a new database with an optional argument at runtime
 - Database calls are now run on a separate thread.
 - hammer now requires a MySQL server to run.
 

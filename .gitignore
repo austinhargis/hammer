@@ -7,3 +7,5 @@ hammer.db
 *.txt
 *.spec
 *.env
+dist/
+build/
