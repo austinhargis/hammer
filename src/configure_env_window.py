@@ -7,14 +7,17 @@ class ConfigureEnvWindow(ttk.Frame):
     def __init__(self):
         super().__init__()
 
+        self.host_entry = None
+        self.pass_entry = None
+        self.user_entry = None
+
         self.window()
 
     def write_to_env(self):
         message = f"""DB_HOST={self.host_entry.get()}\nDB_USER={self.user_entry.get()}\nDB_PASSWORD={self.pass_entry.get()}"""
 
-        data_out = open('./.env', 'w')
-        data_out.write(message)
-        data_out.close()
+        with open('./.env', 'w') as file:
+            file.write(message)
 
         sys.exit()
 
@@ -24,7 +27,7 @@ class ConfigureEnvWindow(ttk.Frame):
 
         heading_frame = ttk.Frame(main_frame)
         heading_frame.pack(fill='both')
-        ttk.Label(heading_frame).pack(side='left')
+        ttk.Label(heading_frame, text='Configure Database Credentials').pack(side='left')
 
         host_frame = ttk.Frame(main_frame)
         host_frame.pack(fill='both')
