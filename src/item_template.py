@@ -1,7 +1,7 @@
 from tkinter import ttk
 
 
-class RecordChildTemplate(ttk.Frame):
+class ItemTemplate(ttk.Frame):
 
     def __init__(self, parent, entry_id):
         super().__init__()

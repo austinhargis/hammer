@@ -34,7 +34,6 @@ class AddRecordWindow(RecordInfoTemplate):
             item_information = list(item_information)
             item_information.append(datetime.now())
             item_information.append(datetime.now())
-            print(item_information)
             self.parent.db.dbCursor.execute(f"""
                 INSERT INTO item_record(title, author, description, publish_date, type, creation_date, managed_date)
                 VALUES (%s, %s, %s, %s, %s, %s, %s)""", item_information)

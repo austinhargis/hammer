@@ -1,12 +1,11 @@
 import logging
 import mysql.connector
 
-from languages import *
 from popup_window import PopupWindow
-from record_child_template import RecordChildTemplate
+from item_template import ItemTemplate
 
 
-class AddItemWindow(RecordChildTemplate):
+class AddItemWindow(ItemTemplate):
 
     def __init__(self, parent, entry_id):
         super().__init__(parent, entry_id)

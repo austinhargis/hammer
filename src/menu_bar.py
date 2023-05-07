@@ -7,8 +7,8 @@ from user_view_specific import ViewSpecificUser
 from user_create import CreateUser
 from settings import SettingsWindow
 from update_checker import UpdateChecker
-from view_checkouts import ViewCheckouts
-from view_users import ViewUsers
+from checkouts_view_all import ViewCheckouts
+from user_view_all import ViewUsers
 
 from login import Login
 
@@ -47,10 +47,6 @@ class MenuBar(tk.Menu):
                                    underline=1,
                                    command=lambda: self.parent.create_tab(UpdateChecker, self.parent.get_region_text(
                                        'update_check_for')))
-        self.file_menu.add_command(label=self.parent.get_region_text(
-                                       'configure_server'),
-                                   command=lambda: self.parent.create_tab(ConfigureEnvWindow, self.parent.get_region_text(
-                                       'configure_server')))
         self.file_menu.add_command(label=self.parent.get_region_text('settings'),
                                    underline=1,
                                    command=lambda: self.parent.create_tab(SettingsWindow,

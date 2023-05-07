@@ -1,7 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 
-from add_item_from_record_window import AddItemFromRecordWindow
+from item_add_window import AddItemWindow
+from item_manage_window import ManageItemWindow
 from popup_window import PopupWindow
 
 
@@ -105,12 +106,14 @@ class ExpandedInformation(tk.Frame):
 
         # TODO: Add support for managing item information
         self.manage_button = ttk.Button(button_frame, text=self.parent.get_region_text('item_manage_heading'),
-                                        command=lambda: None)
+                                        command=lambda: [self.parent.create_tab(ManageItemWindow,
+                                                                                self.parent.get_region_text('item_manage_heading'),
+                                                                                self.entry_id)])
         self.manage_button.pack(side='right',
                                 fill='x')
 
         self.create_button = ttk.Button(button_frame, text=self.parent.get_region_text('item_add_heading'),
-                                        command=lambda: [self.parent.create_tab(AddItemFromRecordWindow,
+                                        command=lambda: [self.parent.create_tab(AddItemWindow,
                                                                                 self.parent.get_region_text('item_add_heading'),
                                                                                 self.entry_id)])
         self.create_button.pack(side='right', fill='x')
@@ -118,7 +121,7 @@ class ExpandedInformation(tk.Frame):
         if not bool(self.parent.user_permissions['can_manage_records']):
             self.delete_button.configure(state='disabled')
             self.create_button.configure(state='disabled')
-        self.manage_button.configure(state='disabled')
+            self.manage_button.configure(state='disabled')
 
     def refresh_table(self):
         for item in self.tree.get_children():

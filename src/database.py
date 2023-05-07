@@ -55,7 +55,7 @@ class Database(threading.Thread):
             self.dbCursor.execute(f"""
                 CREATE TABLE items(
                     id smallint(255),
-                    barcode varchar(255) NOT NULL,
+                    barcode varchar(255) UNIQUE NOT NULL,
                     location_barcode varchar(255),
                     description varchar(255),
                     PRIMARY KEY (barcode),
@@ -66,7 +66,7 @@ class Database(threading.Thread):
             self.dbCursor.execute(f"""
                 CREATE TABLE users(
                     user_id smallint(255) AUTO_INCREMENT,
-                    barcode varchar(255) UNIQUE,
+                    barcode varchar(255) UNIQUE NOT NULL,
                     first_name varchar(255),
                     last_name varchar(255),
                     password varchar(255),

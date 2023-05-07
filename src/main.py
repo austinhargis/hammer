@@ -79,7 +79,6 @@ class Hammer(tk.Tk):
                 return languages[self.save_m.data['language']][key][required_key]
             else:
                 continue
-        print(f'Could not find key {required_key}')
         return required_key
 
     def get_user_permissions(self):

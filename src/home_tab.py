@@ -2,8 +2,8 @@ import logging
 import tkinter as tk
 from tkinter import ttk
 
-from add_item_from_record_window import AddItemFromRecordWindow
-from add_record_window import AddRecordWindow
+from item_add_window import AddItemWindow
+from record_add_window import AddRecordWindow
 from checkin_screen import CheckinScreen
 from checkout_screen import CheckoutScreen
 from expanded_info import ExpandedInformation
@@ -11,7 +11,7 @@ from user_create import CreateUser
 from languages import *
 from location_create import LocationCreate
 from location_view import LocationView
-from manage_record_window import ManageRecordWindow
+from record_manage_window import ManageRecordWindow
 from user_view_specific import ViewSpecificUser
 
 
