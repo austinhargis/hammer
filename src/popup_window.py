@@ -8,6 +8,7 @@ class PopupWindow(tk.Toplevel):
         super().__init__()
 
         self.attributes('-topmost', True)
+        self.focus()
         self.title(title)
 
         self.parent = parent
