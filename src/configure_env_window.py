@@ -31,19 +31,19 @@ class ConfigureEnvWindow(ttk.Frame):
 
         host_frame = ttk.Frame(main_frame)
         host_frame.pack(fill='both')
-        ttk.Label(host_frame, text='Location Name').pack(side='left')
+        ttk.Label(host_frame, text='Host Address').pack(side='left')
         self.host_entry = ttk.Entry(host_frame)
         self.host_entry.pack(side='right')
 
         user_frame = ttk.Frame(main_frame)
         user_frame.pack(fill='both')
-        ttk.Label(user_frame, text='Server Username').pack(side='left')
+        ttk.Label(user_frame, text='SQL Username').pack(side='left')
         self.user_entry = ttk.Entry(user_frame)
         self.user_entry.pack(side='right')
 
         pass_frame = ttk.Frame(main_frame)
         pass_frame.pack(fill='both')
-        ttk.Label(pass_frame, text='Server Password').pack(side='left')
+        ttk.Label(pass_frame, text='SQL Password').pack(side='left')
         self.pass_entry = ttk.Entry(pass_frame)
         self.pass_entry.pack(side='right')
 
@@ -51,3 +51,7 @@ class ConfigureEnvWindow(ttk.Frame):
         button_frame.pack(fill='both')
         ttk.Button(button_frame, text='Save', command=lambda: self.write_to_env()).pack(side='left')
         ttk.Button(button_frame, text='Close', command=lambda: self.destroy()).pack(side='left')
+
+        self.host_entry.bind('<Return>', self.user_entry.focus())
+        self.user_entry.bind('<Return>', self.pass_entry.focus())
+        self.pass_entry.bind('<Return>', self.write_to_env())
