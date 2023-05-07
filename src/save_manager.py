@@ -14,7 +14,6 @@ class SaveManager:
             'last_update_check': datetime.now().strftime('%I:%M%p %m/%d/%Y'),
             'theme': 'system',
             'settings_version': 'v0.2.0a',
-            'show_checkout_menu': 'allowed',
             'show_developer_menu': 'disallowed',
             'show_help_menu': 'allowed',
             'show_users_menu': 'allowed',
@@ -30,9 +29,8 @@ class SaveManager:
         """
 
         try:
-            data_in = open(f'{self.parent.data_path}/settings.pkl', 'rb')
-            self.data = pickle.load(data_in)
-            data_in.close()
+            with open(f'{self.parent.data_path}/settings.pkl', 'rb') as file:
+                self.data = pickle.load(file)
         except EOFError:
             self.settings_enabled = 'disabled'
         except FileNotFoundError:
@@ -44,6 +42,5 @@ class SaveManager:
             :return:
         """
 
-        data_out = open(f'{self.parent.data_path}/settings.pkl', 'wb')
-        pickle.dump(self.data, data_out)
-        data_out.close()
+        with open(f'{self.parent.data_path}/settings.pkl', 'wb') as file:
+            pickle.dump(self.data, file)
