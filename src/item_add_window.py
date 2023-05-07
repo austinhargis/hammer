@@ -6,7 +6,7 @@ from popup_window import PopupWindow
 from record_child_template import RecordChildTemplate
 
 
-class AddItemFromRecordWindow(RecordChildTemplate):
+class AddItemWindow(RecordChildTemplate):
 
     def __init__(self, parent, entry_id):
         super().__init__(parent, entry_id)

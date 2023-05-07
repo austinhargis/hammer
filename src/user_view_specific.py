@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 
+from popup_window import PopupWindow
 from user_manage import ManageUser
 
 
@@ -49,9 +50,10 @@ class ViewSpecificUser(ttk.Frame):
 
         heading_frame = ttk.Frame(left_frame)
         heading_frame.pack(anchor='nw')
-        ttk.Label(heading_frame, text=self.parent.get_region_text('user_specific'), font=self.parent.heading_font).pack(anchor='nw',
-                                                                                       padx=self.parent.padding,
-                                                                                       pady=self.parent.padding)
+        ttk.Label(heading_frame, text=self.parent.get_region_text('user_specific'), font=self.parent.heading_font).pack(
+            anchor='nw',
+            padx=self.parent.padding,
+            pady=self.parent.padding)
 
         barcode_frame = ttk.Frame(left_frame)
         barcode_frame.pack(anchor='nw', padx=self.parent.padding)
@@ -121,3 +123,7 @@ class ViewSpecificUser(ttk.Frame):
 
             if bool(self.parent.user_permissions['can_modify_users']):
                 self.manage_user_button.configure(state='normal')
+        else:
+            PopupWindow(self.parent, 'No User Found',
+                        'A user with that barcode does not exist. Please check that the barcode has'
+                        'been entered correctly.')
