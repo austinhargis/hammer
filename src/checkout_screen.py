@@ -7,7 +7,7 @@ from languages import *
 from popup_window import PopupWindow
 
 
-class CheckoutScreen(tk.Frame):
+class CheckoutScreen(ttk.Frame):
 
     def __init__(self, parent):
         super().__init__()
