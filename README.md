@@ -1,5 +1,5 @@
 ## hammer
-hammer is an basic lightweight inventory management system developed in Python with a Tkinter GUI and a SQLite3 database.
+hammer is a basic lightweight inventory management system developed in Python with a Tkinter GUI and a MySQL database.
 hammer's abilities include:
 - Creating and managing Records and Items
 - Creating and managing users
@@ -10,30 +10,28 @@ hammer is still in very early development. Changes can and will happen, and your
 not work in later versions of hammer. As we get closer to a stable, functional state, we will begin implementing measures
 to allow for the updating of databases and settings files to ensure compatibility.
 
-hammer currently utilizes MySQL for its database. We have recently switched to MySQL from SQLite3, so there will likely be some
-issues leftover from that conversion, as well as old SQLite3 code. If you run into any issues, please open an Issue. MySQL must
-be configured separately from hammer.
-
 ## Configuring
-In this current revision, for hammer to work as intended, a .env file in the src folder in hammer's directory *MUST* be
-configured. In this file, you will find three variables that need to be filled out:
-```env
-db_host=<insert_host_address>
-db_user=<insert_user_name>
-db_password=<insert_desired_user_password>
-```
-Assuming your information is correct, opening hammer will create the required database, hammerDB, and the necessary
-tables.
+Upon launching hammer, you may be presented with a configuration screen, asking for a hostname, SQL user, and a SQL password.
+This information is necessary in order to create hammer's database and tables. Once you enter the required information, 
+you can press 'Save'. This will save your changes and close the popup window. Reopen hammer with its executable, and you 
+will be brought to the login page. The default credentials are:
+- ```Username: admin```
+- ```Password: 12345```
+
+The password for this account can be changed in the Manage User screen, however, this account cannot be disabled.
+
+If after entering your MySQL database credentials, you continue to see the configuration window, please double-check that
+you have correctly configured your database. If you are certain that you have configured your database correctly,
+please open an issue on hammer's GitHub page. 
 
 ## Requirements
-In order to run hammer yourself from source, you will be required to install:
-- Python 3.11
-  - This is the version that we are currently targeting, but it *should* work with any recent version of Python.
+In order to run hammer yourself from source, you will be required to install a few modules. These can all be installed with
+```pip install -r requirements.txt```. The following Python version is required:
+- Python 3.11 (or greater)
+
+The following modules are required:
 - bcrypt
-  - This can be installed with ```pip install bcrypt```.
-- Python MySQL
-  - This can be installed with ```pip install mysql-python-connector```.
+- MySQL Connector Python
+- pyinstaller
 - python-dotenv
-    - This can be installed with ```pip install python-dotenv```.
 - tkcalendar
-  - tkcalendar is used to handle date entry in the Create User and Manage User screens. It can be installed with ```pip install tkcalendar```.
