@@ -97,7 +97,6 @@ class SettingsWindow(ttk.Frame):
 
         self.parent.save_m.data['automatic_update_check'] = self.update_var.get()
         self.parent.save_m.data['theme'] = self.theme_var.get()
-        self.parent.save_m.data['show_checkout_menu'] = self.checkout_var.get()
         self.parent.save_m.data['show_developer_menu'] = self.developer_var.get()
         self.parent.save_m.data['show_help_menu'] = self.help_var.get()
         self.parent.save_m.data['show_users_menu'] = self.users_var.get()
