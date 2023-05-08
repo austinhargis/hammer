@@ -5,7 +5,8 @@ if __name__ == '__main__':
         '--onefile',
         '--clean',
         '--noconfirm',
-        '--hidden-import="babel.numbers"',
+        '--hidden-import=["babel.numbers", "babel.dates"]',
+        '--additional-hooks-dir=.',
         '-nhammer',
         'main.py',
     ])

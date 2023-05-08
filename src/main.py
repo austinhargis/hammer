@@ -6,6 +6,7 @@
     version: v0.2.0a
 
 """
+import babel.numbers, babel.dates
 import logging
 import os
 import tkinter as tk
