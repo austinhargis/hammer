@@ -6,7 +6,7 @@ from datetime import datetime
 from tkinter import ttk
 
 
-class UpdateChecker(tk.Frame):
+class UpdateChecker(ttk.Frame):
 
     def __init__(self, parent):
         super().__init__()

@@ -6,7 +6,7 @@ from item_manage_window import ManageItemWindow
 from popup_window import PopupWindow
 
 
-class ExpandedInformation(tk.Frame):
+class ExpandedInformation(ttk.Frame):
 
     def __init__(self, parent, entry_values):
         super().__init__()

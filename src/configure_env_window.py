@@ -52,6 +52,6 @@ class ConfigureEnvWindow(ttk.Frame):
         ttk.Button(button_frame, text='Save', command=lambda: self.write_to_env()).pack(side='left')
         ttk.Button(button_frame, text='Close', command=lambda: self.destroy()).pack(side='left')
 
-        self.host_entry.bind('<Return>', self.user_entry.focus())
-        self.user_entry.bind('<Return>', self.pass_entry.focus())
-        self.pass_entry.bind('<Return>', self.write_to_env())
+        self.host_entry.bind('<Return>', lambda event: self.user_entry.focus())
+        self.user_entry.bind('<Return>', lambda event: self.pass_entry.focus())
+        self.pass_entry.bind('<Return>', lambda event: self.write_to_env())
