@@ -1,3 +1,5 @@
+import logging
+
 import bcrypt
 from tkinter import ttk
 
@@ -16,33 +18,48 @@ class Login(ttk.Frame):
 
         self.window()
 
+    def get_motd(self):
+        self.parent.db.dbCursor.execute("""
+            SELECT message FROM message_of_the_day
+            ORDER BY id DESC
+        """)
+        message = self.parent.db.dbCursor.fetchone()
+
+        logging.info('Got the message of the day')
+
+        return message[0]
+
     def window(self):
         main_frame = ttk.Frame(self)
-        main_frame.pack(anchor='nw')
+        main_frame.pack(anchor='nw', expand=True, fill='both')
 
         heading_frame = ttk.Frame(main_frame)
-        heading_frame.pack(fill='both', padx=self.parent.padding, pady=self.parent.padding)
+        heading_frame.pack(anchor='nw', fill='both', padx=self.parent.padding, pady=self.parent.padding)
         ttk.Label(heading_frame,
                   text=self.parent.get_region_text('login_heading'),
-                  font=self.parent.heading_font).pack(side='left', anchor='nw')
+                  font=self.parent.heading_font).pack(side='top', anchor='nw')
+        ttk.Label(heading_frame, text=f"{self.get_motd()}", font=('Arial', 14),
+                  wraplength=self.parent.wraplength).pack(anchor='nw',
+                                                          side='top')
 
         user_frame = ttk.Frame(main_frame)
-        user_frame.pack(fill='both', expand=True, padx=self.parent.padding, pady=(0, self.parent.padding))
+        user_frame.pack(anchor='nw', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(user_frame,
                   text=self.parent.get_region_text('username')).pack(
             side='left')
         self.user_barcode = ttk.Entry(user_frame)
-        self.user_barcode.pack(side='right', ipadx=16)
+        self.user_barcode.pack(side='left', ipadx=16)
 
         password_frame = ttk.Frame(main_frame)
-        password_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
+        password_frame.pack(anchor='nw', padx=self.parent.padding, pady=(0, self.parent.padding))
         ttk.Label(password_frame,
                   text=self.parent.get_region_text('password')).pack(
             side='left')
         self.password_entry = ttk.Entry(password_frame, show='*')
-        self.password_entry.pack(side='right', ipadx=16)
+        self.password_entry.pack(side='left', ipadx=16)
 
-        ttk.Button(main_frame, command=lambda: self.password_check(), text=self.parent.get_region_text('login_heading')).pack()
+        ttk.Button(main_frame, command=lambda: self.password_check(),
+                   text=self.parent.get_region_text('login_heading')).pack(padx=self.parent.padding, anchor='nw')
 
         self.user_barcode.focus()
         self.user_barcode.bind('<Return>', lambda event: self.password_entry.focus())

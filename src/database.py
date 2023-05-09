@@ -88,6 +88,14 @@ class Database(threading.Thread):
                     FOREIGN KEY(item_barcode) REFERENCES items(barcode)
                 )""")
             self.dbCursor.execute("""
+                CREATE TABLE message_of_the_day(
+                    id smallint(255) UNIQUE NOT NULL AUTO_INCREMENT,
+                    message varchar(255),
+                    expiration_date datetime,
+                    PRIMARY KEY (id)
+                )
+            """)
+            self.dbCursor.execute("""
                 INSERT INTO users (barcode, first_name, last_name, password, birthday, email, is_admin, can_check_out, can_manage_records, can_modify_users)
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             """, ('admin', 'admin', 'admin', bcrypt.hashpw('12345'.encode('utf-8'), bcrypt.gensalt()), '2023-02-01', '', 1, 1, 1, 1))
@@ -136,7 +144,10 @@ class Database(threading.Thread):
             :return: a list of tuples of data in the table
         """
 
-        self.dbCursor.execute("""SELECT * FROM item_record""")
+        self.dbCursor.execute("""
+            SELECT * FROM item_record
+            ORDER BY title ASC
+        """)
         return self.dbCursor.fetchall()
 
     def unique_conflict(self):
