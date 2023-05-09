@@ -6,7 +6,6 @@
     version: v0.2.0a
 
 """
-import babel.numbers, babel.dates
 import logging
 import os
 import tkinter as tk
@@ -46,7 +45,7 @@ class Hammer(tk.Tk):
         self.padding = 10
         self.user_barcode = None
         self.user_permissions = None
-        self.wraplength = 200
+        self.wraplength = 1000
 
         self.tab_controller = ttk.Notebook(self)
         self.save_m = SaveManager(self)
@@ -66,9 +65,9 @@ class Hammer(tk.Tk):
             :return:
         """
         if values is not None:
-            self.tab_controller.add(window(self, values), text=title[0:10])
+            self.tab_controller.add(window(self, values), text=title[0:16])
         else:
-            self.tab_controller.add(window(self), text=title[0:10])
+            self.tab_controller.add(window(self), text=title[0:16])
         tabs = self.tab_controller.tabs()
         self.tab_controller.select(len(tabs) - 1)
 
@@ -115,5 +114,6 @@ if __name__ == "__main__":
     except (mysql.connector.errors.ProgrammingError, mysql.connector.errors.DatabaseError):
         app = tk.Toplevel()
         app.attributes('-topmost')
+        app.focus()
         ConfigureEnvWindow().pack()
         app.mainloop()

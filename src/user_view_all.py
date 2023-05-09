@@ -51,6 +51,7 @@ class ViewUsers(ttk.Frame):
     def get_users(self):
         self.parent.db.dbCursor.execute("""
             SELECT * FROM users
+            ORDER BY user_barcode ASC
         """)
         users = self.parent.db.dbCursor.fetchall()
 

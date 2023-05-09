@@ -28,6 +28,8 @@ languages = {
             'home_tab': 'Home',
             'configure_server': 'Configure Server',
             'records_heading': 'Item Record',
+            'create_message': 'Create Message of the Day',
+            'create_message_short': 'Create MOTD'
         },
         'item_info': {
             'item_add_heading': 'Create Item',

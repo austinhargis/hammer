@@ -11,6 +11,7 @@ from user_create import CreateUser
 from languages import *
 from location_create import LocationCreate
 from location_view import LocationView
+from message_create import CreateMessage
 from record_manage_window import ManageRecordWindow
 from user_view_specific import ViewSpecificUser
 
@@ -273,6 +274,14 @@ class HomeTab(ttk.Frame):
                        command=lambda: self.parent.create_tab(LocationView,
                                                               languages[self.parent.save_m.data['language']]['locations'][
                                                                   'location_view'])).pack(fill='x')
+
+        if bool(self.parent.user_permissions['is_admin']):
+            message_frame = ttk.Frame(left_frame)
+            message_frame.pack(fill='x', side='top', padx=self.parent.padding)
+
+            ttk.Label(message_frame, text='Message of the Day', font=self.parent.heading_font).pack()
+            ttk.Button(message_frame, text='Create Message', command=lambda: self.parent.create_tab(CreateMessage, 'Create MOTD')).pack(fill='x')
+
 
         users_frame = ttk.Frame(left_frame)
         users_frame.pack(fill='x', side='top', padx=self.parent.padding)
