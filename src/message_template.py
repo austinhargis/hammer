@@ -38,4 +38,4 @@ class MessageTemplate(ttk.Frame):
         ttk.Button(button_frame, text=self.parent.get_region_text('prompt_deny'),
                    command=lambda: self.destroy()).pack(side='left')
 
-
+        self.message_text.focus()

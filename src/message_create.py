@@ -12,6 +12,8 @@ class CreateMessage(MessageTemplate):
             text=self.parent.get_region_text('create_message_short'))
         self.heading_label.configure(text=self.parent.get_region_text('create_message'))
 
+        self.message_text.bind('<Return>', lambda event: self.create_message())
+
     def create_message(self):
 
         self.parent.db.dbCursor.execute("""

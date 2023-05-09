@@ -20,6 +20,8 @@ class ManageItemWindow(ItemTemplate):
 
         self.insert_data()
 
+        self.description_entry.bind('<Return>', lambda event: self.update_item())
+
     def insert_data(self):
         self.parent.db.dbCursor.execute(f"""
             SELECT barcode, location_barcode, description
