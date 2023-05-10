@@ -19,15 +19,18 @@ class Login(ttk.Frame):
         self.window()
 
     def get_motd(self):
-        self.parent.db.dbCursor.execute("""
-            SELECT message FROM message_of_the_day
-            ORDER BY id DESC
-        """)
-        message = self.parent.db.dbCursor.fetchone()
+        try:
+            self.parent.db.dbCursor.execute("""
+                SELECT message FROM message_of_the_day
+                ORDER BY id DESC
+            """)
+            message = self.parent.db.dbCursor.fetchone()
 
-        logging.info('Got the message of the day')
+            logging.info('Got the message of the day')
 
-        return message[0]
+            return message[0]
+        except TypeError:
+            return ''
 
     def window(self):
         main_frame = ttk.Frame(self)
