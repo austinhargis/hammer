@@ -1,5 +1,6 @@
 from datetime import datetime
 
+import babel.numbers
 import bcrypt
 from tkcalendar import Calendar
 import tkinter as tk
