@@ -8,19 +8,17 @@ class PopupWindow(tk.Toplevel):
         super().__init__()
 
         self.attributes('-topmost', True)
+        self.configure(padx=parent.padding, pady=parent.padding)
         self.focus()
         self.title(title)
 
         self.parent = parent
 
-        main_frame = ttk.Frame(self)
-        main_frame.pack(padx=self.parent.padding, pady=self.parent.padding)
-
-        ttk.Label(main_frame,
+        ttk.Label(self,
                   text=message,
                   wraplength=self.parent.wraplength,
                   justify='center').pack()
-        button = ttk.Button(main_frame, text=self.parent.get_region_text('prompt_exit'), command=lambda: self.destroy())
+        button = ttk.Button(self, text=self.parent.get_region_text('prompt_exit'), command=lambda: self.destroy())
         button.pack()
 
         self.bind('<Return>', lambda event: self.destroy())
