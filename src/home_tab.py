@@ -27,7 +27,8 @@ class HomeTab(ttk.Frame):
 
         self.window()
         self.populate_table()
-        self.after(self.parent.manage_check_delay, self.check_focus)
+        if self.parent.user_permissions['can_manage_records'] or self.parent.user_permissions['is_admin']:
+            self.after(self.parent.manage_check_delay, self.check_focus)
         self.parent.tree.bind("<Delete>", lambda event: self.delete_popup_window())
         self.parent.config(menu=self.parent.menu_bar)
 
