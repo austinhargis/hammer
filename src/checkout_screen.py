@@ -87,10 +87,6 @@ class CheckoutScreen(ttk.Frame):
         ttk.Button(button_frame,
                    text=self.parent.get_region_text('prompt_exit'),
                    command=lambda: [self.parent.tab_controller.select(0), self.destroy()]).pack(side='right')
-        ttk.Button(button_frame,
-                   text=self.parent.get_region_text('checkout_confirm'),
-                   command=lambda: [self.parent.db.dbConnection.commit(), self.parent.tab_controller.select(0)]) \
-            .pack(side='right')
 
         self.user_barcode.focus()
         self.barcode_entry.bind('<Return>', lambda event: self.checkout_to_user())
