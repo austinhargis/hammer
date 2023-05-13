@@ -108,7 +108,7 @@ class ExpandedInformation(ttk.Frame):
         self.manage_button = ttk.Button(button_frame, text=self.parent.get_region_text('item_manage_heading'),
                                         command=lambda: [self.parent.create_tab(ManageItemWindow,
                                                                                 self.parent.get_region_text('item_manage_heading'),
-                                                                                self.entry_id)])
+                                                                                self.tree.item(self.tree.focus())['values'][0])])
         self.manage_button.pack(side='right',
                                 fill='x')
 

@@ -1,7 +1,5 @@
 import logging
 import mysql.connector.errors
-import tkinter as tk
-from tkinter import ttk
 
 from item_template import ItemTemplate
 
@@ -26,7 +24,7 @@ class ManageItemWindow(ItemTemplate):
         self.parent.db.dbCursor.execute(f"""
             SELECT barcode, location_barcode, description
             FROM items
-            WHERE id=%s
+            WHERE barcode=%s
         """, (self.entry_id,))
         data = self.parent.db.dbCursor.fetchone()
 
