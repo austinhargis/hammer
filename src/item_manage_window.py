@@ -32,31 +32,28 @@ class ManageItemWindow(ItemTemplate):
         self.location_entry.insert(0, data[1])
         self.description_entry.insert(0, data[2])
 
+        self.barcode_entry.configure(state='disabled')
+
     def update_item(self):
         try:
             data = self.get_item_info()
-            del data[0]
+            del data[:2]
 
-            if data[0] != '':
-                self.parent.db.dbCursor.execute(f"""
-                    UPDATE items
-                    SET barcode=%s, location_barcode=%s, description=%s
-                    WHERE id={self.entry_id}
-                """, data)
-                self.parent.db.dbConnection.commit()
+            self.parent.db.dbCursor.execute(f"""
+                UPDATE items
+                SET location_barcode=%s, description=%s
+                WHERE barcode='{self.entry_id}'
+            """, data)
+            self.parent.db.dbConnection.commit()
 
-                logging.info(f'Updated item with id {self.entry_id}')
+            logging.info(f'Updated item with id {self.entry_id}')
 
-                for tab in self.parent.tab_controller.tabs():
-                    tab_object = self.parent.tab_controller.nametowidget(tab)
-                    if callable(getattr(tab_object, 'refresh_table', None)):
-                        tab_object.refresh_table()
-                        self.parent.tab_controller.select(tab)
+            for tab in self.parent.tab_controller.tabs():
+                tab_object = self.parent.tab_controller.nametowidget(tab)
+                if callable(getattr(tab_object, 'refresh_table', None)):
+                    tab_object.refresh_table()
+                    self.parent.tab_controller.select(tab)
 
-                self.destroy()
-
-            else:
-                raise mysql.connector.errors.IntegrityError
-
+            self.destroy()
         except mysql.connector.errors.IntegrityError:
             self.parent.db.unique_conflict()

@@ -65,9 +65,9 @@ class ViewSpecificUser(ttk.Frame):
 
         tree_frame = ttk.Frame(bottom_frame)
         tree_frame.pack(side='top', fill='both', expand=True, pady=self.parent.padding)
-        self.tree = ttk.Treeview(tree_frame, columns=('item_barcode', 'item_title'))
+        self.tree = ttk.Treeview(tree_frame, columns=('item_barcode', 'item_title', 'item_description'))
         self.tree['show'] = 'headings'
-        self.tree['displaycolumns'] = ('item_barcode', 'item_title')
+        self.tree['displaycolumns'] = ('item_barcode', 'item_title', 'item_description')
 
         self.tree_scroll = ttk.Scrollbar(tree_frame, command=self.tree.yview)
         self.tree.configure(yscrollcommand=self.tree_scroll.set)
@@ -78,6 +78,7 @@ class ViewSpecificUser(ttk.Frame):
         self.tree.column('item_barcode', stretch=False)
         self.tree.heading('item_title',
                           text=self.parent.get_region_text('checkout_item_title'))
+        self.tree.heading('item_description', text=self.parent.get_region_text('item_description'))
         self.tree.pack(fill='both', expand=True, padx=(self.parent.padding, 0), pady=(0, self.parent.padding))
 
         ttk.Button(bottom_frame,
@@ -97,7 +98,7 @@ class ViewSpecificUser(ttk.Frame):
             self.tree.delete(item)
 
         self.parent.db.dbCursor.execute("""
-            SELECT barcode, item_record.title 
+            SELECT barcode, item_record.title, items.description 
             FROM items
             INNER JOIN item_record ON items.id = item_record.id
             INNER JOIN checkouts ON items.barcode = checkouts.item_barcode
