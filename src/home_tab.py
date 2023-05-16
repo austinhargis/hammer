@@ -278,14 +278,14 @@ class HomeTab(ttk.Frame):
 
         if bool(self.parent.user_permissions['is_admin']):
             message_frame = ttk.Frame(left_frame)
-            message_frame.pack(fill='x', side='top', padx=self.parent.padding)
+            message_frame.pack(fill='x', side='top', padx=self.parent.padding, pady=(0, self.parent.padding))
 
             ttk.Label(message_frame, text='Message of the Day', font=self.parent.heading_font).pack()
             ttk.Button(message_frame, text='Create Message', command=lambda: self.parent.create_tab(CreateMessage, 'Create MOTD')).pack(fill='x')
 
 
         users_frame = ttk.Frame(left_frame)
-        users_frame.pack(fill='x', side='top', padx=self.parent.padding)
+        users_frame.pack(fill='x', side='top', padx=self.parent.padding, pady=(0, self.parent.padding))
 
         ttk.Label(users_frame,
                   text=languages[self.parent.save_m.data['language']]['users']['users_home_heading'],
@@ -317,10 +317,11 @@ class HomeTab(ttk.Frame):
 
         self.parent.tree.heading('id', text='ID')
         self.parent.tree.heading('title', text='Title')
-        self.parent.tree.column('title', stretch=False, width=150)
+        self.parent.tree.column('title', stretch=False, width=300)
         self.parent.tree.heading('author', text='Author')
-        self.parent.tree.column('author', stretch=False, width=150)
+        self.parent.tree.column('author', stretch=False, width=300)
         self.parent.tree.heading('publish_date', text='Publish Date')
+        self.parent.tree.column('publish_date', stretch=False, width=100)
         self.parent.tree.heading('type', text='Type')
         self.parent.tree.pack(expand=True, fill='both', padx=(self.parent.padding, 0), pady=self.parent.padding)
 
