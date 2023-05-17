@@ -37,7 +37,7 @@ class SettingsWindow(ttk.Frame):
                                           self.parent.get_region_text('settings_theme_light'),
                                           self.parent.get_region_text('settings_theme_system')])
         theme_dropdown.pack(side='left')
-        theme_dropdown.configure(state=self.parent.save_m.settings_enabled)
+        theme_dropdown.configure(state='disabled')
 
         update_frame = ttk.Frame(main_frame)
         update_frame.pack(fill='both', padx=self.parent.padding, pady=(0, self.parent.padding))
