@@ -51,10 +51,10 @@ class MenuBar(tk.Menu):
                                    underline=1,
                                    command=lambda: self.parent.create_tab(SettingsWindow,
                                                                           self.parent.get_region_text('settings')))
+        self.file_menu.add_separator()
         self.file_menu.add_command(label=self.parent.get_region_text('logout'),
                                    underline=1,
                                    command=lambda: self.parent.logout())
-        self.file_menu.add_separator()
         self.file_menu.add_command(label="Exit", underline=1, command=self.quit, accelerator='Escape')
 
     def developer(self):
@@ -70,6 +70,10 @@ class MenuBar(tk.Menu):
             self.help_menu = tk.Menu(self, tearoff=False)
             self.add_cascade(label=self.parent.get_region_text('help_menu'), underline=0,
                              menu=self.help_menu)
+            self.help_menu.add_command(label=self.parent.get_region_text('discord'), underline=1,
+                                       command=lambda: open_new_tab(
+                                           'https://discord.gg/KU4xZCKsW3'
+                                       ))
             self.help_menu.add_command(label=self.parent.get_region_text('github'), underline=1,
                                        command=lambda: open_new_tab(
                                            'https://github.com/austinhargis/hammer'))
