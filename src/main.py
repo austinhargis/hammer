@@ -55,6 +55,14 @@ class Hammer(tk.Tk):
 
         self.logout()
 
+        self.bind('<Escape>', lambda event: self.close_current_tab())
+
+    def close_current_tab(self):
+        current_tab = self.tab_controller.select()
+
+        if current_tab != self.tab_controller.tabs()[0]:
+            self.tab_controller.forget(current_tab)
+
     def create_tab(self, window, title, values=None):
         """
             Creates a new Notebook tab with the passed class and title,
