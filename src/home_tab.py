@@ -145,9 +145,11 @@ class HomeTab(ttk.Frame):
 
         logging.info(f'Performed search query "{search_term}"')
 
-    def sort_tree(self):
+    def sort_tree(self, option=None):
         for item in self.parent.tree.get_children():
             self.parent.tree.delete(item)
+
+        print(option)
 
         sorts_names = {
             'Ascending': 'asc',
@@ -158,7 +160,11 @@ class HomeTab(ttk.Frame):
             'Type': 'type'
         }
 
-        column = sorts_names[self.sort_col_var.get()]
+        if option is None:
+            column = sorts_names[self.sort_col_var.get()]
+        else:
+            column = option
+
         direction = sorts_names[self.sort_type_var.get()]
 
         self.parent.db.dbCursor.execute(f"""
@@ -171,12 +177,15 @@ class HomeTab(ttk.Frame):
             self.parent.tree.insert('', tk.END, values=item)
 
     def tree_double_click(self):
-        current_item = self.parent.tree.focus()
+        try:
+            current_item = self.parent.tree.focus()
 
-        entry_values = self.parent.tree.item(current_item)['values']
-        entry_title = self.parent.tree.item(current_item)['values'][1]
+            entry_values = self.parent.tree.item(current_item)['values']
+            entry_title = self.parent.tree.item(current_item)['values'][1]
 
-        self.parent.create_tab(ExpandedInformation, title=f'{entry_title}', values=entry_values)
+            self.parent.create_tab(ExpandedInformation, title=f'{entry_title}', values=entry_values)
+        except IndexError:
+            pass
 
     def window(self):
         main_frame = ttk.Frame(self)
@@ -319,18 +328,18 @@ class HomeTab(ttk.Frame):
         self.parent.tree_scroll_bar.pack(side='right', fill='both', pady=self.parent.padding)
 
         self.parent.tree.heading('id', text='ID')
-        self.parent.tree.heading('title', text='Title')
+        self.parent.tree.heading('title', text='Title', command=lambda: self.sort_tree('title'))
         self.parent.tree.column('title', stretch=False, width=300)
-        self.parent.tree.heading('author', text='Author')
+        self.parent.tree.heading('author', text='Author', command=lambda: self.sort_tree('author'))
         self.parent.tree.column('author', stretch=False, width=300)
-        self.parent.tree.heading('publish_date', text='Publish Date')
+        self.parent.tree.heading('publish_date', text='Publish Date', command=lambda: self.sort_tree('publish_date'))
         self.parent.tree.column('publish_date', stretch=False, width=100)
-        self.parent.tree.heading('type', text='Type')
+        self.parent.tree.heading('type', text='Type', command=lambda: self.sort_tree('type'))
         self.parent.tree.pack(expand=True, fill='both', padx=(self.parent.padding, 0), pady=self.parent.padding)
 
-        self.parent.tree.bind('<Button-1>', lambda event: self.get_expanded_tree())
-        self.parent.tree.bind('<Up>', lambda event: self.get_expanded_tree())
-        self.parent.tree.bind('<Down>', lambda event: self.get_expanded_tree())
+        # self.parent.tree.bind('<Button-1>', lambda event: self.get_expanded_tree())
+        # self.parent.tree.bind('<Up>', lambda event: self.get_expanded_tree())
+        # self.parent.tree.bind('<Down>', lambda event: self.get_expanded_tree())
         self.parent.tree.focus()
 
         search_frame = ttk.Frame(bottom_right_frame)
@@ -339,6 +348,7 @@ class HomeTab(ttk.Frame):
                                                                                    padx=self.parent.padding)
         search_box = ttk.Entry(search_frame)
         search_box.pack(side='left', padx=(0, self.parent.padding), pady=self.parent.padding)
+        search_box.bind('<Return>', lambda event: self.search_table(search_box))
         ttk.Button(search_frame, text='Search', command=lambda: self.search_table(search_box)).pack(side='left')
 
         sort_frame = ttk.Frame(bottom_right_frame)
