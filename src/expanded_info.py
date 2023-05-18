@@ -104,17 +104,16 @@ class ExpandedInformation(ttk.Frame):
                                         command=lambda: [self.delete_item(), self.refresh_table()])
         self.delete_button.pack(side='right', fill='x')
 
-        # TODO: Add support for managing item information
         self.manage_button = ttk.Button(button_frame, text=self.parent.get_region_text('item_manage_heading'),
-                                        command=lambda: [self.parent.create_tab(ManageItemWindow,
-                                                                                self.parent.get_region_text('item_manage_heading'),
-                                                                                self.tree.item(self.tree.focus())['values'][0])])
+                                        command=lambda: self.manage_item())
+
         self.manage_button.pack(side='right',
                                 fill='x')
 
         self.create_button = ttk.Button(button_frame, text=self.parent.get_region_text('item_add_heading'),
                                         command=lambda: [self.parent.create_tab(AddItemWindow,
-                                                                                self.parent.get_region_text('item_add_heading'),
+                                                                                self.parent.get_region_text(
+                                                                                    'item_add_heading'),
                                                                                 self.entry_id)])
         self.create_button.pack(side='right', fill='x')
 
@@ -145,22 +144,32 @@ class ExpandedInformation(ttk.Frame):
 
     def delete_item(self):
         selected = self.tree.item(self.tree.focus())
-        barcode = selected['values'][0]
 
-        self.parent.db.dbCursor.execute(f"""
-            SELECT *
-            FROM checkouts
-            WHERE item_barcode=%s    
-        """, (barcode,))
-        barcode_checkouts = self.parent.db.dbCursor.fetchall()
+        if len(selected['values']) > 0:
+            barcode = selected['values'][0]
 
-        if len(barcode_checkouts) == 0:
             self.parent.db.dbCursor.execute(f"""
-                DELETE FROM items
-                WHERE barcode=%s
+                SELECT *
+                FROM checkouts
+                WHERE item_barcode=%s    
             """, (barcode,))
-            self.parent.db.dbConnection.commit()
-        else:
-            PopupWindow(self.parent,
-                        'Barcode Checked Out',
-                        'This item cannot be deleted at this time because it is currently checked out.')
+            barcode_checkouts = self.parent.db.dbCursor.fetchall()
+
+            if len(barcode_checkouts) == 0:
+                self.parent.db.dbCursor.execute(f"""
+                    DELETE FROM items
+                    WHERE barcode=%s
+                """, (barcode,))
+                self.parent.db.dbConnection.commit()
+            else:
+                PopupWindow(self.parent,
+                            'Barcode Checked Out',
+                            'This item cannot be deleted at this time because it is currently checked out.')
+
+    def manage_item(self):
+        selected = self.tree.item(self.tree.focus())
+
+        if len(selected['values']) > 0:
+            self.parent.create_tab(ManageItemWindow,
+                                   self.parent.get_region_text('item_manage_heading'),
+                                   selected['values'][0])

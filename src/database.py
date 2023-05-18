@@ -146,7 +146,7 @@ class Database(threading.Thread):
 
         self.dbCursor.execute("""
             SELECT * FROM item_record
-            ORDER BY title ASC
+            ORDER BY title
         """)
         return self.dbCursor.fetchall()
 
