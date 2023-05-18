@@ -87,16 +87,18 @@ languages = {
             'users_menu': 'Users',
             'developer_menu': 'Admin',
             'help_menu': 'Help',
-            'github': 'GitHub'
+            'github': 'GitHub',
+            'discord': 'Discord'
         },
         'prompts': {
             'prompt_accept': 'Okay',
             'prompt_add_item': 'Add Record',
             'prompt_add_item_to_record': 'Create Item From Record',
             'prompt_confirm': 'Confirm',
-            'prompt_delete': 'Are you sure you would like to delete this?',
+            'prompt_delete': 'Are you sure you would like to delete this? This cannot be undone.',
             'prompt_deny': 'Cancel',
             'prompt_exit': 'Close',
+            'prompt_warning': 'Warning',
             'prompt_save_changes': 'Save Changes'
         },
         'settings': {
