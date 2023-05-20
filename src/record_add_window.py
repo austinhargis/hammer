@@ -1,10 +1,8 @@
 from datetime import datetime
 import logging
 import mysql.connector
-
-from languages import *
-from popup_window import PopupWindow
 from record_info_template import RecordInfoTemplate
+from tkinter import messagebox
 
 
 class AddRecordWindow(RecordInfoTemplate):
@@ -25,8 +23,8 @@ class AddRecordWindow(RecordInfoTemplate):
     def create_record(self):
         item_information = self.get_item_info()
         if item_information[0].replace(' ', '') == '':
-            PopupWindow(self.parent, self.parent.get_region_text('missing_item_title'),
-                        self.parent.get_region_text('missing_item_body'))
+            messagebox.showwarning(self.parent.get_region_text('missing_field_title'),
+                                   self.parent.get_region_text('missing_field_body'))
 
             return
 

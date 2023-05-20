@@ -1,10 +1,7 @@
 import logging
 import mysql.connector
 import tkinter as tk
-from tkinter import ttk
-
-from languages import *
-from popup_window import PopupWindow
+from tkinter import messagebox, ttk
 
 
 class CheckoutScreen(ttk.Frame):
@@ -114,6 +111,7 @@ class CheckoutScreen(ttk.Frame):
         """, (data[0],))
         users = self.parent.db.dbCursor.fetchall()
 
+        # Ensures that an item and user with the respective barcodes exist
         if len(items) == 1 and len(users) == 1:
 
             try:
@@ -128,14 +126,15 @@ class CheckoutScreen(ttk.Frame):
                 self.update_tree()
                 self.barcode_entry.delete(0, tk.END)
 
+            # If an item is already checked out, an IntegrityError will be thrown, resulting in an error window
             except mysql.connector.errors.IntegrityError:
-                PopupWindow(self.parent, self.parent.get_region_text('checkout_invalid_error_title'),
-                            self.parent.get_region_text('checkout_invalid_error_body'))
+                messagebox.showerror(title=self.parent.get_region_text('checkout_invalid_error_title'),
+                                     message=self.parent.get_region_text('checkout_invalid_error_body'))
                 logging.info(f'Item with barcode {data[1]} is already checked out')
 
         else:
-            PopupWindow(self.parent, self.parent.get_region_text('checkout_invalid_barcode_title'),
-                        self.parent.get_region_text('checkout_invalid_barcode_body'))
+            messagebox.showerror(title=self.parent.get_region_text('checkout_invalid_barcode_title'),
+                                 message=self.parent.get_region_text('checkout_invalid_barcode_body'))
             logging.info(f'One or both barcode(s) are invalid')
 
     def get_user(self):
@@ -154,18 +153,22 @@ class CheckoutScreen(ttk.Frame):
             """, (self.user_barcode.get(),))
             checkouts = self.parent.db.dbCursor.fetchall()
 
+            """
+                Determines if the user has permissions to check out.
+                If they do not have permissions, disable the barcode entry
+            """
             if not bool(self.parent.user_permissions['can_check_out']):
                 self.barcode_entry.configure(state='disabled')
-                PopupWindow(self.parent, self.parent.get_region_text('checkout_not_allowed_error_title'),
-                            self.parent.get_region_text('checkout_not_allowed_error_body'))
+                messagebox.showerror(title=self.parent.get_region_text('checkout_not_allowed_error_title'),
+                                     message=self.parent.get_region_text('checkout_not_allowed_error_body'))
             else:
                 self.barcode_entry.configure(state='normal')
                 self.barcode_entry.focus()
 
             self.user_checkouts.configure(text=f'Checkouts: {len(checkouts)}')
         else:
-            PopupWindow(self.parent, self.parent.get_region_text('checkout_nonexistent_user_error_title'),
-                        self.parent.get_region_text('checkout_nonexistent_user_error_body'))
+            messagebox.showerror(title=self.parent.get_region_text('checkout_nonexistent_user_error_title'),
+                                 message=self.parent.get_region_text('checkout_nonexistent_user_error_body'))
 
     def update_tree(self):
         self.parent.db.dbCursor.execute("""

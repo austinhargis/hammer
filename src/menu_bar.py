@@ -2,15 +2,12 @@ import sys
 import tkinter as tk
 from webbrowser import open_new_tab
 
-from configure_env_window import ConfigureEnvWindow
 from user_view_specific import ViewSpecificUser
 from user_create import CreateUser
 from settings import SettingsWindow
 from update_checker import UpdateChecker
 from checkouts_view_all import ViewCheckouts
 from user_view_all import ViewUsers
-
-from login import Login
 
 
 class MenuBar(tk.Menu):

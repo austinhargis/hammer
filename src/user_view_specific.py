@@ -1,7 +1,5 @@
 import tkinter as tk
-from tkinter import ttk
-
-from popup_window import PopupWindow
+from tkinter import messagebox, ttk
 from user_manage import ManageUser
 
 
@@ -125,6 +123,5 @@ class ViewSpecificUser(ttk.Frame):
             if bool(self.parent.user_permissions['can_modify_users']):
                 self.manage_user_button.configure(state='normal')
         else:
-            PopupWindow(self.parent, 'No User Found',
-                        'A user with that barcode does not exist. Please check that the barcode has'
-                        'been entered correctly.')
+            messagebox.showerror(title=self.parent.get_region_text('user_not_found_title'),
+                                 message=self.parent.get_region_text('user_not_found_body'))

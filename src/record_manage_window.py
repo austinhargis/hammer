@@ -1,5 +1,5 @@
-from languages import *
 from record_info_template import RecordInfoTemplate
+from tkinter import messagebox
 
 
 class ManageRecordWindow(RecordInfoTemplate):
@@ -22,16 +22,24 @@ class ManageRecordWindow(RecordInfoTemplate):
         self.fill_entries()
 
     def commit_changes(self):
-        self.parent.db.dbCursor.execute(f"""
-            UPDATE item_record 
-            SET title=%s, author=%s, description=%s, publish_date=%s, type=%s
-            WHERE id={self.entry_id}""", self.get_item_info())
+        item_information = self.get_item_info()
 
-        self.parent.db.dbConnection.commit()
+        if item_information[0].replace(' ', '') == '':
+            messagebox.showwarning(self.parent.get_region_text('missing_field_title'),
+                                   self.parent.get_region_text('missing_field_body'))
 
-        self.parent.home_tab.refresh_table()
-        self.parent.tab_controller.select(0)
-        self.destroy()
+            return
+        else:
+            self.parent.db.dbCursor.execute(f"""
+                UPDATE item_record 
+                SET title=%s, author=%s, description=%s, publish_date=%s, type=%s
+                WHERE id={self.entry_id}""", item_information)
+
+            self.parent.db.dbConnection.commit()
+
+            self.parent.home_tab.refresh_table()
+            self.parent.tab_controller.select(0)
+            self.destroy()
 
     def fill_entries(self):
         current_item = self.parent.tree.focus()

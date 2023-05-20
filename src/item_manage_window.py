@@ -1,7 +1,6 @@
+from item_template import ItemTemplate
 import logging
 import mysql.connector
-
-from item_template import ItemTemplate
 
 
 class ManageItemWindow(ItemTemplate):

@@ -1,9 +1,8 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import messagebox, ttk
 
 from item_add_window import AddItemWindow
 from item_manage_window import ManageItemWindow
-from popup_window import PopupWindow
 
 
 class ExpandedInformation(ttk.Frame):
@@ -106,7 +105,6 @@ class ExpandedInformation(ttk.Frame):
 
         self.manage_button = ttk.Button(button_frame, text=self.parent.get_region_text('item_manage_heading'),
                                         command=lambda: self.manage_item())
-
         self.manage_button.pack(side='right',
                                 fill='x')
 
@@ -162,14 +160,18 @@ class ExpandedInformation(ttk.Frame):
                 """, (barcode,))
                 self.parent.db.dbConnection.commit()
             else:
-                PopupWindow(self.parent,
-                            'Barcode Checked Out',
-                            'This item cannot be deleted at this time because it is currently checked out.')
+                messagebox.showerror(title=self.parent.get_region_text('item_cant_delete_error_title'),
+                                     message=self.parent.get_region_text('item_cant_delete_error_body'))
 
     def manage_item(self):
         selected = self.tree.item(self.tree.focus())
 
-        if len(selected['values']) > 0:
+        # Check to see if an item is currently selected in order to prevent an error
+
+        try:
             self.parent.create_tab(ManageItemWindow,
                                    self.parent.get_region_text('item_manage_heading'),
                                    selected['values'][0])
+        except IndexError:
+            messagebox.showerror(title=self.parent.get_region_text('item_not_selected_title'),
+                                 message=self.parent.get_region_text('item_not_selected_body'))

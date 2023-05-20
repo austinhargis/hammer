@@ -1,6 +1,4 @@
-from tkinter import ttk
-
-from popup_window import PopupWindow
+from tkinter import messagebox, ttk
 
 
 class LocationTemplate(ttk.Frame):
@@ -42,8 +40,8 @@ class LocationTemplate(ttk.Frame):
         self.name_entry.bind('<Return>', lambda event: self.barcode_entry.focus())
 
     def barcode_in_use(self):
-        PopupWindow(self.parent, self.parent.get_region_text('location_barcode_in_use_error_title'),
-                    self.parent.get_region_text('location_barcode_in_use_error_body'))
+        messagebox.showerror(title=self.parent.get_region_text('location_barcode_in_use_error_title'),
+                             message=self.parent.get_region_text('location_barcode_in_use_error_body'))
 
     def get_all_entries(self):
         return [

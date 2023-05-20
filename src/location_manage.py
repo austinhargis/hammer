@@ -1,7 +1,6 @@
+from location_template import LocationTemplate
 import logging
 import mysql.connector
-
-from location_template import LocationTemplate
 
 
 class LocationManage(LocationTemplate):

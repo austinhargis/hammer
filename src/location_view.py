@@ -1,8 +1,7 @@
+from location_manage import LocationManage
 import logging
 import tkinter as tk
 from tkinter import ttk
-
-from location_manage import LocationManage
 
 
 class LocationView(ttk.Frame):

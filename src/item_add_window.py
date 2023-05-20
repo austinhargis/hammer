@@ -1,8 +1,7 @@
+from item_template import ItemTemplate
 import logging
 import mysql.connector
-
-from popup_window import PopupWindow
-from item_template import ItemTemplate
+from tkinter import messagebox
 
 
 class AddItemWindow(ItemTemplate):
@@ -41,6 +40,7 @@ class AddItemWindow(ItemTemplate):
                             tab_object.refresh_table()
                 self.destroy()
             else:
-                PopupWindow(self.parent, self.parent.get_region_text('missing_barcode_title'), self.parent.get_region_text('missing_barcode_body'))
+                messagebox.showerror(title=self.parent.get_region_text('missing_barcode_title'),
+                                     message=self.parent.get_region_text('missing_barcode_body'))
         except mysql.connector.errors.IntegrityError:
             self.parent.db.unique_conflict()

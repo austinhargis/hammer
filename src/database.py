@@ -3,8 +3,7 @@ from dotenv import load_dotenv
 import mysql.connector
 import os
 import threading
-
-from popup_window import PopupWindow
+from tkinter import messagebox
 
 
 class Database(threading.Thread):
@@ -134,9 +133,8 @@ class Database(threading.Thread):
             self.dbCursor.execute(f"""DELETE FROM item_record WHERE id={data[0]}""")
             self.dbConnection.commit()
         else:
-            PopupWindow(self.parent,
-                        title=self.parent.get_region_text('item_cant_delete_error_title'),
-                        message=self.parent.get_region_text('item_cant_delete_error_body'))
+            messagebox.showerror(title=self.parent.get_region_text('item_cant_delete_error_title'),
+                                 message=self.parent.get_region_text('item_cant_delete_error_body'))
 
     def get_all_query(self):
         """
@@ -151,6 +149,5 @@ class Database(threading.Thread):
         return self.dbCursor.fetchall()
 
     def unique_conflict(self):
-        PopupWindow(self.parent,
-                    title=self.parent.get_region_text('item_barcode_in_use_error_title'),
-                    message=self.parent.get_region_text('item_barcode_in_use_error_body'))
+        messagebox.showerror(title=self.parent.get_region_text('item_barcode_in_use_error_title'),
+                             message=self.parent.get_region_text('item_barcode_in_use_error_body'))

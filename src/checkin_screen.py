@@ -1,9 +1,6 @@
 import logging
 import tkinter as tk
-from tkinter import ttk
-
-from languages import *
-from popup_window import PopupWindow
+from tkinter import messagebox, ttk
 
 
 class CheckinScreen(ttk.Frame):
@@ -73,8 +70,8 @@ class CheckinScreen(ttk.Frame):
         """)
         items = self.parent.db.dbCursor.fetchall()
 
+        # Checks that the item was checked out
         if len(items) == 1:
-
             self.parent.db.dbCursor.execute(f"""
                 DELETE FROM checkouts
                 WHERE item_barcode='{self.barcode_entry.get()}'
@@ -95,5 +92,5 @@ class CheckinScreen(ttk.Frame):
             self.tree.insert('', tk.END, values=[self.barcode_entry.get(), return_title[0][0]])
             self.barcode_entry.delete(0, tk.END)
         else:
-            PopupWindow(self.parent, self.parent.get_region_text('checkin_error_title'),
-                        self.parent.get_region_text('checkin_error_body'))
+            messagebox.showerror(title=self.parent.get_region_text('checkin_error_title'),
+                                 message=self.parent.get_region_text('checkin_error_body'))

@@ -1,8 +1,6 @@
-import logging
-
-import mysql.connector.errors
-
 from location_template import LocationTemplate
+import logging
+import mysql.connector.errors
 
 
 class LocationCreate(LocationTemplate):

@@ -1,8 +1,6 @@
 import logging
 import mysql.connector
 from datetime import datetime
-
-from languages import *
 from user_template import UserTemplate
 
 

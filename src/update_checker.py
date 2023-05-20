@@ -1,5 +1,4 @@
 import logging
-import tkinter as tk
 import urllib.request
 import webbrowser
 from datetime import datetime

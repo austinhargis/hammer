@@ -8,13 +8,16 @@ languages = {
             'checkout_heading': 'Check Item Out',
             'checkout_view': 'View Checkouts',
             'checkout_invalid_error_title': 'Already Checked Out',
-            'checkout_invalid_error_body': 'This item is already checked out to a user. This checkout cannot be completed at this time.',
+            'checkout_invalid_error_body': 'This item is already checked out to a user. This checkout cannot be '
+                                           'completed at this time.',
             'checkout_invalid_barcode_title': 'Invalid Barcode',
             'checkout_invalid_barcode_body': 'The user or item barcode were invalid or do not exist.',
             'checkout_not_allowed_error_title': 'Checkout Not Permitted',
-            'checkout_not_allowed_error_body': 'You are not presently allowed to checkout items. If you think this is a mistake, please contact an administrator.',
+            'checkout_not_allowed_error_body': 'You are not presently allowed to checkout items. If you think this is '
+                                               'a mistake, please contact an administrator.',
             'checkout_nonexistent_user_error_title': 'User Does Not Exist',
-            'checkout_nonexistent_user_error_body': 'A user with that barcode does not exist. Please check the barcode and try again.',
+            'checkout_nonexistent_user_error_body': 'A user with that barcode does not exist. Please check the '
+                                                    'barcode and try again.',
             'checkin_return': 'Return Item',
             'checkin_heading': 'Check Item In',
             'checkin_error_title': 'Not Checked Out',
@@ -56,7 +59,8 @@ languages = {
             'missing_field_title': 'Missing Field',
             'missing_field_body': 'Records must have a title field.',
             'item_cant_delete_error_title': 'Item Currently Checked Out',
-            'item_cant_delete_error_body': 'Warning: An item with this barcode is currently checked out. This barcode CANNOT be deleted at this time.',
+            'item_cant_delete_error_body': 'Warning: An item with this barcode is currently checked out. This barcode '
+                                           'CANNOT be deleted at this time.',
             'item_barcode_in_use_error_title': 'Barcode Already in Use',
             'item_barcode_in_use_error_body': 'Warning: This barcode is already in use. Please try a different barcode.',
             'item_delete': 'Delete Item',
@@ -80,7 +84,8 @@ languages = {
             'username': 'Username',
             'password': 'Password',
             'login_error_title': 'Incorrect Credentials',
-            'login_error_body':  'Your username or password are incorrect. Please contact an administrator if this continues.',
+            'login_error_body':  'Your username or password are incorrect. Please contact an administrator if this '
+                                 'continues.',
             'logout': 'Logout'
         },
         'menubar': {
@@ -147,6 +152,10 @@ languages = {
             'user_allowed_checkouts': 'Allow User to Checkout',
             'user_allowed_item_management': 'Allow Item Management',
             'user_allowed_modification_of_users': 'Allow Modification of Users',
+
+            'user_not_found_title': 'No User Found',
+            'user_not_found_body': 'A user with that barcode does not exist. Please check that the barcode has been '
+                                   'entered correctly.'
 
         }
     }

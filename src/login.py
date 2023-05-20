@@ -1,10 +1,7 @@
-import logging
-
 import bcrypt
-from tkinter import ttk
-
 from home_tab import HomeTab
-from popup_window import PopupWindow
+import logging
+from tkinter import messagebox, ttk
 
 
 class Login(ttk.Frame):
@@ -84,5 +81,5 @@ class Login(ttk.Frame):
             else:
                 raise IndexError
         except IndexError:
-            PopupWindow(self.parent, self.parent.get_region_text('login_error_title'),
-                        self.parent.get_region_text('login_error_body'))
+            messagebox.showerror(title=self.parent.get_region_text('login_error_title'),
+                                 message=self.parent.get_region_text('login_error_body'))
