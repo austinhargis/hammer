@@ -54,12 +54,14 @@ languages = {
             'missing_barcode_title': 'Barcode Missing',
             'missing_barcode_body': 'Items must have a barcode in order to be created.',
             'missing_field_title': 'Missing Field',
-            'missing_field_body': 'The title field must have a value specified before this item can be added to the table.',
+            'missing_field_body': 'Records must have a title field.',
             'item_cant_delete_error_title': 'Item Currently Checked Out',
             'item_cant_delete_error_body': 'Warning: An item with this barcode is currently checked out. This barcode CANNOT be deleted at this time.',
             'item_barcode_in_use_error_title': 'Barcode Already in Use',
             'item_barcode_in_use_error_body': 'Warning: This barcode is already in use. Please try a different barcode.',
             'item_delete': 'Delete Item',
+            'item_not_selected_title': 'Please Select an Item',
+            'item_not_selected_body': 'In order to manage an item, you must first select one.'
         },
         'locations': {
             'location_heading': 'Locations',
