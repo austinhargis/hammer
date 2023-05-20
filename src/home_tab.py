@@ -3,7 +3,6 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
 
-from item_add_window import AddItemWindow
 from record_add_window import AddRecordWindow
 from checkin_screen import CheckinScreen
 from checkout_screen import CheckoutScreen
@@ -15,6 +14,7 @@ from location_view import LocationView
 from message_create import CreateMessage
 from record_manage_window import ManageRecordWindow
 from user_view_specific import ViewSpecificUser
+
 
 class HomeTab(ttk.Frame):
 
@@ -197,28 +197,6 @@ class HomeTab(ttk.Frame):
         right_frame = ttk.Frame(main_frame)
         right_frame.pack(fill='both', expand=True, side='left', anchor='ne', padx=self.parent.padding)
 
-        right_right_frame = ttk.Frame(main_frame)
-        right_right_frame.pack(fill='both', expand=True, side='left', anchor='ne', pady=self.parent.padding)
-
-        self.items_tree = ttk.Treeview(right_right_frame, columns=(
-            'barcode', 'location', 'description', 'status'
-        ))
-        self.items_tree.pack(side='left', expand=False)
-
-        self.items_tree['show'] = 'headings'
-        # show only the desired columns (hiding the id)
-        self.items_tree['displaycolumns'] = ('barcode', 'location', 'description', 'status')
-
-        treeScroll = ttk.Scrollbar(right_right_frame, command=self.items_tree.yview)
-        self.items_tree.configure(yscrollcommand=treeScroll.set)
-        treeScroll.pack(side='right', fill='both')
-
-        self.items_tree.heading('barcode', text=self.parent.get_region_text('item_barcode'))
-        self.items_tree.heading('location', text=self.parent.get_region_text('item_location'))
-        self.items_tree.heading('description', text=self.parent.get_region_text('item_description'))
-        self.items_tree.heading('status', text=self.parent.get_region_text('item_status'))
-        self.items_tree.pack(fill='both', expand=True)
-
         top_right_frame = ttk.Frame(right_frame)
         top_right_frame.pack(expand=True, fill='both', side='top')
 
@@ -337,9 +315,6 @@ class HomeTab(ttk.Frame):
         self.parent.tree.heading('type', text='Type', command=lambda: self.sort_tree('type'))
         self.parent.tree.pack(expand=True, fill='both', padx=(self.parent.padding, 0), pady=self.parent.padding)
 
-        # self.parent.tree.bind('<Button-1>', lambda event: self.get_expanded_tree())
-        # self.parent.tree.bind('<Up>', lambda event: self.get_expanded_tree())
-        # self.parent.tree.bind('<Down>', lambda event: self.get_expanded_tree())
         self.parent.tree.focus()
 
         search_frame = ttk.Frame(bottom_right_frame)
@@ -368,24 +343,3 @@ class HomeTab(ttk.Frame):
 
         self.bind('<Return>', lambda event: self.search_table(search_box))
         self.parent.tree.bind('<Double-1>', lambda event: self.tree_double_click())
-
-    def get_expanded_tree(self):
-
-        for item in self.items_tree.get_children():
-            self.items_tree.delete(item)
-
-        item = self.parent.tree.focus()
-        item_id = self.parent.tree.item(item)['values'][0]
-
-        self.parent.db.dbCursor.execute(f"""
-            SELECT items.barcode, locations.name, items.description
-            FROM items
-            INNER JOIN locations on locations.barcode = items.location_barcode
-            WHERE items.id=%s
-        """, (item_id,))
-        items = self.parent.db.dbCursor.fetchall()
-
-        for item in items:
-            item = list(item)
-            item.append(self.get_item_status(item[0]))
-            self.items_tree.insert('', tk.END, values=item)
