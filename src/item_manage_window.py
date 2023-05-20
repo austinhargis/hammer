@@ -1,5 +1,5 @@
 import logging
-import mysql.connector.errors
+import mysql.connector
 
 from item_template import ItemTemplate
 
