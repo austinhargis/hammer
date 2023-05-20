@@ -9,6 +9,7 @@
 import logging
 import os
 import tkinter as tk
+import tkinter.font
 from pathlib import Path
 from tkinter import ttk
 import _tkinter
@@ -39,8 +40,12 @@ class Hammer(tk.Tk):
         self.title(f"hammer")
         self.minsize(800, 600)
 
+        self.default_font = tkinter.font.nametofont('TkDefaultFont')
+        self.default_font.configure(family='Arial',
+                                    size=12)
+
         self.data_path = f'{Path.home()}/hammer'
-        self.heading_font = ('Arial', 20, 'bold')
+        self.heading_font = ('Arial', 22, 'bold')
         self.manage_check_delay = 250
         self.padding = 10
         self.user_barcode = None

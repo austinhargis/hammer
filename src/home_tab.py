@@ -307,9 +307,9 @@ class HomeTab(ttk.Frame):
 
         self.parent.tree.heading('id', text='ID')
         self.parent.tree.heading('title', text='Title', command=lambda: self.sort_tree('title'))
-        self.parent.tree.column('title', stretch=False, width=300)
+        self.parent.tree.column('title', stretch=True, minwidth=350)
         self.parent.tree.heading('author', text='Author', command=lambda: self.sort_tree('author'))
-        self.parent.tree.column('author', stretch=False, width=300)
+        self.parent.tree.column('author', stretch=True, minwidth=250)
         self.parent.tree.heading('publish_date', text='Publish Date', command=lambda: self.sort_tree('publish_date'))
         self.parent.tree.column('publish_date', stretch=False, width=100)
         self.parent.tree.heading('type', text='Type', command=lambda: self.sort_tree('type'))
